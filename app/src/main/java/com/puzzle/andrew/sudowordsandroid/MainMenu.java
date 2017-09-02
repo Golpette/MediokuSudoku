@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.puzzle.andrew.sudowordsandroid.crossword.Crossword;
+import com.puzzle.andrew.sudowordsandroid.wordsearch.Wordsearch;
+import com.puzzle.andrew.sudowordsandroid.sudoku.Sudoku;
+
 public class MainMenu extends AppCompatActivity {
 
     ImageButton crosswordButton, wordsearchButton, sudokuButton;

@@ -1,4 +1,4 @@
-package com.puzzle.andrew.sudowordsandroid;
+package com.puzzle.andrew.sudowordsandroid.sudoku;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +11,8 @@ import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.puzzle.andrew.sudowordsandroid.R;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -45,6 +47,7 @@ public class Sudoku extends AppCompatActivity{
 
         sudokuButton = (ImageButton)findViewById(R.id.crossword);
         generateSudoku(grid);
+        makeGrid(grid);
     }
 
     public void generateSudoku(int[][] grid){
@@ -132,12 +135,27 @@ public class Sudoku extends AppCompatActivity{
             }
         }
         if(!correct.isEmpty()){
-            for(int i = 0; i < x-2; i++){
-                for (int j = 0; j < y-2; j++){
-                    android.widget.GridLayout sudGrid = (android.widget.GridLayout)findViewById(R.id.sudokuGrid);
-                    EditText field = (EditText)sudGrid.getChildAt(i*9+j);
-                    field.setText(""+ correct.get(j*(x-2) + i));
-                    grid[i][j] = correct.get(j*(x-2) + i);
+            for(int i = 0; i < x-2; i++) {
+                for (int j = 0; j < y - 2; j++) {
+
+
+
+                    //field.setText(""+ correct.get(j*(x-2) + i));
+                    grid[i][j] = correct.get(j * (x - 2) + i);
+                }
+            }
+        }
+    }
+
+    public void makeGrid(int [][] grid){
+        grid = SudokuMethods.makeEasy(grid);
+        for(int i = 0; i < x-2; i++){
+            for (int j = 0; j < y-2; j++){
+                android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
+                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+                //SudokuMethods.makeMedium(grid);
+                if(grid[i][j]!=0) {
+                    field.setText("" + grid[i][j]);
                 }
             }
         }

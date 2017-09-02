@@ -16,21 +16,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Crossword">
+        <activity android:name=".crossword.Crossword">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Wordsearch">
+        <activity android:name=".wordsearch.Wordsearch">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Sudoku">
+        <activity android:name=".sudoku.Sudoku">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
