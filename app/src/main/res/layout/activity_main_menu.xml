@@ -16,39 +16,39 @@
         android:text="SudoWords"
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentEnd="false"
+        android:autoText="false"
+        android:textSize="35sp" />
 
     <ImageButton
         android:layout_width="200dp"
         android:layout_height="150dp"
         android:id="@+id/crossword"
         android:src="@drawable/crossword"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/textView"
-        android:layout_alignEnd="@+id/textView"
-        android:onClick="openCrossword" />
+        android:onClick="openCrossword"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/wordsearch" />
 
     <ImageButton
         android:layout_width="200dp"
         android:layout_height="150dp"
         android:id="@+id/wordsearch"
         android:src="@drawable/wordsearch"
-        android:layout_above="@+id/sudoku"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:nestedScrollingEnabled="false"
-        android:onClick="openWordsearch" />
+        android:onClick="openWordsearch"
+        android:layout_alignLeft="@+id/crossword"
+        android:layout_alignStart="@+id/crossword"
+        android:layout_above="@+id/sudoku" />
 
     <ImageButton
         android:layout_width="200dp"
         android:layout_height="150dp"
         android:id="@+id/sudoku"
         android:src="@drawable/sudoku"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="openSudoku" />
+        android:onClick="openSudoku"
+        android:layout_alignLeft="@+id/wordsearch"
+        android:layout_alignStart="@+id/wordsearch"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
