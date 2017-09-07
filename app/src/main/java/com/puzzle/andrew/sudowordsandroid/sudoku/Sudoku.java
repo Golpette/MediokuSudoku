@@ -224,7 +224,34 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             case R.id.sudokuHintButton:
                 //// TODO: 07/09/17
                 Log.d(TAG,"Hint button pressed");
+                // Every time hint is pressed, get rid of "check" features (copy and pasted from below)
+                checkPressed = false;
+                // Reset colours
+                for (int i = 0; i < x - 2; i++) {
+                    for (int j = 0; j < y - 2; j++) {
+                        android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
+                        EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+                        // Need to update the grid[][] array -  this does not happen upon text entry!
+                        // Is there a better way to do this, not just upon button press?
+                        if (!String.valueOf(field.getText()).isEmpty()) {
+                            grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
+                        }
+
+                        if( field.getKeyListener() == null ){
+                            field.setBackgroundResource(R.drawable.border);
+                        }
+                        else {
+                            field.setBackgroundResource(R.drawable.border_active);
+                        }
+                    }
+                }
+
+
+
+
                 break;
+
+
 
 
             case R.id.sudokuCheckButton:
