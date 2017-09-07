@@ -28,177 +28,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        android:background="@drawable/largest_border">
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-        <!-- was 0dp width and 400dp height
+        <!-- Steve:  was 0dp width and 400dp height
         android:background="@drawable/largest_border"
         -->
-
-
-
-        <!--
-
-        <EditText
-            android:id="@+id/largest"
-            android:layout_width="360dp"
-            android:layout_height="360dp"
-            android:layout_column="0"
-            android:layout_columnSpan="9"
-            android:layout_row="0"
-            android:layout_rowSpan="9"
-            android:background="@drawable/largest_border"
-            android:clickable="false"
-            android:contextClickable="false"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="none"
-            android:visibility="visible" />
-
-
-        <EditText
-            android:id="@+id/large_row0col0"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_column="0"
-            android:layout_columnSpan="3"
-            android:layout_row="0"
-            android:layout_rowSpan="3"
-            android:background="@drawable/large_border"
-            android:clickable="false"
-            android:contextClickable="false"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="number" />
-
-
-        <EditText
-            android:id="@+id/large_row0col1"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_column="3"
-            android:layout_columnSpan="3"
-            android:layout_row="0"
-            android:layout_rowSpan="3"
-            android:background="@drawable/large_border"
-            android:clickable="false"
-            android:contextClickable="false"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="number" />
-
-        <EditText
-            android:id="@+id/large_row0col2"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_column="6"
-            android:layout_columnSpan="3"
-            android:layout_row="0"
-            android:layout_rowSpan="3"
-            android:background="@drawable/large_border"
-            android:clickable="false"
-            android:contextClickable="false"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="number" />
-
-        <EditText
-            android:id="@+id/large_row1col0"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_column="0"
-            android:layout_columnSpan="3"
-            android:layout_row="3"
-            android:layout_rowSpan="3"
-            android:background="@drawable/large_border"
-            android:clickable="false"
-            android:contextClickable="false"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="number" />
-
-        <EditText
-            android:id="@+id/large_row1col1"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_column="3"
-            android:layout_columnSpan="3"
-            android:layout_row="3"
-            android:layout_rowSpan="3"
-            android:background="@drawable/large_border"
-            android:clickable="false"
-            android:contextClickable="false"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="number" />
-
-        <EditText
-            android:id="@+id/large_row1col2"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_column="6"
-            android:layout_columnSpan="3"
-            android:layout_row="3"
-            android:layout_rowSpan="3"
-            android:background="@drawable/large_border"
-            android:clickable="false"
-            android:contextClickable="false"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="number" />
-
-        <EditText
-            android:id="@+id/large_row2col0"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_column="0"
-            android:layout_columnSpan="3"
-            android:layout_row="6"
-            android:layout_rowSpan="3"
-            android:background="@drawable/large_border"
-            android:clickable="false"
-            android:contextClickable="false"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="number" />
-
-        <EditText
-            android:id="@+id/large_row2col1"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_column="3"
-            android:layout_columnSpan="3"
-            android:layout_row="6"
-            android:layout_rowSpan="3"
-            android:background="@drawable/large_border"
-            android:clickable="false"
-            android:contextClickable="false"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="number" />
-
-        <EditText
-            android:id="@+id/large_row2col2"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_column="6"
-            android:layout_columnSpan="3"
-            android:layout_row="6"
-            android:layout_rowSpan="3"
-            android:background="@drawable/large_border"
-            android:clickable="false"
-            android:contextClickable="false"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="number" />
-
-        -->
-
-
-
-
-
-        <!-- Steve -->
 
 
         <EditText
@@ -1262,13 +1096,113 @@
             android:textAlignment="center" />
 
 
+        <ImageView
+            android:id="@+id/large_row0col0"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_column="0"
+            android:layout_columnSpan="3"
+            android:layout_row="0"
+            android:layout_rowSpan="3"
+            app:srcCompat="@drawable/large_border" />
+
+        <ImageView
+            android:id="@+id/large_row0col1"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_column="3"
+            android:layout_columnSpan="3"
+            android:layout_row="0"
+            android:layout_rowSpan="3"
+            app:srcCompat="@drawable/large_border" />
+
+        <ImageView
+            android:id="@+id/large_row0col2"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_column="6"
+            android:layout_columnSpan="3"
+            android:layout_row="0"
+            android:layout_rowSpan="3"
+            app:srcCompat="@drawable/large_border" />
+
+        <ImageView
+            android:id="@+id/large_row1col0"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_column="0"
+            android:layout_columnSpan="3"
+            android:layout_row="3"
+            android:layout_rowSpan="3"
+            app:srcCompat="@drawable/large_border" />
+
+        <ImageView
+            android:id="@+id/large_row1col1"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_column="3"
+            android:layout_columnSpan="3"
+            android:layout_row="3"
+            android:layout_rowSpan="3"
+            app:srcCompat="@drawable/large_border" />
+
+        <ImageView
+            android:id="@+id/large_row1col2"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_column="6"
+            android:layout_columnSpan="3"
+            android:layout_row="3"
+            android:layout_rowSpan="3"
+            app:srcCompat="@drawable/large_border" />
+
+        <ImageView
+            android:id="@+id/large_row2col0"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_column="0"
+            android:layout_columnSpan="3"
+            android:layout_row="6"
+            android:layout_rowSpan="3"
+            app:srcCompat="@drawable/large_border" />
+
+        <ImageView
+            android:id="@+id/large_row2col1"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_column="3"
+            android:layout_columnSpan="3"
+            android:layout_row="6"
+            android:layout_rowSpan="3"
+            app:srcCompat="@drawable/large_border" />
+
+        <ImageView
+            android:id="@+id/large_row2col2"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_column="6"
+            android:layout_columnSpan="3"
+            android:layout_row="6"
+            android:layout_rowSpan="3"
+            app:srcCompat="@drawable/large_border" />
 
 
+        <ImageView
+            android:id="@+id/largest"
+            android:layout_width="360dp"
+            android:layout_height="360dp"
+            android:layout_column="0"
+            android:layout_columnSpan="9"
+            android:layout_row="0"
+            android:layout_rowSpan="9"
+            app:srcCompat="@drawable/largest_border" />
 
 
 
 
 
     </GridLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>
