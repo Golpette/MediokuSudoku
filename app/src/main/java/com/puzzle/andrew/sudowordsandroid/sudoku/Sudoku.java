@@ -2,6 +2,9 @@ package com.puzzle.andrew.sudowordsandroid.sudoku;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -14,10 +17,16 @@ import java.util.Random;
 /**
  * Created by Andrew on 30/08/2017.
  */
-public class Sudoku extends AppCompatActivity{
+public class Sudoku extends AppCompatActivity implements View.OnClickListener{
+
+    private static final String TAG = Sudoku.class.getSimpleName();
+    private static final String TAG2 = Sudoku.class.getSimpleName();
 
     GridView sudokuGrid;
     ImageButton sudokuButton;
+
+    private Button checkButton;
+    private Button hintButton;
 
     ArrayList<Integer> row, checks;
     ArrayList<Integer> correct;
@@ -40,10 +49,21 @@ public class Sudoku extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sudoku_menu);
 
+        checkButton = (Button) findViewById(R.id.sudokuCheckButton);
+        checkButton.setOnClickListener(Sudoku.this);
+
+        hintButton = (Button) findViewById(R.id.sudokuHintButton);
+        hintButton.setOnClickListener(Sudoku.this);
+
         sudokuButton = (ImageButton)findViewById(R.id.crossword);
         generateSudoku(grid);
         makeGrid(grid);
     }
+
+
+
+
+
 
 
 
@@ -170,6 +190,34 @@ public class Sudoku extends AppCompatActivity{
             }
         }
     }
+
+
+    @Override
+    public void onClick(View view) {
+
+        switch ( view.getId() ){
+
+            case R.id.sudokuHintButton:
+                //// TODO: 07/09/17
+                Log.d(TAG,"Hint button pressed");
+                break;
+
+            case R.id.sudokuCheckButton:
+                //// TODO: 07/09/17
+                Log.d(TAG2,"Check button pressed");
+                break;
+
+
+            default:
+                break;  //is this essential?
+
+        }
+        
+    }
+
+
+
+
 
 
 
