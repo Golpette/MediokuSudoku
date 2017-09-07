@@ -1,5 +1,6 @@
 package com.puzzle.andrew.sudowordsandroid.sudoku;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,11 +29,19 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     private Button checkButton;
     private Button hintButton;
 
+    private boolean checkPressed = false;
+
     ArrayList<Integer> row, checks;
     ArrayList<Integer> correct;
     ArrayList<ArrayList<Integer>> cols;
     ArrayList<ArrayList<Integer>> boxes;
+
     int[][] grid = new int [9][9];
+
+    // hold solution
+    int[][] grid_correct = new int [9][9];
+
+
     int x = 11, y = 11;
     Random rand;
     boolean complete = false;
@@ -161,20 +170,35 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
                     //field.setText(""+ correct.get(j*(x-2) + i));
                     grid[i][j] = correct.get(j * (x - 2) + i);
+                    //grid[i][j] = grid2[i][j];
                 }
             }
         }
+
+
+
+        // Set correct solution
+        for(int i = 0; i < x-2; i++) {
+            for (int j = 0; j < y - 2; j++) {
+                //field.setText(""+ correct.get(j*(x-2) + i));
+                grid_correct[i][j] = grid[i][j];
+                //grid[i][j] = grid2[i][j];
+            }
+        }
+
+
+
     }
 
 
 
 
-    public void makeGrid(int [][] grid){
+    public void makeGrid(int [][] grid2){
         /**
          * Generates starting grid from solution grid
          */
 
-        grid = SudokuMethods.makeEasy(grid);
+        grid = SudokuMethods.makeEasy(grid2);
         //grid = SudokuMethods.makeMedium(grid);
 
         for(int i = 0; i < x-2; i++){
@@ -202,9 +226,58 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 Log.d(TAG,"Hint button pressed");
                 break;
 
+
             case R.id.sudokuCheckButton:
-                //// TODO: 07/09/17
                 Log.d(TAG2,"Check button pressed");
+
+                if( !checkPressed ) {
+                    checkPressed=true;
+                    for (int i = 0; i < x - 2; i++) {
+                        for (int j = 0; j < y - 2; j++) {
+
+                            android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
+                            EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+
+                            // Need to update the grid[][] array -  this does not happen upon text entry!
+                            // Is there a better way to do this, not just upon button press?
+                            if (!String.valueOf(field.getText()).isEmpty()) {
+                                grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
+                            }
+                            //field.setBackgroundResource(R.drawable.border_active);
+                            if (grid[i][j] == grid_correct[i][j]) {
+                                field.setBackgroundColor(Color.GREEN);
+                            }
+                            else if(grid[i][j]!=0){  // 0 is set if no number is entered
+                                field.setBackgroundColor(Color.RED);
+                            }
+                        }
+                    }
+                }
+                else{
+                    checkPressed = false;
+                    for (int i = 0; i < x - 2; i++) {
+                        for (int j = 0; j < y - 2; j++) {
+
+                            android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
+                            EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+
+                            // Need to update the grid[][] array -  this does not happen upon text entry!
+                            // Is there a better way to do this, not just upon button press?
+                            if (!String.valueOf(field.getText()).isEmpty()) {
+                                grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
+                            }
+
+                            if( field.getKeyListener() == null ){
+                                field.setBackgroundResource(R.drawable.border);
+                            }
+                            else {
+                                field.setBackgroundResource(R.drawable.border_active);
+                            }
+                        }
+                    }
+
+                }
+
                 break;
 
 
