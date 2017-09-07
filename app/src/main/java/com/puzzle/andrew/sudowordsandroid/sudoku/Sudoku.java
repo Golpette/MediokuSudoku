@@ -29,6 +29,7 @@ public class Sudoku extends AppCompatActivity{
     boolean complete = false;
 
     protected void onCreate(Bundle savedInstanceState) {
+
         correct = new ArrayList<Integer>();
         row = new ArrayList<Integer>();
         checks = new ArrayList<Integer>();
@@ -44,7 +45,13 @@ public class Sudoku extends AppCompatActivity{
         makeGrid(grid);
     }
 
+
+
+
     public void generateSudoku(int[][] grid){
+        /**
+         * Generates full solution grid
+         */
         boxes.clear();
         cols.clear();
         row.clear();
@@ -132,8 +139,6 @@ public class Sudoku extends AppCompatActivity{
             for(int i = 0; i < x-2; i++) {
                 for (int j = 0; j < y - 2; j++) {
 
-
-
                     //field.setText(""+ correct.get(j*(x-2) + i));
                     grid[i][j] = correct.get(j * (x - 2) + i);
                 }
@@ -141,9 +146,17 @@ public class Sudoku extends AppCompatActivity{
         }
     }
 
+
+
+
     public void makeGrid(int [][] grid){
+        /**
+         * Generates starting grid from solution grid
+         */
+
         grid = SudokuMethods.makeEasy(grid);
         //grid = SudokuMethods.makeMedium(grid);
+
         for(int i = 0; i < x-2; i++){
             for (int j = 0; j < y-2; j++){
                 android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
@@ -157,4 +170,10 @@ public class Sudoku extends AppCompatActivity{
             }
         }
     }
+
+
+
+
+
+
 }
