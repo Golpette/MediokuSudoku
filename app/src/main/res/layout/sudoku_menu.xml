@@ -20,16 +20,20 @@
 
     <GridLayout
         android:id="@+id/sudokuGrid"
-        android:layout_width="0dp"
-        android:layout_height="400dp"
+        android:layout_width="360dp"
+        android:layout_height="360dp"
         android:columnCount="9"
         android:rowCount="9"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        android:background="@drawable/largest_border">
 
+        <!-- was 0dp width and 400dp height
+        android:background="@drawable/largest_border"
+        -->
 
 
 
@@ -50,6 +54,7 @@
             android:enabled="false"
             android:inputType="none"
             android:visibility="visible" />
+
 
         <EditText
             android:id="@+id/large_row0col0"
@@ -188,6 +193,8 @@
             android:inputType="number" />
 
         -->
+
+
 
 
 
