@@ -216,20 +216,30 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     }
 
 
+
+
+
     @Override
     public void onClick(View view) {
+        /**
+         * Define function of Hint and Check buttons here
+         */
+
+        android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
+
 
         switch ( view.getId() ){
 
             case R.id.sudokuHintButton:
                 //// TODO: 07/09/17
                 Log.d(TAG,"Hint button pressed");
+
                 // Every time hint is pressed, get rid of "check" features (copy and pasted from below)
                 checkPressed = false;
+
                 // Reset colours
                 for (int i = 0; i < x - 2; i++) {
                     for (int j = 0; j < y - 2; j++) {
-                        android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
                         EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
                         // Need to update the grid[][] array -  this does not happen upon text entry!
                         // Is there a better way to do this, not just upon button press?
@@ -247,7 +257,11 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
 
 
-
+                //TODO
+                // actual Hint Button functionality
+                int[] hint_xy = SudokuMethods.getHint_singles_hiddenSingles( grid );
+                EditText field2 = (EditText) sudGrid.getChildAt( hint_xy[0] * 9 + hint_xy[1] );
+                field2.setBackgroundColor(Color.BLUE);
 
                 break;
 
@@ -257,12 +271,30 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             case R.id.sudokuCheckButton:
                 Log.d(TAG2,"Check button pressed");
 
+                // Always reset colours when Check is pressed
+                for (int i = 0; i < x - 2; i++) {
+                    for (int j = 0; j < y - 2; j++) {
+                        EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+                        // Need to update the grid[][] array -  this does not happen upon text entry!
+                        // Is there a better way to do this, not just upon button press?
+                        if (!String.valueOf(field.getText()).isEmpty()) {
+                            grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
+                        }
+                        if( field.getKeyListener() == null ){
+                            field.setBackgroundResource(R.drawable.border);
+                        }
+                        else {
+                            field.setBackgroundResource(R.drawable.border_active);
+                        }
+                    }
+                }
+
+
                 if( !checkPressed ) {
                     checkPressed=true;
                     for (int i = 0; i < x - 2; i++) {
                         for (int j = 0; j < y - 2; j++) {
 
-                            android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
                             EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
 
                             // Need to update the grid[][] array -  this does not happen upon text entry!
@@ -282,27 +314,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
                 else{
                     checkPressed = false;
-                    for (int i = 0; i < x - 2; i++) {
-                        for (int j = 0; j < y - 2; j++) {
-
-                            android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
-                            EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-
-                            // Need to update the grid[][] array -  this does not happen upon text entry!
-                            // Is there a better way to do this, not just upon button press?
-                            if (!String.valueOf(field.getText()).isEmpty()) {
-                                grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
-                            }
-
-                            if( field.getKeyListener() == null ){
-                                field.setBackgroundResource(R.drawable.border);
-                            }
-                            else {
-                                field.setBackgroundResource(R.drawable.border_active);
-                            }
-                        }
-                    }
-
                 }
 
                 break;
