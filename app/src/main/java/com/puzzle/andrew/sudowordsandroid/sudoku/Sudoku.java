@@ -36,10 +36,21 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     ArrayList<ArrayList<Integer>> cols;
     ArrayList<ArrayList<Integer>> boxes;
 
+    // current state of grid
     int[][] grid = new int [9][9];
-
     // hold solution
     int[][] grid_correct = new int [9][9];
+
+
+    //Color HIGHLIGHT_COLOUR = new Color(230, 230,  230);
+    //	Color HINT_COLOR = new Color(150,150,220);
+    //Color HINT_COLOR = new Color(170,220,230);
+
+    //Color WRONG_COLOUR = new Color(20 , 255,  20);
+    //Color CORRECT_COLOUR = new Color( 0 , 255,  0);
+    //Color correct = new Color( 20 , 255,  20);
+    //Color fixed = new Color(90,90,90);
+    //Color fixed = new Color(40,40,40);
 
 
     int x = 11, y = 11;
@@ -231,7 +242,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         switch ( view.getId() ){
 
             case R.id.sudokuHintButton:
-                //// TODO: 07/09/17
                 Log.d(TAG,"Hint button pressed");
 
                 // Every time hint is pressed, get rid of "check" features (copy and pasted from below)
@@ -257,11 +267,11 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
 
 
-                //TODO
                 // actual Hint Button functionality
                 int[] hint_xy = SudokuMethods.getHint_singles_hiddenSingles( grid );
                 EditText field2 = (EditText) sudGrid.getChildAt( hint_xy[0] * 9 + hint_xy[1] );
-                field2.setBackgroundColor(Color.BLUE);
+                field2.setBackgroundColor( getResources().getColor(R.color.sudoku_hint) );
+
 
                 break;
 
@@ -304,10 +314,12 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                             }
                             //field.setBackgroundResource(R.drawable.border_active);
                             if (grid[i][j] == grid_correct[i][j]) {
-                                field.setBackgroundColor(Color.GREEN);
+                                //field.setBackgroundColor(Color.GREEN);
+                                field.setBackgroundColor( getResources().getColor(R.color.sudoku_correct) );
                             }
                             else if(grid[i][j]!=0){  // 0 is set if no number is entered
-                                field.setBackgroundColor(Color.RED);
+                                //field.setBackgroundColor(Color.RED);
+                                field.setBackgroundColor( getResources().getColor(R.color.sudoku_wrong) );
                             }
                         }
                     }
