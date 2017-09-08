@@ -148,7 +148,7 @@ public class Sudoku extends AppCompatActivity{
     }
 
     public void makeGrid(int [][] grid){
-        grid = SudokuMethods.makeEasy(grid);
+        grid = SudokuMethods.makeMedium(grid);
         for(int i = 0; i < x-2; i++){
             for (int j = 0; j < y-2; j++){
                 android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
