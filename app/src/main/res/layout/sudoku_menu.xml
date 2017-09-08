@@ -46,7 +46,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row0col1"
@@ -60,7 +61,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row0col2"
@@ -73,7 +75,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row0col3"
@@ -86,7 +89,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row0col4"
@@ -99,7 +103,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row0col5"
@@ -112,7 +117,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row0col6"
@@ -125,7 +131,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row0col7"
@@ -138,7 +145,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row0col8"
@@ -151,7 +159,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row1col0"
@@ -164,7 +173,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row1col1"
@@ -177,7 +187,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row1col2"
@@ -190,7 +201,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row1col3"
@@ -203,7 +215,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row1col4"
@@ -216,7 +229,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row1col5"
@@ -229,7 +243,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row1col6"
@@ -242,7 +257,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row1col7"
@@ -255,7 +271,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row1col8"
@@ -268,7 +285,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row2col0"
@@ -281,7 +299,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row2col1"
@@ -294,7 +313,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row2col2"
@@ -307,7 +327,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row2col3"
@@ -320,7 +341,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row2col4"
@@ -333,7 +355,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row2col5"
@@ -346,7 +369,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row2col6"
@@ -359,7 +383,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row2col7"
@@ -372,7 +397,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row2col8"
@@ -385,7 +411,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row3col0"
@@ -398,7 +425,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row3col1"
@@ -411,7 +439,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row3col2"
@@ -424,7 +453,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row3col3"
@@ -437,7 +467,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row3col4"
@@ -450,7 +481,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row3col5"
@@ -463,7 +495,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row3col6"
@@ -476,7 +509,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row3col7"
@@ -489,7 +523,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row3col8"
@@ -502,7 +537,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row4col0"
@@ -528,7 +564,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row4col2"
@@ -541,7 +578,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row4col3"
@@ -554,7 +592,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row4col4"
@@ -567,7 +606,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row4col5"
@@ -580,7 +620,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row4col6"
@@ -593,7 +634,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row4col7"
@@ -606,7 +648,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row4col8"
@@ -619,7 +662,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row5col0"
@@ -632,7 +676,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row5col1"
@@ -645,7 +690,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row5col2"
@@ -658,7 +704,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row5col3"
@@ -671,7 +718,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row5col4"
@@ -684,7 +732,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row5col5"
@@ -697,7 +746,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row5col6"
@@ -710,7 +760,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row5col7"
@@ -723,7 +774,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row5col8"
@@ -736,7 +788,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row6col0"
@@ -749,7 +802,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row6col1"
@@ -762,7 +816,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row6col2"
@@ -775,7 +830,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row6col3"
@@ -788,7 +844,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row6col4"
@@ -801,7 +858,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row6col5"
@@ -814,7 +872,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row6col6"
@@ -827,7 +886,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row6col7"
@@ -837,16 +897,11 @@
             android:layout_columnSpan="1"
             android:layout_row="6"
             android:layout_rowSpan="1"
-            android:clickable="true"
-            android:contextClickable="true"
             android:ems="10"
-            android:enabled="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:forceHasOverlappingRendering="true"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row6col8"
@@ -859,7 +914,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row7col0"
@@ -872,7 +928,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row7col1"
@@ -885,7 +942,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row7col2"
@@ -898,7 +956,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row7col3"
@@ -911,7 +970,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row7col4"
@@ -924,7 +984,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row7col5"
@@ -937,7 +998,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row7col6"
@@ -950,7 +1012,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row7col7"
@@ -963,7 +1026,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row7col8"
@@ -976,7 +1040,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row8col0"
@@ -989,7 +1054,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row8col1"
@@ -1002,7 +1068,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row8col2"
@@ -1015,7 +1082,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row8col3"
@@ -1028,7 +1096,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row8col4"
@@ -1041,7 +1110,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row8col5"
@@ -1054,7 +1124,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row8col6"
@@ -1067,7 +1138,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row8col7"
@@ -1080,7 +1152,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:id="@+id/row8col8"
@@ -1093,7 +1166,8 @@
             android:ems="10"
             android:inputType="number"
             android:maxLength="1"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
 
         <ImageView

@@ -1,6 +1,5 @@
 package com.puzzle.andrew.sudowordsandroid.sudoku;
 
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,8 +19,6 @@ import java.util.Random;
 // (1) The hint will not be correct if there is an incorrect entry; fix the method / give warning?
 // (2) Landscape not supported; deal with this
 // (3) If grid is full, crashes if Hint is pressed -- maybe just do congrats message and close?
-// (4) To get rid of hint highlighting you have to hit "Check" twice...
-
 
 
 /**
@@ -31,6 +28,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = Sudoku.class.getSimpleName();
     private static final String TAG2 = Sudoku.class.getSimpleName();
+    private static final String TAG3 = Sudoku.class.getSimpleName();
 
 
     GridView sudokuGrid;
@@ -52,17 +50,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     int[][] grid = new int [9][9];
     // hold solution
     int[][] grid_correct = new int [9][9];
-
-
-    //Color HIGHLIGHT_COLOUR = new Color(230, 230,  230);
-    //	Color HINT_COLOR = new Color(150,150,220);
-    //Color HINT_COLOR = new Color(170,220,230);
-
-    //Color WRONG_COLOUR = new Color(20 , 255,  20);
-    //Color CORRECT_COLOUR = new Color( 0 , 255,  0);
-    //Color correct = new Color( 20 , 255,  20);
-    //Color fixed = new Color(90,90,90);
-    //Color fixed = new Color(40,40,40);
 
 
     int x = 11, y = 11;
@@ -224,9 +211,10 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         grid = SudokuMethods.makeEasy(grid2);
         //grid = SudokuMethods.makeMedium(grid);
 
+        android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
+
         for(int i = 0; i < x-2; i++){
             for (int j = 0; j < y-2; j++){
-                android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
                 EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
                 field.setBackgroundResource(R.drawable.border_active);
                 if(grid[i][j]!=0) {
@@ -253,6 +241,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         switch ( view.getId() ){
 
+
+            // Hint button -----------------------
             case R.id.sudokuHintButton:
                 Log.d(TAG,"Hint button pressed");
 
@@ -278,12 +268,11 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                     }
                 }
 
-
                 if( !hintPressed ) {
                     hintPressed = true;
                     // actual Hint Button functionality
                     int[] hint_xy = SudokuMethods.getHint_singles_hiddenSingles(grid);
-                    EditText field2 = (EditText) sudGrid.getChildAt(hint_xy[0] * 9 + hint_xy[1]);
+                    EditText field2 = (EditText) sudGrid.getChildAt(hint_xy[0] * 9 + hint_xy[1]);   //TODO: double check the [0] and [1] are correct way round
                     field2.setBackgroundColor(getResources().getColor(R.color.sudoku_hint));
                 }
                 else{
@@ -294,7 +283,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
 
-
+            // Check button -------------------------------------------
             case R.id.sudokuCheckButton:
                 Log.d(TAG2,"Check button pressed");
 
@@ -331,11 +320,9 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                             }
                             //field.setBackgroundResource(R.drawable.border_active);
                             if (grid[i][j] == grid_correct[i][j]) {
-                                //field.setBackgroundColor(Color.GREEN);
                                 field.setBackgroundColor( getResources().getColor(R.color.sudoku_correct) );
                             }
                             else if(grid[i][j]!=0){  // 0 is set if no number is entered
-                                //field.setBackgroundColor(Color.RED);
                                 field.setBackgroundColor( getResources().getColor(R.color.sudoku_wrong) );
                             }
                         }
@@ -346,6 +333,9 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
 
                 break;
+
+
+            case R.id.
 
 
             default:
