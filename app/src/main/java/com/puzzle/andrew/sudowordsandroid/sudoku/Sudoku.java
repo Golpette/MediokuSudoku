@@ -15,6 +15,14 @@ import com.puzzle.andrew.sudowordsandroid.R;
 import java.util.ArrayList;
 import java.util.Random;
 
+
+//TODO:   BUGS TO SORT
+// (1) The hint will not be correct if there is an incorrect entry; fix the method / give warning?
+// (2) Landscape not supported; deal with this
+// (3) If grid is full, crashes if Hint is pressed -- maybe just do congrats message and close?
+// (4)
+
+
 /**
  * Created by Andrew on 30/08/2017.
  */
