@@ -7,4 +7,7 @@
     <color name="background_color2">#88CCCCCC</color>
     <color name="large_background_color">#00FFFFFF</color>
     <color name="background_color">#00FFFFFF</color>
+    <color name="sudoku_correct">#AAF6A1</color>
+    <color name="sudoku_wrong">#F56C6C</color>
+    <color name="sudoku_hint">#69EBF7</color>
 </resources>
