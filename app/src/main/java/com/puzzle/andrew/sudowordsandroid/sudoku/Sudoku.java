@@ -286,6 +286,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             case R.id.sudokuCheckButton:
                 Log.d(TAG2,"Check button pressed");
 
+                hintPressed = false;
+
                 // Always reset colours when Check is pressed
                 for (int i = 0; i < x - 2; i++) {
                     for (int j = 0; j < y - 2; j++) {
