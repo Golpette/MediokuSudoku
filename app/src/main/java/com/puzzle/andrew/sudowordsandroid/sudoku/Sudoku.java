@@ -32,6 +32,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = Sudoku.class.getSimpleName();
     private static final String TAG2 = Sudoku.class.getSimpleName();
 
+
     GridView sudokuGrid;
     ImageButton sudokuButton;
 
@@ -39,6 +40,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     private Button hintButton;
 
     private boolean checkPressed = false;
+    private boolean hintPressed = false;
+
 
     ArrayList<Integer> row, checks;
     ArrayList<Integer> correct;
@@ -276,11 +279,16 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
 
 
-                // actual Hint Button functionality
-                int[] hint_xy = SudokuMethods.getHint_singles_hiddenSingles( grid );
-                EditText field2 = (EditText) sudGrid.getChildAt( hint_xy[0] * 9 + hint_xy[1] );
-                field2.setBackgroundColor( getResources().getColor(R.color.sudoku_hint) );
-
+                if( !hintPressed ) {
+                    hintPressed = true;
+                    // actual Hint Button functionality
+                    int[] hint_xy = SudokuMethods.getHint_singles_hiddenSingles(grid);
+                    EditText field2 = (EditText) sudGrid.getChildAt(hint_xy[0] * 9 + hint_xy[1]);
+                    field2.setBackgroundColor(getResources().getColor(R.color.sudoku_hint));
+                }
+                else{
+                    hintPressed = false;
+                }
 
                 break;
 
