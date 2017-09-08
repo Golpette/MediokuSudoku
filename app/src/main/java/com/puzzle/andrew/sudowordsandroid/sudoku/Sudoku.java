@@ -1,16 +1,10 @@
 package com.puzzle.andrew.sudowordsandroid.sudoku;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Layout;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.puzzle.andrew.sudowordsandroid.R;
 
@@ -148,14 +142,21 @@ public class Sudoku extends AppCompatActivity{
     }
 
     public void makeGrid(int [][] grid){
+<<<<<<< HEAD
         grid = SudokuMethods.makeMedium(grid);
+=======
+        grid = SudokuMethods.makeEasy(grid);
+        //grid = SudokuMethods.makeMedium(grid);
+>>>>>>> 6d6b39545dc9f4004ce1a5dac6ccdd1f9f610fa1
         for(int i = 0; i < x-2; i++){
             for (int j = 0; j < y-2; j++){
                 android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
                 EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-                //SudokuMethods.makeMedium(grid);
+                field.setBackgroundResource(R.drawable.border_active);
                 if(grid[i][j]!=0) {
                     field.setText("" + grid[i][j]);
+                    field.setBackgroundResource(R.drawable.border);
+                    field.setKeyListener(null);
                 }
             }
         }
