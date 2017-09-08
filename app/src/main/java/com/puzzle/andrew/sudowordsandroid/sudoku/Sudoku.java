@@ -30,19 +30,13 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = Sudoku.class.getSimpleName();
     private static final String TAG2 = Sudoku.class.getSimpleName();
-    private static final String TAG3 = Sudoku.class.getSimpleName();
 
-
-    GridView sudokuGrid;
     ImageButton sudokuButton;
 
     private Button checkButton;
     private Button hintButton;
 
     android.widget.GridLayout clickableGrid;
-
-    //GridLayout grid = (GridLayout) findViewById(R.id.your_layout_id);
-    ///int childCount = grid.getChildCount();
 
     private boolean checkPressed = false;
     private boolean hintPressed = false;
@@ -80,21 +74,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         hintButton = (Button) findViewById(R.id.sudokuHintButton);
         hintButton.setOnClickListener(Sudoku.this);
-
-        clickableGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
-        //clickableGrid.setOnClickListener(Sudoku.this);
-        //clickableGrid.setOnItemClickListener(Sudoku.this);
-        int childCount = clickableGrid.getChildCount();
-        //for (int i= 0; i < childCount; i++){
-        for (int i=0; i<81; i++){
-            EditText container = (EditText) clickableGrid.getChildAt(i);
-//            container.setOnClickListener(new View.OnClickListener(){
-//                    // your click code here
-//                }
-//            });
-            container.setOnClickListener( Sudoku.this  );
-        }
-
 
         sudokuButton = (ImageButton)findViewById(R.id.crossword);
         generateSudoku(grid);
@@ -264,36 +243,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         switch ( view.getId() ){
 
 
-//            // Any where of GridLayout clears colours
-//            case R.id.sudokuGrid:
-//                Log.d(TAG3,"SOMEWEHRE ON GRIDLAYOUT");
-//                checkPressed = false;
-//                hintPressed = false;
-//
-//                // Reset colours
-//                for (int i = 0; i < x - 2; i++) {
-//                    for (int j = 0; j < y - 2; j++) {
-//                        EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-//                        // Need to update the grid[][] array -  this does not happen upon text entry!
-//                        // Is there a better way to do this, not just upon button press?
-//                        if (!String.valueOf(field.getText()).isEmpty()) {
-//                            grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
-//                        }
-//
-//                        if( field.getKeyListener() == null ){
-//                            field.setBackgroundResource(R.drawable.border);
-//                        }
-//                        else {
-//                            field.setBackgroundResource(R.drawable.border_active);
-//                        }
-//                    }
-//                }
-
-
-
-
-
-                // Hint button -----------------------
+            // Hint button -----------------------
             case R.id.sudokuHintButton:
                 Log.d(TAG,"Hint button pressed");
 
