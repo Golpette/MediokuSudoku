@@ -246,6 +246,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 if (  !String.valueOf(field.getText()).isEmpty()  ) {
                     grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
                 }
+                //System.out.println(grid[i][j]);
             }
         }
 
@@ -260,7 +261,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 if (grid[i][j] != grid_correct[i][j]) {
                     gridCorrect = false;
                 }
-                else if(grid[i][j]==0){  // 0 is set if no number is entered //TODO BE CAREFUL SINCE. WE CAN ENTER 0 INTO GRID. PROBABLY NOO ISSUE BUT CHECK  BUG HERE!!!!!!!!!!!!
+                if(grid[i][j]==0){  // 0 is set if no number is entered //TODO BE CAREFUL SINCE. WE CAN ENTER 0 INTO GRID. PROBABLY NOO ISSUE BUT CHECK  BUG HERE!!!!!!!!!!!!
                     gridFull = false;
                 }
             }
