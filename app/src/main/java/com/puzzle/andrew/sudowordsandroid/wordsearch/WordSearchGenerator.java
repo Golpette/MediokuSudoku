@@ -1,4 +1,6 @@
 package com.puzzle.andrew.sudowordsandroid.wordsearch;
+import android.content.Context;
+
 import java.io.*;
 import java.util.*;
 
@@ -15,22 +17,26 @@ public class WordSearchGenerator{
 	String dictionary1 = "", dictionary2 = "";
 	ArrayList<String> acrossClues;
 	ArrayList<String> downClues;
-	ArrayList<Word> words;	
+	ArrayList<Word> words;
+	Context context;
+	ReadWords readWords;
 	
-	public WordSearchGenerator(int wordsearchSize, int difficulty, String dictionary1, String dictionary2, String languageFrom, String languageTo, String currentTopic) throws IOException{
+	public WordSearchGenerator(Context context, int wordsearchSize, int difficulty, String dictionary1, String dictionary2, String languageFrom, String languageTo, String currentTopic) throws IOException{
 		this.difficulty = difficulty;
 		this.wordsearchSize = wordsearchSize;
 		this.dictionary1 = dictionary1;
 		this.dictionary2 = dictionary2;
 		gridSize = wordsearchSize + 2;
+		this.context = context;
 		x = gridSize;     
 		y = gridSize;
+		readWords = new ReadWords(context);
 		grid = new String[x][y];
 		acrossClues = new ArrayList<String>();
 		downClues = new ArrayList<String>();
 		ArrayList<Word> words = new ArrayList<Word>();
 				System.out.println("!!Dictionary: "+ dictionary1 + " " + dictionary2);
-		words = ReadWords.getWordsandDefs(dictionary1, dictionary2);
+		words = readWords.getWordsandDefs(dictionary1, dictionary2);
 		
 		
 		

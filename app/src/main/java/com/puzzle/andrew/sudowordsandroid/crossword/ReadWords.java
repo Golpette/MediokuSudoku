@@ -1,4 +1,6 @@
 package com.puzzle.andrew.sudowordsandroid.crossword;
+import android.content.Context;
+
 import java.util.*;
 
 import com.puzzle.andrew.sudowordsandroid.crossword.ResourceLoader;
@@ -8,13 +10,21 @@ import java.io.*;
 /**
  *	Read in words and definitions from file and put into an ArrayList.
  */
-public class ReadWords {	
+public class ReadWords {
+
+	private Context context;
+	ResourceLoader resourceLoader;
+
+	public ReadWords(Context context){
+		this.context = context;
+		resourceLoader = new ResourceLoader(context);
+	}
 	
-	public static ArrayList<Word> getWordsandDefs(String filenameTo, String filenameFrom)throws IOException{
+	public ArrayList<Word> getWordsandDefs(String filenameTo, String filenameFrom)throws IOException{
 		ArrayList<Word> words = new ArrayList<Word>();
 		ArrayList<String> definitions = new ArrayList<String>();
 		//BufferedReader in = new BufferedReader(new FileReader(filename));
-		BufferedReader in = ResourceLoader.getBufferedReader(filenameFrom);
+		BufferedReader in = resourceLoader.getBufferedReader(filenameFrom);
 		//enter new resourceloader thing here
 		
 		
