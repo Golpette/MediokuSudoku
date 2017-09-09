@@ -1,6 +1,8 @@
 package com.puzzle.andrew.sudowordsandroid;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +20,9 @@ public class MainMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
+        //steve: need this plus the android:screenOrientation="portrait" in the xml
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         crosswordButton = (ImageButton)findViewById(R.id.crossword);
         /*crosswordButton.setOnClickListener(new View.OnClickListener(){
             // When the button is pressed/clicked, it will run the code below
@@ -29,6 +34,12 @@ public class MainMenu extends AppCompatActivity {
         });*/
         wordsearchButton = (ImageButton)findViewById(R.id.wordsearch);
         sudokuButton = (ImageButton)findViewById(R.id.sudoku);
+    }
+
+    @Override   // STEVE ADDED THIS TO STOP SCREEN ROTATION
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     public void openCrossword(View v)

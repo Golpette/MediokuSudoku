@@ -1,5 +1,7 @@
 package com.puzzle.andrew.sudowordsandroid.sudoku;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +20,6 @@ import java.util.Random;
 //TODO:   BUGS TO SORT
 // (1) The hint will not be correct if there is an incorrect entry; fix the method / give warning?
 // (2) Landscape not supported; deal with this
-// (3) If grid is full, crashes if Hint is pressed -- maybe just do congrats message and close?
 
 
 /**
@@ -57,6 +58,9 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
     protected void onCreate(Bundle savedInstanceState) {
 
+        //steve: need this plus the android:screenOrientation="portrait" in the xml
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         correct = new ArrayList<Integer>();
         row = new ArrayList<Integer>();
         checks = new ArrayList<Integer>();
@@ -78,12 +82,11 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         makeGrid(grid);
     }
 
-
-
-
-
-
-
+    @Override   // STEVE ADDED THIS TO STOP SCREEN ROTATION
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
 
 
     public void generateSudoku(int[][] grid){
