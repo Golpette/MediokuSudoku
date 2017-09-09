@@ -1,5 +1,7 @@
 package com.puzzle.andrew.sudowordsandroid.sudoku;
 
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +20,6 @@ import java.util.Random;
 //TODO:   BUGS TO SORT
 // (1) The hint will not be correct if there is an incorrect entry; fix the method / give warning?
 // (2) Landscape not supported; deal with this
-// (3) If grid is full, crashes if Hint is pressed -- maybe just do congrats message and close?
 
 
 /**
@@ -57,6 +58,9 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
     protected void onCreate(Bundle savedInstanceState) {
 
+        //steve: need this plus the android:screenOrientation="portrait" in the xml
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         correct = new ArrayList<Integer>();
         row = new ArrayList<Integer>();
         checks = new ArrayList<Integer>();
@@ -78,12 +82,11 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         makeGrid(grid);
     }
 
-
-
-
-
-
-
+    @Override   // STEVE ADDED THIS TO STOP SCREEN ROTATION
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
 
 
     public void generateSudoku(int[][] grid){
@@ -233,7 +236,44 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
          * Define function of Hint and Check buttons here
          */
 
+
+        // Update grid every time a button is pressed
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
+        for (int i = 0; i < x - 2; i++) {
+            for (int j = 0; j < y - 2; j++) {
+                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+                // Need to update the grid[][] array -  this does not happen upon text entry!
+                // Is there a better way to do this, not just upon button press?
+                if (  !String.valueOf(field.getText()).isEmpty()  ) {
+                    grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
+                }
+                //System.out.println(grid[i][j]);
+            }
+        }
+
+        boolean gridFull = true;
+        boolean gridCorrect = true; /// //TODO TIDY THIS WHOLE THING UP
+
+        // Check if grid is full or correct
+        for (int i = 0; i < x - 2; i++) {
+            for (int j = 0; j < y - 2; j++) {
+                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+                //field.setBackgroundResource(R.drawable.border_active);
+                if (grid[i][j] != grid_correct[i][j]) {
+                    gridCorrect = false;
+                }
+                if(grid[i][j]==0){  // 0 is set if no number is entered //TODO BE CAREFUL SINCE. WE CAN ENTER 0 INTO GRID. PROBABLY NOO ISSUE BUT CHECK  BUG HERE!!!!!!!!!!!!
+                    gridFull = false;
+                }
+            }
+        }
+
+
+
+        if( gridCorrect ){
+            //TODO:  IF GRID CORRECT MAKE CONGRATULATIONS MESSAGE
+        }
+
 
 
         switch ( view.getId() ){
@@ -250,12 +290,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 for (int i = 0; i < x - 2; i++) {
                     for (int j = 0; j < y - 2; j++) {
                         EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-                        // Need to update the grid[][] array -  this does not happen upon text entry!
-                        // Is there a better way to do this, not just upon button press?
-                        if (!String.valueOf(field.getText()).isEmpty()) {
-                            grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
-                        }
-
                         if( field.getKeyListener() == null ){
                             field.setBackgroundResource(R.drawable.border);
                         }
@@ -265,7 +299,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                     }
                 }
 
-                if( !hintPressed ) {
+                if( !hintPressed && !gridFull ) {
                     hintPressed = true;
                     // actual Hint Button functionality
                     int[] hint_xy = SudokuMethods.getHint_singles_hiddenSingles(grid);
@@ -290,11 +324,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 for (int i = 0; i < x - 2; i++) {
                     for (int j = 0; j < y - 2; j++) {
                         EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-                        // Need to update the grid[][] array -  this does not happen upon text entry!
-                        // Is there a better way to do this, not just upon button press?
-                        if (!String.valueOf(field.getText()).isEmpty()) {
-                            grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
-                        }
                         if( field.getKeyListener() == null ){
                             field.setBackgroundResource(R.drawable.border);
                         }
@@ -309,14 +338,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                     checkPressed=true;
                     for (int i = 0; i < x - 2; i++) {
                         for (int j = 0; j < y - 2; j++) {
-
                             EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-
-                            // Need to update the grid[][] array -  this does not happen upon text entry!
-                            // Is there a better way to do this, not just upon button press?
-                            if (!String.valueOf(field.getText()).isEmpty()) {
-                                grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
-                            }
                             //field.setBackgroundResource(R.drawable.border_active);
                             if (grid[i][j] == grid_correct[i][j]) {
                                 field.setBackgroundColor( getResources().getColor(R.color.sudoku_correct) );

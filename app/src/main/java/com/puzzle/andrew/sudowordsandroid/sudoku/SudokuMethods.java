@@ -91,7 +91,7 @@ public class SudokuMethods {
 		
 		// Do this a set number of times / until no more can be removed / specific number of entries are left??
 		
-		for( int tries=0; tries<100000; tries++ ){
+		for( int tries=0; tries<5000; tries++ ){   //REDUCED THIS FROM 100,000 !!
 		
 			// pick random space and remove            //TODO: do all similar numbers instead of random??
 			int xp=(int)(Math.random()*gridSize);  
