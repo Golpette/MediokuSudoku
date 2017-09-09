@@ -30,8 +30,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = Sudoku.class.getSimpleName();
     private static final String TAG2 = Sudoku.class.getSimpleName();
 
-    ImageButton sudokuButton;
-
     private Button checkButton;
     private Button hintButton;
 
@@ -77,7 +75,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         hintButton = (Button) findViewById(R.id.sudokuHintButton);
         hintButton.setOnClickListener(Sudoku.this);
 
-        sudokuButton = (ImageButton)findViewById(R.id.crossword);
         generateSudoku(grid);
         makeGrid(grid);
     }
