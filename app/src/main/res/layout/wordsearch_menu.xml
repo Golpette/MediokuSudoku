@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <GridLayout
         android:layout_width="match_parent"
@@ -19,7 +20,10 @@
             android:layout_row="0"
             android:layout_column="0"
             android:layout_rowSpan="1"
-            android:layout_columnSpan="1" />
+            android:layout_columnSpan="1"
+            android:maxLength="1"
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:layout_width="40dp"
@@ -30,7 +34,10 @@
             android:layout_row="0"
             android:layout_column="1"
             android:layout_rowSpan="1"
-            android:layout_columnSpan="1" />
+            android:layout_columnSpan="1"
+            android:maxLength="1"
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:layout_width="40dp"
@@ -41,7 +48,10 @@
             android:layout_row="0"
             android:layout_column="2"
             android:layout_rowSpan="1"
-            android:layout_columnSpan="1" />
+            android:layout_columnSpan="1"
+            android:maxLength="1"
+            android:textAlignment="center"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:layout_width="40dp"
@@ -405,6 +415,16 @@
             android:layout_column="5"
             android:layout_rowSpan="1"
             android:layout_columnSpan="1" />
+
+        <ImageView
+            android:id="@+id/largest"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:layout_column="0"
+            android:layout_columnSpan="6"
+            android:layout_row="0"
+            android:layout_rowSpan="6"
+            app:srcCompat="@drawable/largest_border" />
 
     </GridLayout>
 

@@ -10,4 +10,5 @@
     <color name="sudoku_correct">#AAF6A1</color>
     <color name="sudoku_wrong">#F56C6C</color>
     <color name="sudoku_hint">#69EBF7</color>
+    <color name="light_grey">#AAAAAA</color>
 </resources>
