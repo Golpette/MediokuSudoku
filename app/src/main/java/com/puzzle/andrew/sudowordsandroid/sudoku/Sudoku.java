@@ -218,8 +218,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
          * Generates starting grid from solution grid
          */
 
-        grid = SudokuMethods.makeEasy(grid2);
-        //grid = SudokuMethods.makeMedium(grid);
+        //grid = SudokuMethods.makeEasy(grid2);
+        grid = SudokuMethods.makeMedium(grid2);
 
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
 
@@ -333,7 +333,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                         }
                     }
                 }
-
 
                 if( !checkPressed ) {
                     // Display congrats message upon completion

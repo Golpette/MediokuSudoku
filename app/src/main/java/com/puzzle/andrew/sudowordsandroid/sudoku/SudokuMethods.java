@@ -37,30 +37,34 @@ public class SudokuMethods {
 	
 		
 		// Remove numbers. Do this a set number of times / until no more can be removed 
-		for( int tries=0; tries<200; tries++ ){ // REDUCED TO 200 SINCE THIS METHOD IS NOW VERY SLOW
+		for( int tries=0; tries<90; tries++ ){ // REDUCED TO 200 SINCE THIS METHOD IS NOW VERY SLOW
 			
 			// pick random space and remove      
 			int xp=(int)(Math.random()*gridSize);  
 			int yp=(int)(Math.random()*gridSize); 
 			
 			int value_removed = startGrid[xp][yp];
-			startGrid[xp][yp]=0;                    /// TODO: CAREFUL!!!
 
-			// Try to solve
-			int[][] solved_config = new int[9][9];
-			solved_config = SudokuMethods.solver_singles_hiddenSingles(  startGrid  );
-			
-			// Check if solved
-			boolean is_solved = isSolved( solved_config );
-			
-			if( is_solved ){
-				// remove number and re-enter loop to pick another
-			}
-			else{
-				// put number back and try again
-				startGrid[xp][yp] = value_removed;
-			}
-		
+            if( startGrid[xp][yp] != 0 ) {
+                startGrid[xp][yp] = 0;                    /// TODO: CAREFUL!!!
+
+                // Try to solve
+                int[][] solved_config = new int[9][9];
+                solved_config = SudokuMethods.solver_singles_hiddenSingles(startGrid);
+
+                // Check if solved
+                boolean is_solved = isSolved(solved_config);
+
+                if (is_solved) {
+                    // remove number and re-enter loop to pick another
+                } else {
+                    // put number back and try again
+                    startGrid[xp][yp] = value_removed;
+                }
+            }
+            else{
+                tries = tries-1;  // i.e. don't count this removal attempt. We were re-solving when no changes had been made!
+            }
 		}
 
 		return startGrid;
@@ -91,7 +95,7 @@ public class SudokuMethods {
 		
 		// Do this a set number of times / until no more can be removed / specific number of entries are left??
 		
-		for( int tries=0; tries<5000; tries++ ){   //REDUCED THIS FROM 100,000 !!
+		for( int tries=0; tries<1000; tries++ ){   //REDUCED THIS FROM 100,000 !!
 		
 			// pick random space and remove            //TODO: do all similar numbers instead of random??
 			int xp=(int)(Math.random()*gridSize);  
