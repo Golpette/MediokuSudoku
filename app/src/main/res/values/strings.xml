@@ -3,4 +3,5 @@
     <string name="sudoku_header">Good luck!</string>
     <string name="sudoku_hint">Hint</string>
     <string name="sudoku_check">Check</string>
+    <string name="sudoku_congrats">"CONGRATULATIONS!"</string>
 </resources>
