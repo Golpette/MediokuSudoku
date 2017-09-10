@@ -273,28 +273,10 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 if (grid[i][j] != grid_correct[i][j]) {
                     gridCorrect = false;
                 }
-                if(grid[i][j]==0){  // 0 is set if no number is entered //TODO BE CAREFUL SINCE. WE CAN ENTER 0 INTO GRID. PROBABLY NOO ISSUE BUT CHECK  BUG HERE!!!!!!!!!!!!
+                if(grid[i][j]==0){  // 0 is set if no number is entered
                     gridFull = false;
                 }
             }
-        }
-
-
-
-
-        if( gridCorrect ){  // Then display congrats message
-            // Make snackbar
-            Snackbar mSnackbar = Snackbar.make(view, R.string.sudoku_congrats, Snackbar.LENGTH_LONG);
-            // Get snackbar view
-            View mView = mSnackbar.getView();
-            // Get textview inside snackbar view
-            TextView mTextView = (TextView) mView.findViewById(android.support.design.R.id.snackbar_text);
-            // Center the message
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-                mTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            else
-                mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
-            mSnackbar.show();
         }
 
 
@@ -304,8 +286,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
             // Hint button -----------------------
             case R.id.sudokuHintButton:
-                Log.d(TAG,"Hint button pressed");
-
                 // Every time hint is pressed, get rid of "check" features (copy and pasted from below)
                 checkPressed = false;
 
@@ -339,8 +319,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
             // Check button -------------------------------------------
             case R.id.sudokuCheckButton:
-                Log.d(TAG2,"Check button pressed");
-
                 hintPressed = false;
 
                 // Always reset colours when Check is pressed
@@ -358,6 +336,22 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
                 if( !checkPressed ) {
+                    // Display congrats message upon completion
+                    if( gridCorrect){
+                        // Make snackbar
+                        Snackbar mSnackbar = Snackbar.make(view, R.string.sudoku_congrats, Snackbar.LENGTH_LONG);
+                        // Get snackbar view
+                        View mView = mSnackbar.getView();
+                        // Get textview inside snackbar view
+                        TextView mTextView = (TextView) mView.findViewById(android.support.design.R.id.snackbar_text);
+                        // Center the message
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+                            mTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                        else
+                            mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+                        mSnackbar.show();
+                    }
+
                     checkPressed=true;
                     for (int i = 0; i < x - 2; i++) {
                         for (int j = 0; j < y - 2; j++) {
