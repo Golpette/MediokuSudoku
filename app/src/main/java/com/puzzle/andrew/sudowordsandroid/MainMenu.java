@@ -20,7 +20,7 @@ public class MainMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        //steve: need this plus the android:screenOrientation="portrait" in the xml
+        //Steve: need this plus the android:screenOrientation="portrait" in the xml
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         crosswordButton = (ImageButton)findViewById(R.id.crossword);
@@ -36,7 +36,8 @@ public class MainMenu extends AppCompatActivity {
         sudokuButton = (ImageButton)findViewById(R.id.sudoku);
     }
 
-    @Override   // STEVE ADDED THIS TO STOP SCREEN ROTATION
+    // STEVE: Added this to stop screen rotation; force portrait
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

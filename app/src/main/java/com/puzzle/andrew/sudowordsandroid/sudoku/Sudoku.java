@@ -1,33 +1,32 @@
 package com.puzzle.andrew.sudowordsandroid.sudoku;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-//import com.nispok.snackbar.Snackbar;
 import com.puzzle.andrew.sudowordsandroid.R;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import static android.R.attr.duration;
-
 
 //TODO:   BUGS TO SORT
 // (1) The hint will not be correct if there is an incorrect entry; fix the method / give warning?
-// (2) Landscape not supported; deal with this
 
 
 /**
@@ -43,30 +42,29 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     private Button checkButton;
     private Button hintButton;
 
-    android.widget.GridLayout clickableGrid;
-
     private boolean checkPressed = false;
     private boolean hintPressed = false;
-
 
     ArrayList<Integer> row, checks;
     ArrayList<Integer> correct;
     ArrayList<ArrayList<Integer>> cols;
     ArrayList<ArrayList<Integer>> boxes;
 
-    // current state of grid
+    // Current state of grid
     int[][] grid = new int [9][9];
-    // hold solution
+    // Hold solution
     int[][] grid_correct = new int [9][9];
-
 
     int x = 11, y = 11;
     Random rand;
     boolean complete = false;
 
+
+
+
     protected void onCreate(Bundle savedInstanceState) {
 
-        //steve: need this plus the android:screenOrientation="portrait" in the xml
+        //Steve: need this plus the android:screenOrientation="portrait" in the xml
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         correct = new ArrayList<Integer>();
@@ -79,24 +77,55 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sudoku_menu);
 
+        // Make Hint and Check buttons and listeners
         checkButton = (Button) findViewById(R.id.sudokuCheckButton);
         checkButton.setOnClickListener(Sudoku.this);
-
         hintButton = (Button) findViewById(R.id.sudokuHintButton);
         hintButton.setOnClickListener(Sudoku.this);
 
+        //Create a TextWatcher for input to addTextChangedListener() to hide keypad on number entry
+        GridLayout layout = (GridLayout)findViewById(R.id.sudokuGrid);
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View v = layout.getChildAt(i);
+            if (v instanceof EditText) {
+                final EditText et = (EditText) v;
+                TextWatcher tw = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(et.getApplicationWindowToken(), 0);
+                    }
+                };
+                et.addTextChangedListener( tw );
+
+            }
+        }
+
+        // ???
         sudokuButton = (ImageButton)findViewById(R.id.crossword);
+
+        //Make the puzzle!
         generateSudoku(grid);
         makeGrid(grid);
     }
 
-    @Override   // STEVE ADDED THIS TO STOP SCREEN ROTATION
+
+    // STEVE: added this to prevent screen rotation
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
 
+
+    // Generate the full (solution) grid
     public void generateSudoku(int[][] grid){
         /**
          * Generates full solution grid
@@ -248,24 +277,21 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
          * Define function of Hint and Check buttons here
          */
 
-
-
-        // Update grid every time a button is pressed
+        // Update grid[][] every time a button is pressed, does not happen upon text entry.
+        // Is there a better way to do this?
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
         for (int i = 0; i < x - 2; i++) {
             for (int j = 0; j < y - 2; j++) {
                 EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-                // Need to update the grid[][] array -  this does not happen upon text entry!
-                // Is there a better way to do this, not just upon button press?
                 if (  !String.valueOf(field.getText()).isEmpty()  ) {
                     grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
                 }
-                //System.out.println(grid[i][j]);
             }
         }
 
+
         boolean gridFull = true;
-        boolean gridCorrect = true; /// //TODO TIDY THIS WHOLE THING UP
+        boolean gridCorrect = true;
 
         // Check if grid is full or correct
         for (int i = 0; i < x - 2; i++) {
