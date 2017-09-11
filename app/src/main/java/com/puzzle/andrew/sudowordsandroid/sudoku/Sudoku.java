@@ -219,7 +219,9 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
          */
 
         //grid = SudokuMethods.makeEasy(grid2);
-        grid = SudokuMethods.makeMedium(grid2);
+        //grid = SudokuMethods.makeMedium(grid2); // DO NOT USE THIS
+        grid = SudokuMethods.makeMedium2(grid2); /// Steve: quick fix to make medium puzzles more efficient
+
 
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
 
