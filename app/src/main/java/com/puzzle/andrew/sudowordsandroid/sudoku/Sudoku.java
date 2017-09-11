@@ -71,7 +71,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         correct = new ArrayList<Integer>();
         row = new ArrayList<Integer>();
-        checks = new ArrayList<Integer>();
         boxes = new ArrayList<ArrayList<Integer>>();
         cols = new ArrayList<ArrayList<Integer>>();
         rand = new Random();
@@ -86,7 +85,12 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         hintButton.setOnClickListener(Sudoku.this);
 
         sudokuButton = (ImageButton)findViewById(R.id.crossword);
+        long startTime = System.currentTimeMillis();
         generateSudoku(grid);
+        long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        System.out.println("Time elapsed to generate sudoku: " + elapsedTime +"ms");
+
         makeGrid(grid);
     }
 
@@ -101,10 +105,13 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         /**
          * Generates full solution grid
          */
+
+
+
+
         boxes.clear();
         cols.clear();
         row.clear();
-        checks.clear();
         correct.clear();
         if(!complete){
             for (int i = 0; i < x-2; i++){
@@ -155,14 +162,11 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                     if(bound == 0){
                         complete = true;
                         break;
-                        //generateSudoku();
                     }else{
                         if(!cols.isEmpty()){
                             int temp = (rand.nextInt(bound));
                             int insertion = row.get(temp);
-                            //numbers[i][j].setText(""+insertion);
                             correct.add(insertion);
-                            checks.add(row.get(temp));
                             cols.get(j).add(row.get(temp));
                             boxes.get(((i/3)*3)+(j/3)).add(row.get(temp));
                             row.remove(row.get(temp));
@@ -187,27 +191,11 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         if(!correct.isEmpty()){
             for(int i = 0; i < x-2; i++) {
                 for (int j = 0; j < y - 2; j++) {
-
-                    //field.setText(""+ correct.get(j*(x-2) + i));
                     grid[i][j] = correct.get(j * (x - 2) + i);
-                    //grid[i][j] = grid2[i][j];
+                    grid_correct[i][j] = correct.get(j * (x - 2) + i);
                 }
             }
         }
-
-
-
-        // Set correct solution
-        for(int i = 0; i < x-2; i++) {
-            for (int j = 0; j < y - 2; j++) {
-                //field.setText(""+ correct.get(j*(x-2) + i));
-                grid_correct[i][j] = grid[i][j];
-                //grid[i][j] = grid2[i][j];
-            }
-        }
-
-
-
     }
 
 
@@ -380,14 +368,5 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         }
         
     }
-
-
-
-
-
-
-
-
-
 
 }
