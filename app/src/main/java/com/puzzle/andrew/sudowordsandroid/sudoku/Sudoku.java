@@ -291,7 +291,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
         boolean gridFull = true;
-        boolean gridCorrect = true; 
+        boolean gridCorrect = true;
 
         // Check if grid is full or correct
         for (int i = 0; i < x - 2; i++) {
