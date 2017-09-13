@@ -1,5 +1,8 @@
 package com.puzzle.andrew.sudowordsandroid.sudoku;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class SudokuMethods {
@@ -12,7 +15,7 @@ public class SudokuMethods {
 	public static int gridSize = 9;
 	
 	static int last_rand_pos=0;
-	
+
 	
 	
 	public static int[][] makeMedium(int[][] fullGrid){   // As hard as possible without guessing
@@ -21,7 +24,9 @@ public class SudokuMethods {
 		 *  To do this, it lists all possible numbers that can go at each site. If there is only 1, we add
 		 *  it to grid (for all if multiple single choices), update the lists then repeat until no more can be added.
 		 */
-		
+
+		long startTime = System.currentTimeMillis();
+
 		int[][] startGrid = new int[9][9];
 		for( int i=0; i<9; i++ ){
 			for( int j=0; j<9; j++){
@@ -60,8 +65,11 @@ public class SudokuMethods {
                 tries = tries-1;  // i.e. don't count this removal attempt. We were re-solving when no changes had been made!
             }
 		}
-
+		long stopTime = System.currentTimeMillis();
+		long elapsedTime = stopTime - startTime;
+		System.out.println("Time elapsed in Make Medium: " + elapsedTime +"ms");
 		return startGrid;
+
 	}
 	
 	
@@ -1043,7 +1051,14 @@ public class SudokuMethods {
          *        Cycle through all numbers say 3 times?
          * (4) Create 2 random lists of integers 0-8 for x and y coords, then cycle through them both
          *        several times. This way we are not wasting time making unnecessary random numbers.
+		 *  (AR) Could also remove squares from the grid once they have been selected instead of having potential
+		 *  	 conflicts
+		 *  (5) Make solve methods more efficient!
+		 *	(6) Generate copmlete sudokus quicker!
          */
+
+
+        long startTime = System.currentTimeMillis();
 
         int[][] startGrid = new int[9][9];
         for( int i=0; i<9; i++ ){
@@ -1051,6 +1066,9 @@ public class SudokuMethods {
                 startGrid[i][j] = fullGrid[i][j];
             }
         }
+
+        int unchecked_tries = 20;
+
 
         // Remove numbers. Attempt this a set number of times
         for( int tries=0; tries<55; tries++ ){
@@ -1065,21 +1083,36 @@ public class SudokuMethods {
                 startGrid[xp][yp] = 0;
 
                 // Try to solve
-                boolean is_solvable = false;
-                is_solvable = SudokuMethods.solver_singles_hiddenSingles2(startGrid, xp, yp);
 
-                if (is_solvable) {
-                    // remove number and re-enter loop to pick another
-                } else {
-                    // put number back and try again
-                    startGrid[xp][yp] = value_removed;
-                }
+                //**(AR) We don't need to solve this for the first few as it is impossible to make an
+                //unsolvable grid by removing x=? (we need to find maximum x) I started with 10 but we should
+                // check what the maximum value is.
+				if(tries > unchecked_tries ) {
+					boolean is_solvable = false;
+					is_solvable = SudokuMethods.solver_singles_hiddenSingles2(startGrid, xp, yp);
+
+
+                    if( tries == unchecked_tries+1 && !is_solvable ){
+                        System.out.println( "Puzzle broken" );
+                    }
+
+
+
+					if (is_solvable) {
+						// remove number and re-enter loop to pick another
+					} else {
+						// put number back and try again
+						startGrid[xp][yp] = value_removed;
+					}
+				}
             }
             else{
                 tries = tries-1;  // i.e. don't count this removal attempt. We were re-solving when no changes had been made!
             }
         }
-
+		long stopTime = System.currentTimeMillis();
+		long elapsedTime = stopTime - startTime;
+		System.out.println("Time elapsed in Make Medium2: " + elapsedTime +"ms");
         return startGrid;
     }
 
@@ -1148,7 +1181,100 @@ public class SudokuMethods {
 
         return is_solvable;
     }
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public static int[][] makeMedium3(int[][] fullGrid){
+		/**
+		 * Seeing what happens if we try to remove numbers one at a time.
+		 */
+
+
+		LinkedList<Integer> order = new LinkedList<Integer>(Arrays.asList(1,2,3,4,5,6,7,8,9));
+
+		long startTime = System.currentTimeMillis();
+
+		int[][] startGrid = new int[9][9];
+		for( int i=0; i<9; i++ ){
+			for( int j=0; j<9; j++){
+				startGrid[i][j] = fullGrid[i][j];
+			}
+		}
+
+		int unchecked_tries = 30;
+
+		int tries = 0;
+		while( order.size() > 0 ){
+
+			int n = order.pop();
+
+			for( int i=0; i<9; i++ ){
+				for( int j=0; j<9; j++){
+
+					if( startGrid[i][j] == n ){
+						tries++;
+
+						startGrid[i][j] = 0;
+
+						// Try to solve
+						if(tries > unchecked_tries) {
+							boolean solvable = false;
+							solvable = SudokuMethods.solver_singles_hiddenSingles2(startGrid, i, j);
+
+							if( tries == unchecked_tries+1 && !solvable ){
+								System.out.println( "Puzzle broken" );
+							}
+
+							if (solvable) {
+								// remove number and re-enter loop to pick another
+							} else {
+								// put number back and try again
+								startGrid[i][j] = n;
+							}
+						}
+					}
+
+				}
+			}
+		}
+
+		long stopTime = System.currentTimeMillis();
+		long elapsedTime = stopTime - startTime;
+		System.out.println("Time elapsed in Make Medium2: " + elapsedTime +"ms");
+		return startGrid;
+	}
+
+
+
+
 	
 	
 	
