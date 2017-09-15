@@ -14,22 +14,24 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/sudokuGrid"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="32dp"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <GridLayout
         android:id="@+id/sudokuGrid"
         android:layout_width="360dp"
-        android:layout_height="360dp"
+        android:layout_height="0dp"
         android:columnCount="9"
         android:rowCount="9"
         android:visibility="visible"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintBottom_toTopOf="@+id/sudokuHintButton">
+        app:layout_constraintBottom_toTopOf="@+id/sudokuHintButton"
+        android:layout_marginTop="32dp">
         <!-- Steve:
         was 0dp width and 400dp height,
         android:background="@drawable/largest_border"
@@ -1282,20 +1284,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sudoku_hint"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/sudokuCheckButton"
         app:layout_constraintRight_toLeftOf="@+id/sudokuCheckButton"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sudokuGrid" />
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
         android:id="@+id/sudokuCheckButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:text="@string/sudoku_check"
-        app:layout_constraintTop_toBottomOf="@+id/sudokuGrid"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/sudokuHintButton"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/sudokuSaveButton"
+        android:layout_marginBottom="25dp" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
@@ -1305,6 +1306,15 @@
         android:orientation="horizontal"
         tools:layout_editor_absoluteY="20dp"
         tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/sudokuSaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sudoku_save"
+        app:layout_constraintLeft_toRightOf="@+id/sudokuCheckButton"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/sudokuCheckButton" />
 
 
 </android.support.constraint.ConstraintLayout>

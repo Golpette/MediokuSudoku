@@ -1,6 +1,5 @@
 package com.puzzle.andrew.sudowordsandroid.sudoku;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
@@ -12,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import android.widget.GridLayout;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.puzzle.andrew.sudowordsandroid.R;
@@ -37,13 +36,9 @@ import java.util.Random;
  */
 public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
-    private static final String TAG = Sudoku.class.getSimpleName();
-    private static final String TAG2 = Sudoku.class.getSimpleName();
-
-    ImageButton sudokuButton;
-
     private Button checkButton;
     private Button hintButton;
+    private Button saveButton;
 
     private boolean checkPressed = false;
     private boolean hintPressed = false;
@@ -67,8 +62,17 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
     protected void onCreate(Bundle savedInstanceState) {
 
+        // Get difficulty
+        String DIFFICULTY ="";
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null)
+        {
+            DIFFICULTY = extras.getString("difficulty");
+        }
+
         //Steve: need this plus the android:screenOrientation="portrait" in the xml
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
 
         correct = new ArrayList<Integer>();
         row = new ArrayList<Integer>();
@@ -85,6 +89,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         checkButton.setOnClickListener(Sudoku.this);
         hintButton = (Button) findViewById(R.id.sudokuHintButton);
         hintButton.setOnClickListener(Sudoku.this);
+        saveButton = (Button) findViewById(R.id.sudokuSaveButton);
+        saveButton.setOnClickListener(Sudoku.this);
 
         //Create a TextWatcher for input to addTextChangedListener() to hide keypad on number entry
         GridLayout layout = (GridLayout)findViewById(R.id.sudokuGrid);
@@ -110,12 +116,12 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             }
         }
 
-        // ???
-        sudokuButton = (ImageButton)findViewById(R.id.crossword);
+        // ???   WHAT DID THIS EVER DO???
+        //sudokuButton = (ImageButton)findViewById(R.id.crossword);
 
         //Make the puzzle!
         generateSudoku(grid);
-        makeGrid(grid);
+        makeGrid(grid, DIFFICULTY);
     }
 
 
@@ -245,14 +251,18 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
 
-    public void makeGrid(int [][] grid2){
+    public void makeGrid(int [][] grid2, String diff){
         /**
          * Generates starting grid from solution grid
          */
 
-        //grid = SudokuMethods.makeEasy(grid2);
+        if( diff.equals("easy" ) ){
+            grid = SudokuMethods.makeEasy(grid2);
+        }
+        else if( diff.equals("medium") ){
+            grid = SudokuMethods.makeMedium2(grid2); /// Steve: quick fix to make medium puzzles more efficient
+        }
         //grid = SudokuMethods.makeMedium(grid2); // DO NOT USE THIS
-        grid = SudokuMethods.makeMedium2(grid2); /// Steve: quick fix to make medium puzzles more efficient
 
 
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
@@ -405,6 +415,15 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
 
                 break;
+
+
+
+
+            case R.id.sudokuSaveButton:
+                //TODO
+                break;
+
+
 
 
             default:
