@@ -40,6 +40,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     private Button hintButton;
     private Button saveButton;
 
+    private String DIFFICULTY;
+
     private boolean checkPressed = false;
     private boolean hintPressed = false;
 
@@ -62,8 +64,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
     protected void onCreate(Bundle savedInstanceState) {
 
-        // Get difficulty
-        String DIFFICULTY ="";
+        // Get difficulty from button ID
         Bundle extras = getIntent().getExtras();
         if(extras!=null)
         {
@@ -116,8 +117,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             }
         }
 
-        // ???   WHAT DID THIS EVER DO???
-        //sudokuButton = (ImageButton)findViewById(R.id.crossword);
 
         //Make the puzzle!
         generateSudoku(grid);
@@ -225,10 +224,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         if(!correct.isEmpty()){
             for(int i = 0; i < x-2; i++) {
                 for (int j = 0; j < y - 2; j++) {
-
-                    //field.setText(""+ correct.get(j*(x-2) + i));
                     grid[i][j] = correct.get(j * (x - 2) + i);
-                    //grid[i][j] = grid2[i][j];
                 }
             }
         }
@@ -238,9 +234,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         // Set correct solution
         for(int i = 0; i < x-2; i++) {
             for (int j = 0; j < y - 2; j++) {
-                //field.setText(""+ correct.get(j*(x-2) + i));
                 grid_correct[i][j] = grid[i][j];
-                //grid[i][j] = grid2[i][j];
             }
         }
 
@@ -262,7 +256,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         else if( diff.equals("medium") ){
             grid = SudokuMethods.makeMedium2(grid2); /// Steve: quick fix to make medium puzzles more efficient
         }
-        //grid = SudokuMethods.makeMedium(grid2); // DO NOT USE THIS
+        ////grid = SudokuMethods.makeMedium(grid2); // DO NOT USE THIS
 
 
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
@@ -422,7 +416,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             case R.id.sudokuSaveButton:
                 //TODO
                 break;
-
 
 
 

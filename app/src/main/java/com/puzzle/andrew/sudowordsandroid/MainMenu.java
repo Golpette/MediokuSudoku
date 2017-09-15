@@ -24,16 +24,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         //Steve: need this plus the android:screenOrientation="portrait" in the xml
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        //crosswordButton = (ImageButton)findViewById(R.id.crossword);
-        /*crosswordButton.setOnClickListener(new View.OnClickListener(){
-            // When the button is pressed/clicked, it will run the code below
-            public void onClick(){
-                // Intent is what you use to start another activity
-                Intent intent = new Intent(this, YourActivity.class);
-                startActivity(intent);
-            }
-        });*/
-
         easyButton = (Button) findViewById(R.id.button_easy);
         easyButton.setOnClickListener(MainMenu.this);
 
@@ -55,7 +45,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View view) {
 
-        // Perform action on click
         switch(view.getId()) {
 
             case R.id.button_easy:

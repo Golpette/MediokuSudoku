@@ -32,10 +32,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:layout_constraintBottom_toTopOf="@+id/sudokuHintButton"
         android:layout_marginTop="32dp">
-        <!-- Steve:
-        was 0dp width and 400dp height,
-        android:background="@drawable/largest_border"
-        -->
 
 
         <EditText

@@ -26,7 +26,6 @@
 
     <Button
         android:id="@+id/button_easy"
-        android:onClick="openSudoku_easy"
         android:layout_width="120dp"
         android:layout_height="70dp"
         android:background="@android:color/holo_blue_light"
@@ -42,7 +41,6 @@
 
     <Button
         android:id="@+id/button_medium"
-        android:onClick="openSudoku_medium"
         android:layout_width="120dp"
         android:layout_height="70dp"
         android:background="@android:color/holo_blue_dark"
