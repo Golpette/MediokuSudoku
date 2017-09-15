@@ -14,6 +14,6 @@ public class Crossword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.crossword_menu);
 
-        crosswordButton = (ImageButton)findViewById(R.id.crossword);
+        //crosswordButton = (ImageButton)findViewById(R.id.crossword);
     }
 }
