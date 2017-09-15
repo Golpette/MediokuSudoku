@@ -4,4 +4,6 @@
     <string name="sudoku_hint">Hint</string>
     <string name="sudoku_check">Check</string>
     <string name="sudoku_congrats">"CONGRATULATIONS!"</string>
+    <string name="sudoku_backPress_title">"Sure you want to exit?"</string>
+    <string name="sudoku_backPress_message">"Current puzzle will be lost."</string>
 </resources>

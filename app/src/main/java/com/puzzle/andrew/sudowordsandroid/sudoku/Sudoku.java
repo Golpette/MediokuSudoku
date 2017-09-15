@@ -1,10 +1,13 @@
 package com.puzzle.andrew.sudowordsandroid.sudoku;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -271,6 +274,9 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
 
+
+
+
     @Override
     public void onClick(View view) {
         /**
@@ -363,6 +369,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
 
                 if( !checkPressed ) {
+                    checkPressed=true;
+
                     // Display congrats message upon completion
                     if( gridCorrect){
                         // Make snackbar
@@ -379,7 +387,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                         mSnackbar.show();
                     }
 
-                    checkPressed=true;
                     for (int i = 0; i < x - 2; i++) {
                         for (int j = 0; j < y - 2; j++) {
                             EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
@@ -408,6 +415,26 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     }
 
 
+
+
+
+
+    @Override
+    public void onBackPressed() {
+        /**
+         * Create warning message when back button is pressed
+         */
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.sudoku_backPress_title)
+                .setMessage(R.string.sudoku_backPress_message)
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        Sudoku.super.onBackPressed();
+                    }
+                }).create().show();
+    }
 
 
 
