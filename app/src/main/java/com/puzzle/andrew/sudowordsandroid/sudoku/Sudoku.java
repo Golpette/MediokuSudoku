@@ -2,6 +2,7 @@ package com.puzzle.andrew.sudowordsandroid.sudoku;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -52,6 +53,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
     // Current state of grid
     int[][] grid = new int [9][9];
+    int [][] start_grid = new int [9][9];
     // Hold solution
     int[][] grid_correct = new int [9][9];
 
@@ -121,6 +123,12 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         //Make the puzzle!
         generateSudoku(grid);
         makeGrid(grid, DIFFICULTY);
+        for(int i = 0; i < x-2; i++) {
+            for (int j = 0; j < y - 2; j++) {
+                start_grid[i][j] = grid[i][j];
+            }
+        }
+        generateCodedSudoku(start_grid, grid_correct, grid);
     }
 
 
@@ -414,9 +422,16 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
             case R.id.sudokuSaveButton:
-                //TODO
-                break;
 
+                String code = generateCodedSudoku(start_grid, grid_correct, grid);
+
+                SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                //editor.putInt(getString(R.string.saved_high_score), newHighScore);
+                editor.putInt(code, 1);
+                editor.commit();
+
+                break;
 
 
             default:
@@ -428,7 +443,46 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
 
+    public String generateCodedSudoku(int start_grid [][], int [][] grid_correct,  int [][]grid){
+        String savedGame = "";
+        for(int i = 0; i < 9; i++){
+            for (int j = 0; j < 9; j++){
+                if(grid[i][j] == 0){
+                    savedGame += "0";
+                }else if(start_grid[i][j] != 0){
+                    savedGame += start_grid[i][j];
+                }else if(grid[i][j] != grid_correct[i][j]){
+                    char incorrect = 'a';
+                    incorrect += grid[i][j];
+                    savedGame += incorrect;
+                }else{
+                    char correct = 'A';
+                    correct += grid[i][j];
+                    savedGame += correct;
+                }
+            }
+        }
+        System.out.println("\n\n\n" + savedGame + "\n\n\n");
+        return savedGame;
+    }
 
+
+    //Use this to load game eventually
+    public int [][] decodeSavedSudoku(String savedGame){
+        int [][] gameToLoad = new int [9][9];
+        for(int i = 0; i < savedGame.length(); i++){
+            if(savedGame.charAt(i) == '0'){
+                gameToLoad[i%9][i/8] = 0;
+            }else if((int)savedGame.charAt(i) > 96){
+                gameToLoad[i%9][i/8] = (int)savedGame.charAt(i)-96;
+            }
+            else if((int)savedGame.charAt(i) > 64){
+                gameToLoad[i%9][i/8] = (int)savedGame.charAt(i)-64;
+            }else{
+                gameToLoad[i%9][i/8] = (int)savedGame.charAt(i)-49;
+            }
+        }
+    }
 
 
     @Override
