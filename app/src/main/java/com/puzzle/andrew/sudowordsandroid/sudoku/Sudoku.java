@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,6 +20,7 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
+import com.puzzle.andrew.sudowordsandroid.MainMenu;
 import com.puzzle.andrew.sudowordsandroid.R;
 
 import java.util.ArrayList;
@@ -121,6 +121,11 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         //Make the puzzle!
         generateSudoku(grid);
         makeGrid(grid, DIFFICULTY);
+
+        // Stop progressBar
+        MainMenu.progressBar.setVisibility(View.GONE);
+
+
     }
 
 
@@ -431,11 +436,13 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
 
+
     @Override
     public void onBackPressed() {
         /**
          * Create warning message when back button is pressed
          */
+
         new AlertDialog.Builder(this)
                 .setTitle(R.string.sudoku_backPress_title)
                 .setMessage(R.string.sudoku_backPress_message)
@@ -446,6 +453,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                         Sudoku.super.onBackPressed();
                     }
                 }).create().show();
+
+
     }
 
 
