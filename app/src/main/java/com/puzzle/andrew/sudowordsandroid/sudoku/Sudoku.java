@@ -301,6 +301,10 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 if (  !String.valueOf(field.getText()).isEmpty()  ) {
                     grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
                 }
+                else{
+                    // Need to reset empties to zero
+                    grid[i][j] = 0 ;
+                }
             }
         }
 
@@ -403,7 +407,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                             if (grid[i][j] == grid_correct[i][j]) {
                                 field.setBackgroundColor( getResources().getColor(R.color.sudoku_correct) );
                             }
-                            else if(grid[i][j]!=0){  // 0 is set if no number is entered
+                            else if(grid[i][j]!=0 ){  // 0 is set if no number is entered
                                 field.setBackgroundColor( getResources().getColor(R.color.sudoku_wrong) );
                             }
                         }
