@@ -852,7 +852,6 @@ public class SudokuMethods {
          *        several times. This way we are not wasting time making unnecessary random numbers.
          */
 
-        int unchecked_removals = 27;   // ALWAYS WORKED FOR 21... NEED TO DO SOME MATHS AND PROVE WHAT THIS NUMBER SHOULD BE
 
         int[][] startGrid = new int[9][9];
         for( int i=0; i<9; i++ ){
@@ -861,53 +860,40 @@ public class SudokuMethods {
             }
         }
 
-        // Remove numbers. Attempt this a set number of times
-        for( int tries=0; tries<60; tries++ ){
 
-            // pick random space and remove
-            int xp=(int)(Math.random()*gridSize);
-            int yp=(int)(Math.random()*gridSize);
+        for( int i=0; i<9; i++ ) {
+            for (int j = 0; j < 9; j++) {
 
-            int value_removed = startGrid[xp][yp];
+                int value_removed = startGrid[i][j];
 
-            if( startGrid[xp][yp] != 0 ) {
+                    // Only use solver after a certain amount of removals
 
-                // Only use solver after a certain amout of removals
-                if( tries > unchecked_removals ) {
+//                int[][] fullySolved = SudokuMethods.solver_singles_hiddenSingles(startGrid);
+//                boolean full_solved = isSolved(fullySolved);
+//                if (full_solved) {
+//                    Log.d("Solved = ", "SOLVED");
+//                } else {
+//                    Log.d("Solved = ", "NOT SOLVED");
+//                }
 
-                    if( tries == unchecked_removals+1 ){
-                        int[][] fullySolved = SudokuMethods.solver_singles_hiddenSingles(startGrid);
-                        boolean full_solved = isSolved(fullySolved);
-                        if( full_solved){
-                            Log.d("Solved = ", "SOLVED" );
-                        }
-                        else{
-                            Log.d("Solved = ", "NOT SOLVED" );
-                        }
-                    }
+                startGrid[i][j] = 0;
 
-                    startGrid[xp][yp] = 0;
+                // Try to solve
+                boolean is_solvable = false;
+                is_solvable = SudokuMethods.solver_singles_hiddenSingles2(startGrid, i, j);
 
-                    // Try to solve
-                    boolean is_solvable = false;
-                    is_solvable = SudokuMethods.solver_singles_hiddenSingles2(startGrid, xp, yp);
-
-                    if (is_solvable) {
-                        // remove number and re-enter loop to pick another
-                    } else {
-                        // put number back and try again
-                        startGrid[xp][yp] = value_removed;
-                    }
-                }
-                else{
-                    // Don't bother using solver
-                    startGrid[xp][yp] = 0;
+                if (is_solvable) {
+                    // remove number and re-enter loop to pick another
+                } else {
+                    // put number back and try again
+                    startGrid[i][j] = value_removed;
+                    String ss = "(i,j) = ("+Integer.toString(i)+","+Integer.toString(j)+")";
+                    Log.d("SNOT REMOVED = ", ss);
                 }
 
 
-            }
-            else{
-                tries = tries-1;  // i.e. don't count this removal attempt. We were re-solving when no changes had been made!
+
+
             }
         }
 
