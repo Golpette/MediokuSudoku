@@ -3,12 +3,11 @@ package com.puzzle.andrew.sudowordsandroid;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 
 
@@ -24,6 +23,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
     public static ProgressBar progressBar; // Want this accessible from other activity - is this the right way??
 
 
+
+    private String difficulty;
 
 
     // STEVE: TEST MAKING SUDOKU HERE IN ASYNC TASK ==========================================
@@ -102,17 +103,22 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                 // Make progressBar visible
                 progressBar.setVisibility(View.VISIBLE);
 
-                grid_correct = generateSudoku(grid);
-                //Make the puzzle!
-                start_grid = makeGrid(grid, "easy");
+//                grid_correct = generateSudoku(grid);
+//                //Make the puzzle!
+//                start_grid = makeGrid(grid, "easy");
 
-                // RUN THE CODE TO START THE NEXT ACTIVITY
-                Intent easy = new Intent(this, Sudoku.class);
-                Bundle nBundle = new Bundle();
-                nBundle.putSerializable("grid_correct", grid_correct);
-                nBundle.putSerializable("start_grid", start_grid);
-                easy.putExtras(nBundle);
-                startActivity( easy );
+                difficulty = "easy";
+
+                new PuzzleGeneration().execute();
+
+
+//                // RUN THE CODE TO START THE NEXT ACTIVITY
+//                Intent easy = new Intent(this, Sudoku.class);
+//                Bundle nBundle = new Bundle();
+//                nBundle.putSerializable("grid_correct", grid_correct);
+//                nBundle.putSerializable("start_grid", start_grid);
+//                easy.putExtras(nBundle);
+//                startActivity( easy );
 
                 break;
 
@@ -121,22 +127,63 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                 // Make progressBar visible
                 progressBar.setVisibility(View.VISIBLE);
 
-                grid_correct = generateSudoku(grid);
-                //Make the puzzle!
-                start_grid = makeGrid(grid, "medium");
+                difficulty = "medium";
 
-                Intent medium = new Intent(this, Sudoku.class);
-                Bundle mBundle = new Bundle();
-                mBundle.putSerializable("grid_correct", grid_correct);
-                mBundle.putSerializable("start_grid", start_grid);
-                medium.putExtras(mBundle);
-                startActivity( medium );
+
+                new PuzzleGeneration().execute();
+//                grid_correct = generateSudoku(grid);
+//                //Make the puzzle!
+//                start_grid = makeGrid(grid, "medium");
+
+//                Intent medium = new Intent(this, Sudoku.class);
+//                Bundle mBundle = new Bundle();
+//                mBundle.putSerializable("grid_correct", grid_correct);
+//                mBundle.putSerializable("start_grid", start_grid);
+//                medium.putExtras(mBundle);
+//                startActivity( medium );
 
                 break;
         }
 
     }
 
+
+
+
+
+
+
+
+
+
+    private class PuzzleGeneration extends AsyncTask<Object, Object, Void> {
+
+        @Override
+        protected Void doInBackground(Object... objects) {
+
+            // Make full grid
+            grid_correct = generateSudoku(grid);
+            //Make the puzzle!
+            start_grid = makeGrid(grid, difficulty);
+
+            Intent medium = new Intent(MainMenu.this, Sudoku.class);
+            Bundle mBundle = new Bundle();
+            mBundle.putSerializable("grid_correct", grid_correct);
+            mBundle.putSerializable("start_grid", start_grid);
+            medium.putExtras(mBundle);
+            startActivity( medium );
+
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            //progressBar.setVisibility(View.VISIBLE);
+         }
+
+        @Override
+        protected void onProgressUpdate(Object... values) {}
+    }
 
 
 
