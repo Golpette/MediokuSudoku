@@ -1,5 +1,8 @@
 package com.puzzle.andrew.sudowordsandroid.sudoku;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class SudokuMethods {
@@ -12,259 +15,183 @@ public class SudokuMethods {
 	public static int gridSize = 9;
 	
 	static int last_rand_pos=0;
-	
-	
-	
-	public static int[][] makeMedium(int[][] fullGrid){   // As hard as possible without guessing
-		/**
-		 *  Method just solves the full grid every time a number is removed.
-		 *  To do this, it lists all possible numbers that can go at each site. If there is only 1, we add
-		 *  it to grid (for all if multiple single choices), update the lists then repeat until no more can be added.
-		 */
-		
-		int[][] startGrid = new int[9][9];
-		for( int i=0; i<9; i++ ){
-			for( int j=0; j<9; j++){
-				startGrid[i][j] = fullGrid[i][j];
-			}
-		}	
-	
-		
-		// Remove numbers. Do this a set number of times / until no more can be removed 
-		for( int tries=0; tries<55; tries++ ){ // REDUCED TO 200 SINCE THIS METHOD IS NOW VERY SLOW
-			
-			// pick random space and remove      
-			int xp=(int)(Math.random()*gridSize);  
-			int yp=(int)(Math.random()*gridSize); 
-			
-			int value_removed = startGrid[xp][yp];
 
-            if( startGrid[xp][yp] != 0 ) {
-                startGrid[xp][yp] = 0;
 
-                // Try to solve
-                int[][] solved_config = new int[9][9];
-                solved_config = SudokuMethods.solver_singles_hiddenSingles(startGrid);
 
-                // Check if solved
-                boolean is_solved = isSolved(solved_config);
 
-                if (is_solved) {
-                    // remove number and re-enter loop to pick another
-                } else {
-                    // put number back and try again
-                    startGrid[xp][yp] = value_removed;
-                }
-            }
-            else{
-                tries = tries-1;  // i.e. don't count this removal attempt. We were re-solving when no changes had been made!
-            }
-		}
 
-		return startGrid;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 	public static int[][] makeEasy(int[][] fullGrid){   //  MAYBE "VERRRRY" EASY
 		/**
 		 * Easy sudoku makes sure that at every step (removal) the grid can still be solved
 		 * by just looking at the row, column and square and checking if there is exactly
-		 * one possible entry 
+		 * one possible entry
 		 */
-		
+
 		int[][] startGrid = new int[9][9];
-		
+
 		for( int i=0; i<9; i++ ){
 			for( int j=0; j<9; j++){
 				startGrid[i][j] = fullGrid[i][j];
 			}
-		}	
-	
-		
+		}
+
+
 		// Do this a set number of times / until no more can be removed / specific number of entries are left??
-		
+
 		for( int tries=0; tries<500; tries++ ){   //REDUCED THIS FROM 100,000 !!
-		
+
 			// pick random space and remove            //TODO: do all similar numbers instead of random??
-			int xp=(int)(Math.random()*gridSize);  
-			int yp=(int)(Math.random()*gridSize); 
-			
+			int xp=(int)(Math.random()*gridSize);
+			int yp=(int)(Math.random()*gridSize);
+
 			int value_removed = startGrid[xp][yp];
 
-            if( value_removed != 0 ) {
+			if( value_removed != 0 ) {
 
-                startGrid[xp][yp] = 0;                    /// TODO: CAREFUL, this is not printed since it is not in set [1,9]
+				startGrid[xp][yp] = 0;                    /// TODO: CAREFUL, this is not printed since it is not in set [1,9]
 
-                // Get lists of possibilities according to row, column and 3x3 square
-                ArrayList<Integer> poss_row = possibilities_from_row(startGrid, xp, yp);
-                ArrayList<Integer> poss_col = possibilities_from_col(startGrid, xp, yp);
-                ArrayList<Integer> poss_sqr = possibilities_from_sqr(startGrid, xp, yp);
+				// Get lists of possibilities according to row, column and 3x3 square
+				ArrayList<Integer> poss_row = possibilities_from_row(startGrid, xp, yp);
+				ArrayList<Integer> poss_col = possibilities_from_col(startGrid, xp, yp);
+				ArrayList<Integer> poss_sqr = possibilities_from_sqr(startGrid, xp, yp);
 
-                // Take the 3 lists above and check for common numbers.
-                //ArrayList<Integer> common_nums = new ArrayList<Integer>();
-                int count_cns = 0;
-                for (Integer i : poss_row) {
-                    if (poss_col.contains(i) && poss_sqr.contains(i)) {
-                        //common_nums.add(i);
-                        count_cns++;
-                    }
-                }
+				// Take the 3 lists above and check for common numbers.
+				//ArrayList<Integer> common_nums = new ArrayList<Integer>();
+				int count_cns = 0;
+				for (Integer i : poss_row) {
+					if (poss_col.contains(i) && poss_sqr.contains(i)) {
+						//common_nums.add(i);
+						count_cns++;
+					}
+				}
 
-                if (count_cns != 1) {
-                    // cannot solve sudoku with "easy" method so put number back
-                    startGrid[xp][yp] = value_removed;
-                } else if (count_cns == 0) {
-                    System.out.println("SOMETHING ODD - NO SHARED NUMBERS AFTER REMOVAL. SudokuMethods.java ");
-                } else {
-                    // We have exactly 1 possibility for this square. Leave it out and pick another!
-                }
-            }
-            else{
-                tries = tries - 1;
-            }
+				if (count_cns != 1) {
+					// cannot solve sudoku with "easy" method so put number back
+					startGrid[xp][yp] = value_removed;
+				} else if (count_cns == 0) {
+					System.out.println("SOMETHING ODD - NO SHARED NUMBERS AFTER REMOVAL. SudokuMethods.java ");
+				} else {
+					// We have exactly 1 possibility for this square. Leave it out and pick another!
+				}
+			}
+			else{
+				tries = tries - 1;
+			}
 		}
 
 		return startGrid;
 	}
 	
 	
-	
-	
-//	public static int[][] makeEasy(int[][] fullGrid){   //  MAYBE "VERRRRY" EASY
+//	// OLDER INEFFICIENT METHOD
+//	public static int[][] makeMedium(int[][] fullGrid){   // As hard as possible without guessing
 //		/**
-//		 * Easy sudoku makes sure that at every step (removal) the grid can still be solved
-//		 * by just looking at the row, column and square and checking if there is exactly
-//		 * one possible entry 
+//		 *  Method just solves the full grid every time a number is removed.
+//		 *  To do this, it lists all possible numbers that can go at each site. If there is only 1, we add
+//		 *  it to grid (for all if multiple single choices), update the lists then repeat until no more can be added.
 //		 */
-//		
+//
 //		int[][] startGrid = new int[9][9];
-//		
 //		for( int i=0; i<9; i++ ){
 //			for( int j=0; j<9; j++){
 //				startGrid[i][j] = fullGrid[i][j];
 //			}
-//		}	
-//	
-//		
-//		// Do this a set number of times / until no more can be removed / specific number of entries are left??
-//		
-//		for( int tries=0; tries<100000; tries++ ){
-//		
-//			// pick random space and remove            //TODO: do all similar numbers instead of random??
-//			int xp=(int)(Math.random()*gridSize);  
-//			int yp=(int)(Math.random()*gridSize); 
-//			
-//			int value_removed = startGrid[xp][yp];
-//			startGrid[xp][yp]=0;                    /// TODO: CAREFUL, this is not printed since it is not in set [1,9] 
+//		}
 //
-//			// Get lists of possibilities according to row, column and 3x3 square		
-//			ArrayList<Integer> poss_row = possibilities_from_row( startGrid, xp, yp );
-//			ArrayList<Integer> poss_col = possibilities_from_col( startGrid, xp, yp );
-//			ArrayList<Integer> poss_sqr = possibilities_from_sqr( startGrid, xp, yp );			
-//			
-//			// Take the 3 lists above and check for common numbers.
-//			//ArrayList<Integer> common_nums = new ArrayList<Integer>();
-//			int count_cns=0;
-//			for( Integer i: poss_row ){
-//				if( poss_col.contains(i) && poss_sqr.contains(i) ){
-//					//common_nums.add(i);
-//					count_cns++;
-//				}
-//			}
-//			
-//			if( count_cns != 1 ){
-//				// cannot solve sudoku with "easy" method so put number back
-//				startGrid[xp][yp] = value_removed;
-//			}
-//			else if( count_cns ==0 ){
-//				System.out.println("SOMETHING ODD - NO SHARED NUMBERS AFTER REMOVAL. SudokuMethods.java ");
-//			}
-//			else{
-//				// We have exactly 1 possibility for this square. Leave it out and pick another!
-//			}
-//		
+//
+//		// Remove numbers. Do this a set number of times / until no more can be removed
+//		for( int tries=0; tries<55; tries++ ){ // REDUCED TO 200 SINCE THIS METHOD IS NOW VERY SLOW
+//
+//			// pick random space and remove
+//			int xp=(int)(Math.random()*gridSize);
+//			int yp=(int)(Math.random()*gridSize);
+//
+//			int value_removed = startGrid[xp][yp];
+//
+//            if( startGrid[xp][yp] != 0 ) {
+//                startGrid[xp][yp] = 0;
+//
+//                // Try to solve
+//                int[][] solved_config = new int[9][9];
+//                solved_config = SudokuMethods.solver_singles_hiddenSingles(startGrid);
+//
+//                // Check if solved
+//                boolean is_solved = isSolved(solved_config);
+//
+//                if (is_solved) {
+//                    // remove number and re-enter loop to pick another
+//                } else {
+//                    // put number back and try again
+//                    startGrid[xp][yp] = value_removed;
+//                }
+//            }
+//            else{
+//                tries = tries-1;  // i.e. don't count this removal attempt. We were re-solving when no changes had been made!
+//            }
 //		}
 //
 //		return startGrid;
 //	}
 	
 	
-	
-	
-	
-	
-
-
-	
-	
-	
-	
-	
-
-	
-	
-	public static int[][] solver_singles_hiddenSingles( int[][] strtGrid ){
-		/**
-		 * Solves sudoku using only "singles" and "hidden singles".  
-		 * (hidden: there may be 2 or more options in every grid in a given row, but 
-		 * if only one of them contains a "4" option, this must be the 4)
-		 */
-		int[][] solvegrid = new int[9][9];
-		for( int i=0; i<9; i++ ){
-			for( int j=0; j<9; j++){
-				solvegrid[i][j] = strtGrid[i][j];
-			}
-		}		
-		
-		boolean solving = true;
-				
-		while(solving){
-			
-			
-			// HOLD CURRENT GRID TO CHECK FOR DIFFERENCES
-			int[][] prev_grid = new int[9][9];
-			for( int i=0; i<9; i++ ){
-				for( int j=0; j<9; j++){
-					prev_grid[i][j] = solvegrid[i][j];
-				}
-			}	
-			
-			
-			// Add singles
-			add_singles( solvegrid );
-			
-			// Add hidden singles 
-			add_hiddenSingles_ROWS( solvegrid );
-		    add_hiddenSingles_COLS( solvegrid );
-			add_hiddenSingles_3x3s( solvegrid );
-			
-						
-			// check we made at least 1 change
-			boolean anything_added = false;
-			for( int iii=0; iii<9; iii++){
-				for( int jjj=0; jjj<9; jjj++ ){
-					if ( solvegrid[iii][jjj] != 0  &&  prev_grid[iii][jjj] == 0 ){
-						anything_added = true;
-					}
-				}
-			}
-			if( !anything_added){
-				solving=false;
-			}
-			
-			
-		}//end while
-		
-
-		return solvegrid;
-	}
-	
+//    // FULL SOLVER - I.E. SOLVES TO COMPLETION EVERY TIME!!
+//	public static int[][] solver_singles_hiddenSingles( int[][] strtGrid ){
+//		/**
+//		 * Solves sudoku using only "singles" and "hidden singles".
+//		 * (hidden: there may be 2 or more options in every grid in a given row, but
+//		 * if only one of them contains a "4" option, this must be the 4)
+//		 */
+//		int[][] solvegrid = new int[9][9];
+//		for( int i=0; i<9; i++ ){
+//			for( int j=0; j<9; j++){
+//				solvegrid[i][j] = strtGrid[i][j];
+//			}
+//		}
+//
+//		boolean solving = true;
+//
+//		while(solving){
+//
+//
+//			// HOLD CURRENT GRID TO CHECK FOR DIFFERENCES
+//			int[][] prev_grid = new int[9][9];
+//			for( int i=0; i<9; i++ ){
+//				for( int j=0; j<9; j++){
+//					prev_grid[i][j] = solvegrid[i][j];
+//				}
+//			}
+//
+//
+//			// Add singles
+//			add_singles( solvegrid );
+//
+//			// Add hidden singles
+//			add_hiddenSingles_ROWS( solvegrid );
+//		    add_hiddenSingles_COLS( solvegrid );
+//			add_hiddenSingles_3x3s( solvegrid );
+//
+//
+//			// check we made at least 1 change
+//			boolean anything_added = false;
+//			for( int iii=0; iii<9; iii++){
+//				for( int jjj=0; jjj<9; jjj++ ){
+//					if ( solvegrid[iii][jjj] != 0  &&  prev_grid[iii][jjj] == 0 ){
+//						anything_added = true;
+//					}
+//				}
+//			}
+//			if( !anything_added){
+//				solving=false;
+//			}
+//
+//
+//		}//end while
+//
+//
+//		return solvegrid;
+//	}
+//
 
 	
 	
@@ -472,6 +399,7 @@ public class SudokuMethods {
 		 * Use all grid possibilities for all grids for each ROW
 		 * Make a "row_required" list; check if any grids only have 1 of these
 		 */
+
 		// Lists of all possible numbers for each grid point
 		@SuppressWarnings("unchecked")
 		ArrayList<Integer>[][] all_lists =  (ArrayList<Integer>[][])new ArrayList[9][9];
@@ -485,10 +413,8 @@ public class SudokuMethods {
 		
 		//for each row
 		for( int i=0; i<9; i++){
-			
-			
 
-			// Update all grid possibilities
+			// Update all grid possibilities since we might have addded number in last row
 			for( int iii=0; iii<9; iii++){
 				for( int jjj=0; jjj<9; jjj++ ){
 					if( grid[iii][jjj] == 0 ){   // Do not get possibilities from occupied sites
@@ -501,7 +427,6 @@ public class SudokuMethods {
 			// make list of numbers this row needs
 			ArrayList<Integer> required = new ArrayList<Integer>(); /// TODO: WE CNA MAKE THIS REQUIRED LIST MUCH EASIER!
 			for( int j=0; j<9; j++ ){
-	
 				for( Integer poss: all_lists[i][j] ){
 					if( !required.contains(poss) ){
 						required.add( poss );
@@ -523,7 +448,7 @@ public class SudokuMethods {
 						if( all_lists[i][j].contains( r ) ){  
 							// add in the definite entry!
 							
-							grid[i][j] = r; 
+							grid[i][j] = r;  
 
 						}
 					}
@@ -704,92 +629,7 @@ public class SudokuMethods {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//	@SuppressWarnings("unchecked") // WTF IS THIS!? Need it for our array[][] of ArrayLists... possible bugs!? //TODO
-//	public static int[][] solver_basic( int[][] strtGrid ){
-//		/**
-//		 * Method to solve (??) sudokus by writing out every possible number for each
-//		 * grid space and checking if there is exactly 1 possibility for any of them.
-//		 * If so, add them, update grid lists, look again. 
-//		 */
-//		int[][] solvegrid = new int[9][9];
-//		for( int i=0; i<9; i++ ){
-//			for( int j=0; j<9; j++){
-//				solvegrid[i][j] = strtGrid[i][j];
-//			}
-//		}	
-//		
-//		
-//
-//		// Lists of all possible numbers for each grid point
-//		ArrayList<Integer>[][] all_lists =  (ArrayList<Integer>[][])new ArrayList[9][9];
-//		for( int i=0; i<9; i++){
-//			for( int j=0; j<9; j++ ){
-//				all_lists[i][j] = new ArrayList<Integer>();
-//			}
-//		}
-//		
-//		
-//		
-//		
-//		boolean solving = true;
-//		while( solving ){
-//		
-//			// Update all_lists
-//			for( int i=0; i<9; i++){
-//				for( int j=0; j<9; j++ ){
-//					if(solvegrid[i][j] == 0 ){   // Do not get possibilities from occupied sites
-//						all_lists[i][j] = getGridPossibilities( solvegrid, i, j );
-//					}
-//				}
-//			}
-//			
-//			// Check we can actually add something
-//			boolean anything_to_add = false;
-//			for( int i=0; i<9; i++){
-//				for( int j=0; j<9; j++ ){
-//					if(  all_lists[i][j].size() == 1  ){
-//						anything_to_add = true;
-//					}					
-//				}
-//			}
-//			// Stop if we can't add any more
-//			if( !anything_to_add ){ solving = false; }   
-//			
-//			
-//			// Add any definite numbers
-//			for( int i=0; i<9; i++){
-//				for( int j=0; j<9; j++ ){
-//					if(  all_lists[i][j].size() == 1  ){
-//						int n = all_lists[i][j].get(0);
-//						solvegrid[i][j] = n;
-//						// clear the corresponding list
-//						all_lists[i][j].clear();
-//					}
-//				}
-//			}
-//
-//		}
-//        
-//		
-//		return solvegrid;
-//	}
-//	
-	
+
 	
 	
 	
@@ -803,109 +643,74 @@ public class SudokuMethods {
 		 * Method to produce list of possible numbers for single grid space
 		 */
 		ArrayList<Integer> ents = new ArrayList<Integer>();
-		
-		// Get lists of possibilities according to row, column and 3x3 square		
-		ArrayList<Integer> poss_row = possibilities_from_row( strt_grid, xxx, yyy );
-		ArrayList<Integer> poss_col = possibilities_from_col( strt_grid, xxx, yyy);
-		ArrayList<Integer> poss_sqr = possibilities_from_sqr( strt_grid, xxx, yyy );			
-		
-		// Take the 3 lists above and check for common numbers.
-		for( Integer i: poss_row ){
-			if( poss_col.contains(i) && poss_sqr.contains(i) ){     // STEVE TRYING TO DEBUG
-			//if( poss_col.contains(i) && poss_sqr.contains(i) ){
 
-				ents.add(i);
-			}
-		}				
-		
-		
+        Set<Integer> possibilities = new HashSet<Integer>();
+        possibilities.addAll(Arrays.asList(new Integer[] {1,2,3,4,5,6,7,8,9} ));
+
+		// Get lists of row, column and 3x3 square contents
+		Set<Integer> list_row = getRowContents( strt_grid, xxx, yyy );
+        Set<Integer> list_col = getColumnContents( strt_grid, xxx, yyy );
+        Set<Integer> list_3x3 = get3x3Contents( strt_grid, xxx, yyy );
+
+        Set<Integer> difference = new HashSet<Integer>( possibilities );
+        difference.removeAll(list_row);
+        difference.removeAll(list_col);
+        difference.removeAll(list_3x3);
+
+        ents.addAll( difference ) ;
 		return ents;
 	}
+
+
+
+    public static Set<Integer> getRowContents( int[][] strt_grid, int xx, int yy ){
+        /**
+         * Get Set of row contents
+         */
+        Set<Integer> row_conts = new HashSet<Integer>();
+        for(int i=0; i<gridSize; i++){
+            row_conts.add(strt_grid[i][yy]);
+        }
+
+        return row_conts;
+    }
+
+
+
+    public static Set<Integer> getColumnContents (int[][] strt_grid, int xx, int yy ){
+        /**
+         * Get Set of column contents
+         */
+        Set<Integer> col_conts = new HashSet<Integer>();
+        for(int i=0; i<gridSize; i++){
+            col_conts.add(strt_grid[xx][i]);
+        }
+        return col_conts;
+    }
+
+    public static Set<Integer> get3x3Contents (int[][] strt_grid, int xx, int yy ){
+        /**
+         * Get Set of 3x3 square contents
+         */
+        Set<Integer> conts = new HashSet<Integer>();
+
+        //Get top left of current 3x3 square
+        int tl_x = (xx/3)*3;
+        int tl_y = (yy/3)*3;
+
+        for( int i=0; i< 3 ; i++ ){
+            for( int j=0; j<3; j++ ){
+                conts.add( strt_grid[tl_x+i][tl_y+j] );
+            }
+        }
+
+        return conts;
+    }
+
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	public static ArrayList<Integer> possibilities_from_sqr( int[][] strt_grid, int xx, int yy ){
-		ArrayList<Integer> poss = new ArrayList<Integer>();		
-		for(int i=1; i<gridSize+1; i++){
-			poss.add( i );
-		}
-		
-		//Get top left of current 3x3 square   // TODO: GENERALISE FOR NON-3X3 GRIDS
-		int tl_x = (xx/3)*3;
-		int tl_y = (yy/3)*3;		
-		
-		for( int i=0; i< 3 ; i++ ){    // TODO: GENERALISE FOR NON-3X3 GRIDS
-			for( int j=0; j<3; j++ ){
-				
-				if( poss.contains( strt_grid[tl_x+i][tl_y+j] ) ){
-					// then find it in poss and remove it
-					int position = poss.indexOf( strt_grid[tl_x+i][tl_y+j]  );
-					poss.remove( position );
-				}
-				
-			}
-		}
-		
-		return poss;
-	}
-	
-	
-	
-	
-	
-	
-	public static ArrayList<Integer> possibilities_from_row( int[][] strt_grid, int xx, int yy ){
-		
-		ArrayList<Integer> poss = new ArrayList<Integer>();		
-		for(int i=1; i<gridSize+1; i++){
-			poss.add( i );
-		}
-		
-		for(int i=0; i<gridSize; i++){   //
-			if( poss.contains( strt_grid[i][yy] ) ){
-				// then find it in poss and remove it
-				int position = poss.indexOf( strt_grid[i][yy]  );
-				poss.remove( position );
-			}
-		}
-		
-		return poss;
-	}
-	
-	
-	
-	
-	
-	public static ArrayList<Integer> possibilities_from_col( int[][] strt_grid, int xx, int yy ){
-		
-		ArrayList<Integer> poss = new ArrayList<Integer>();		
-		for(int i=1; i<gridSize+1; i++){
-			poss.add( i );
-		}
-		
-		for(int i=0; i<gridSize; i++){
-			if( poss.contains( strt_grid[xx][i] ) ){
-				// then find it in poss and remove it
-				int position = poss.indexOf( strt_grid[xx][i]  );
-				poss.remove( position );
-			}
-		}
-		
-		return poss;
-	}
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	
@@ -1149,11 +954,146 @@ public class SudokuMethods {
         return is_solvable;
     }
 	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //DELETE   #################################################################################
+
+
+
+    public static ArrayList<Integer> possibilities_from_sqr( int[][] strt_grid, int xx, int yy ){
+
+
+        Set<Integer> a = new HashSet<Integer>();
+
+
+        ArrayList<Integer> poss = new ArrayList<Integer>();
+        for(int i=1; i<gridSize+1; i++){
+            poss.add( i );
+        }
+
+        //Get top left of current 3x3 square   // TODO: GENERALISE FOR NON-3X3 GRIDS
+        int tl_x = (xx/3)*3;
+        int tl_y = (yy/3)*3;
+
+        for( int i=0; i< 3 ; i++ ){    // TODO: GENERALISE FOR NON-3X3 GRIDS
+            for( int j=0; j<3; j++ ){
+
+                if( poss.contains( strt_grid[tl_x+i][tl_y+j] ) ){
+                    // then find it in poss and remove it
+                    int position = poss.indexOf( strt_grid[tl_x+i][tl_y+j]  );
+                    poss.remove( position );
+                }
+
+            }
+        }
+
+        return poss;
+    }
+
+
+
+
+
+
+    public static ArrayList<Integer> possibilities_from_row( int[][] strt_grid, int xx, int yy ){
+
+        ArrayList<Integer> poss = new ArrayList<Integer>();
+        for(int i=1; i<gridSize+1; i++){
+            poss.add( i );
+        }
+
+        for(int i=0; i<gridSize; i++){   //
+            if( poss.contains( strt_grid[i][yy] ) ){
+                // then find it in poss and remove it
+                int position = poss.indexOf( strt_grid[i][yy]  );
+                poss.remove( position );
+            }
+        }
+
+        return poss;
+    }
+
+
+
+
+
+    public static ArrayList<Integer> possibilities_from_col( int[][] strt_grid, int xx, int yy ){
+
+        ArrayList<Integer> poss = new ArrayList<Integer>();
+        for(int i=1; i<gridSize+1; i++){
+            poss.add( i );
+        }
+
+        for(int i=0; i<gridSize; i++){
+            if( poss.contains( strt_grid[xx][i] ) ){
+                // then find it in poss and remove it
+                int position = poss.indexOf( strt_grid[xx][i]  );
+                poss.remove( position );
+            }
+        }
+
+        return poss;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
