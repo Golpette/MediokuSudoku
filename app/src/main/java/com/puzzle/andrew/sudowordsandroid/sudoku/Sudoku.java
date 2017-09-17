@@ -40,47 +40,40 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     private Button hintButton;
     private Button saveButton;
 
-    private String DIFFICULTY;
-
     private boolean checkPressed = false;
     private boolean hintPressed = false;
 
-    ArrayList<Integer> row, checks;
-    ArrayList<Integer> correct;
-    ArrayList<ArrayList<Integer>> cols;
-    ArrayList<ArrayList<Integer>> boxes;
+
+
+    ArrayList<Integer> row, checks, correct;
+    ArrayList<ArrayList<Integer>> cols, boxes;
 
     // Current state of grid
     int[][] grid = new int [9][9];
     // Hold solution
     int[][] grid_correct = new int [9][9];
+    //int[][] start_grid = new int [9][9];
+
 
     int x = 11, y = 11;
-    Random rand;
-    boolean complete = false;
+
+
 
 
 
 
     protected void onCreate(Bundle savedInstanceState) {
 
-        // Get difficulty from button ID
+
         Bundle extras = getIntent().getExtras();
-        if(extras!=null)
-        {
-            DIFFICULTY = extras.getString("difficulty");
-        }
+        grid_correct = (int[][]) extras.getSerializable("grid_correct");
+        //start_grid = (int[][]) extras.getSerializable("start_grid");
+        grid = (int[][]) extras.getSerializable("start_grid");
+
+
 
         //Steve: need this plus the android:screenOrientation="portrait" in the xml
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-
-        correct = new ArrayList<Integer>();
-        row = new ArrayList<Integer>();
-        checks = new ArrayList<Integer>();
-        boxes = new ArrayList<ArrayList<Integer>>();
-        cols = new ArrayList<ArrayList<Integer>>();
-        rand = new Random();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sudoku_menu);
@@ -118,151 +111,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         }
 
 
-        //Make the puzzle!
-        generateSudoku(grid);
-        makeGrid(grid, DIFFICULTY);
-
-        // Stop progressBar
-        MainMenu.progressBar.setVisibility(View.GONE);
-
-
-    }
-
-
-    // STEVE: added this to prevent screen rotation
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-    }
-
-
-
-    // Generate the full (solution) grid
-    public void generateSudoku(int[][] grid){
-        /**
-         * Generates full solution grid
-         */
-        boxes.clear();
-        cols.clear();
-        row.clear();
-        checks.clear();
-        correct.clear();
-        if(!complete){
-            for (int i = 0; i < x-2; i++){
-                int bound = 9;
-
-                ArrayList<Integer> tempRow = new ArrayList<Integer>();
-                ArrayList<Integer> tempBox = new ArrayList<Integer>();
-                for (int j = 0; j < y-2; j++){
-                    if(j == 0){
-                        for(int k = 1; k < 10; k++){
-                            row.add(k);
-                            if(i == 0){
-                                ArrayList<Integer> box = new ArrayList<Integer>();
-                                boxes.add(box);
-                                ArrayList<Integer> temps = new ArrayList<Integer>();
-                                cols.add(temps);
-                            }
-                        }
-                    }
-                    tempRow.clear();
-                    tempBox.clear();
-                    if(!cols.isEmpty()){
-                        for(Integer a : cols.get(j)){
-                            if(row.contains(a) && bound > 0){
-                                tempRow.add(a);
-                                row.remove(a);
-                                bound--;
-                            }
-                        }
-                    }
-                    if(!boxes.isEmpty()){
-                        for(Integer b : boxes.get((i/3)*3+(j/3))){
-                            if(row.contains(b) && bound > 0){
-                                tempBox.add(b);
-                                row.remove(b);
-                                bound--;
-                            }
-                        }
-                    }
-                    if(row.isEmpty()){
-                        if(i != 8 || j != 8){
-                            generateSudoku(grid);
-                        }else{
-                            complete = true;
-                            break;
-                        }
-                    }
-                    if(bound == 0){
-                        complete = true;
-                        break;
-                        //generateSudoku();
-                    }else{
-                        if(!cols.isEmpty()){
-                            int temp = (rand.nextInt(bound));
-                            int insertion = row.get(temp);
-                            //numbers[i][j].setText(""+insertion);
-                            correct.add(insertion);
-                            checks.add(row.get(temp));
-                            cols.get(j).add(row.get(temp));
-                            boxes.get(((i/3)*3)+(j/3)).add(row.get(temp));
-                            row.remove(row.get(temp));
-                            bound--;
-                            for(Integer a: tempRow){
-                                if(!row.contains(a)){
-                                    row.add(a);
-                                    bound++;
-                                }
-                            }
-                            for(Integer b: tempBox){
-                                if(!row.contains(b)){
-                                    row.add(b);
-                                    bound++;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if(!correct.isEmpty()){
-            for(int i = 0; i < x-2; i++) {
-                for (int j = 0; j < y - 2; j++) {
-                    grid[i][j] = correct.get(j * (x - 2) + i);
-                }
-            }
-        }
-
-
-
-        // Set correct solution
-        for(int i = 0; i < x-2; i++) {
-            for (int j = 0; j < y - 2; j++) {
-                grid_correct[i][j] = grid[i][j];
-            }
-        }
-
-
-
-    }
-
-
-
-
-    public void makeGrid(int [][] grid2, String diff){
-        /**
-         * Generates starting grid from solution grid
-         */
-
-        if( diff.equals("easy" ) ){
-            grid = SudokuMethods.makeEasy(grid2);
-        }
-        else if( diff.equals("medium") ){
-            grid = SudokuMethods.makeMedium2(grid2); /// Steve: quick fix to make medium puzzles more efficient
-        }
-        ////grid = SudokuMethods.makeMedium(grid2); // DO NOT USE THIS
-
 
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
 
@@ -277,6 +125,21 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
             }
         }
+
+
+
+        // Stop progressBar
+        MainMenu.progressBar.setVisibility(View.GONE);
+
+
+    }
+
+
+    // STEVE: added this to prevent screen rotation
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
 
