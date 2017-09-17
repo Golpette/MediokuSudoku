@@ -20,6 +20,15 @@ public class GameState {
         this.end_game = end_game;
     }
 
+    public int [][] getStartGame(){
+        return start_game;
+    }
 
+    public int [][] getMidGame(){
+        return mid_game;
+    }
 
+    public int [][] getEndGame(){
+        return end_game;
+    }
 }
