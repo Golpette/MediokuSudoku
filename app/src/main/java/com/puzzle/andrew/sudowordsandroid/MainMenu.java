@@ -69,6 +69,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
             case R.id.button_load:
                 Intent load = new Intent(this, Sudoku.class);
+                //load.putExtra();
+                //startActivity(medium);
 
         }
 

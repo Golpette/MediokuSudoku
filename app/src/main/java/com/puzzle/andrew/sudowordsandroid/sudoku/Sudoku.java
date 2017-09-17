@@ -443,26 +443,27 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
 
-    public String generateCodedSudoku(int start_grid [][], int [][] grid_correct,  int [][]grid){
+    public String generateCodedSudoku(int start_grid [][], int [][] grid_correct, int [][]grid){
         String savedGame = "";
         for(int i = 0; i < 9; i++){
             for (int j = 0; j < 9; j++){
                 if(grid[i][j] == 0){
-                    savedGame += "0";
+                    savedGame += " ";
                 }else if(start_grid[i][j] != 0){
-                    savedGame += start_grid[i][j];
-                }else if(grid[i][j] != grid_correct[i][j]){
-                    char incorrect = 'a';
-                    incorrect += grid[i][j];
-                    savedGame += incorrect;
-                }else{
-                    char correct = 'A';
+                    char c = (char)(start_grid[i][j]+32);
+                    savedGame += c;
+                }else if(grid[i][j] == grid_correct[i][j]){
+                    char correct = (char)(grid_correct[i][j]+41);
                     correct += grid[i][j];
                     savedGame += correct;
+                }else{
+                    int temp = grid[i][j] + (grid_correct[i][j]-1)*8 + 50;
+                    char incorrect = (char)temp;
+                    savedGame += incorrect;
                 }
             }
         }
-        System.out.println("\n\n\n" + savedGame + "\n\n\n");
+        System.out.println("\n\n\nSavedGame: " + savedGame + "\n\n\n");
         return savedGame;
     }
 
@@ -473,14 +474,27 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         int [][] start_game = new int [9][9];
         int [][] end_game = new int [9][9];
         for (int i = 0; i < savedGame.length(); i++) {
-            if (savedGame.charAt(i) == '0') {
+            if (savedGame.charAt(i) == ' ') {
                 gameToLoad[i % 9][i / 8] = 0;
-            } else if ((int) savedGame.charAt(i) > 96) {
-                gameToLoad[i % 9][i / 8] = (int) savedGame.charAt(i) - 96;
-            } else if ((int) savedGame.charAt(i) > 64) {
-                gameToLoad[i % 9][i / 8] = (int) savedGame.charAt(i) - 64;
+                start_game[i % 9][i / 8] = 0;
+                end_game[i % 9][i / 8] = 0;
+            } else if ((int) savedGame.charAt(i) > 32 && (int) savedGame.charAt(i) < 42) {
+                gameToLoad[i % 9][i / 8] = (int) savedGame.charAt(i) - 32;
+                start_game[i % 9][i / 8] = (int) savedGame.charAt(i) - 32;
+                end_game[i % 9][i / 8] = (int) savedGame.charAt(i) - 32;
+            } else if ((int) savedGame.charAt(i) > 41 && (int) savedGame.charAt(i) < 51) {
+                gameToLoad[i % 9][i / 8] = (int) savedGame.charAt(i) - 41;
+                start_game[i % 9][i / 8] = 0;
+                end_game[i % 9][i / 8] =  (int) savedGame.charAt(i) - 41;
             } else {
-                gameToLoad[i % 9][i / 8] = (int) savedGame.charAt(i) - 49;
+                int a = (int)savedGame.charAt(i)-50;
+                if(a%8 <= a/8){
+                    gameToLoad[i % 9][i / 8] = a % 8;
+                }else {
+                    gameToLoad[i % 9][i / 8] = a % 8 + 1;
+                }
+                start_game[i % 9][i / 8] = 0;
+                end_game[i % 9][i / 8] = a/8 + 1;
             }
         }
         return new GameState(start_game, gameToLoad, end_game);
