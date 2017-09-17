@@ -468,20 +468,22 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
     //Use this to load game eventually
-    public int [][] decodeSavedSudoku(String savedGame){
-        int [][] gameToLoad = new int [9][9];
-        for(int i = 0; i < savedGame.length(); i++){
-            if(savedGame.charAt(i) == '0'){
-                gameToLoad[i%9][i/8] = 0;
-            }else if((int)savedGame.charAt(i) > 96){
-                gameToLoad[i%9][i/8] = (int)savedGame.charAt(i)-96;
-            }
-            else if((int)savedGame.charAt(i) > 64){
-                gameToLoad[i%9][i/8] = (int)savedGame.charAt(i)-64;
-            }else{
-                gameToLoad[i%9][i/8] = (int)savedGame.charAt(i)-49;
+    public GameState decodeSavedSudoku(String savedGame) {
+        int[][] gameToLoad = new int[9][9];
+        int [][] start_game = new int [9][9];
+        int [][] end_game = new int [9][9];
+        for (int i = 0; i < savedGame.length(); i++) {
+            if (savedGame.charAt(i) == '0') {
+                gameToLoad[i % 9][i / 8] = 0;
+            } else if ((int) savedGame.charAt(i) > 96) {
+                gameToLoad[i % 9][i / 8] = (int) savedGame.charAt(i) - 96;
+            } else if ((int) savedGame.charAt(i) > 64) {
+                gameToLoad[i % 9][i / 8] = (int) savedGame.charAt(i) - 64;
+            } else {
+                gameToLoad[i % 9][i / 8] = (int) savedGame.charAt(i) - 49;
             }
         }
+        return new GameState(start_game, gameToLoad, end_game);
     }
 
 

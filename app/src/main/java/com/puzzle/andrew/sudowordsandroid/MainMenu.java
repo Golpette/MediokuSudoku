@@ -14,7 +14,7 @@ import com.puzzle.andrew.sudowordsandroid.sudoku.Sudoku;
 
 public class MainMenu extends AppCompatActivity implements View.OnClickListener {
 
-    Button easyButton, mediumButton;
+    Button easyButton, mediumButton, loadButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +29,11 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
         mediumButton = (Button) findViewById(R.id.button_medium);
         mediumButton.setOnClickListener(MainMenu.this);
+
+        loadButton = (Button) findViewById(R.id.button_medium);
+        loadButton.setOnClickListener(MainMenu.this);
+
+
     }
 
 
@@ -61,6 +66,10 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                 startActivity( medium );
 
                 break;
+
+            case R.id.button_load:
+                Intent load = new Intent(this, Sudoku.class);
+
         }
 
     }
