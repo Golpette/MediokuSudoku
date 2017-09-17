@@ -1,4 +1,6 @@
 package com.puzzle.andrew.sudowordsandroid.sudoku;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -135,63 +137,63 @@ public class SudokuMethods {
 //	}
 	
 	
-//    // FULL SOLVER - I.E. SOLVES TO COMPLETION EVERY TIME!!
-//	public static int[][] solver_singles_hiddenSingles( int[][] strtGrid ){
-//		/**
-//		 * Solves sudoku using only "singles" and "hidden singles".
-//		 * (hidden: there may be 2 or more options in every grid in a given row, but
-//		 * if only one of them contains a "4" option, this must be the 4)
-//		 */
-//		int[][] solvegrid = new int[9][9];
-//		for( int i=0; i<9; i++ ){
-//			for( int j=0; j<9; j++){
-//				solvegrid[i][j] = strtGrid[i][j];
-//			}
-//		}
-//
-//		boolean solving = true;
-//
-//		while(solving){
-//
-//
-//			// HOLD CURRENT GRID TO CHECK FOR DIFFERENCES
-//			int[][] prev_grid = new int[9][9];
-//			for( int i=0; i<9; i++ ){
-//				for( int j=0; j<9; j++){
-//					prev_grid[i][j] = solvegrid[i][j];
-//				}
-//			}
-//
-//
-//			// Add singles
-//			add_singles( solvegrid );
-//
-//			// Add hidden singles
-//			add_hiddenSingles_ROWS( solvegrid );
-//		    add_hiddenSingles_COLS( solvegrid );
-//			add_hiddenSingles_3x3s( solvegrid );
-//
-//
-//			// check we made at least 1 change
-//			boolean anything_added = false;
-//			for( int iii=0; iii<9; iii++){
-//				for( int jjj=0; jjj<9; jjj++ ){
-//					if ( solvegrid[iii][jjj] != 0  &&  prev_grid[iii][jjj] == 0 ){
-//						anything_added = true;
-//					}
-//				}
-//			}
-//			if( !anything_added){
-//				solving=false;
-//			}
-//
-//
-//		}//end while
-//
-//
-//		return solvegrid;
-//	}
-//
+    // FULL SOLVER - I.E. SOLVES TO COMPLETION EVERY TIME!!
+	public static int[][] solver_singles_hiddenSingles( int[][] strtGrid ){
+		/**
+		 * Solves sudoku using only "singles" and "hidden singles".
+		 * (hidden: there may be 2 or more options in every grid in a given row, but
+		 * if only one of them contains a "4" option, this must be the 4)
+		 */
+		int[][] solvegrid = new int[9][9];
+		for( int i=0; i<9; i++ ){
+			for( int j=0; j<9; j++){
+				solvegrid[i][j] = strtGrid[i][j];
+			}
+		}
+
+		boolean solving = true;
+
+		while(solving){
+
+
+			// HOLD CURRENT GRID TO CHECK FOR DIFFERENCES
+			int[][] prev_grid = new int[9][9];
+			for( int i=0; i<9; i++ ){
+				for( int j=0; j<9; j++){
+					prev_grid[i][j] = solvegrid[i][j];
+				}
+			}
+
+
+			// Add singles
+			add_singles( solvegrid );
+
+			// Add hidden singles
+			add_hiddenSingles_ROWS( solvegrid );
+		    add_hiddenSingles_COLS( solvegrid );
+			add_hiddenSingles_3x3s( solvegrid );
+
+
+			// check we made at least 1 change
+			boolean anything_added = false;
+			for( int iii=0; iii<9; iii++){
+				for( int jjj=0; jjj<9; jjj++ ){
+					if ( solvegrid[iii][jjj] != 0  &&  prev_grid[iii][jjj] == 0 ){
+						anything_added = true;
+					}
+				}
+			}
+			if( !anything_added){
+				solving=false;
+			}
+
+
+		}//end while
+
+
+		return solvegrid;
+	}
+
 
 	
 	
@@ -850,6 +852,8 @@ public class SudokuMethods {
          *        several times. This way we are not wasting time making unnecessary random numbers.
          */
 
+        int unchecked_removals = 27;   // ALWAYS WORKED FOR 21... NEED TO DO SOME MATHS AND PROVE WHAT THIS NUMBER SHOULD BE
+
         int[][] startGrid = new int[9][9];
         for( int i=0; i<9; i++ ){
             for( int j=0; j<9; j++){
@@ -858,7 +862,7 @@ public class SudokuMethods {
         }
 
         // Remove numbers. Attempt this a set number of times
-        for( int tries=0; tries<55; tries++ ){
+        for( int tries=0; tries<60; tries++ ){
 
             // pick random space and remove
             int xp=(int)(Math.random()*gridSize);
@@ -867,18 +871,40 @@ public class SudokuMethods {
             int value_removed = startGrid[xp][yp];
 
             if( startGrid[xp][yp] != 0 ) {
-                startGrid[xp][yp] = 0;
 
-                // Try to solve
-                boolean is_solvable = false;
-                is_solvable = SudokuMethods.solver_singles_hiddenSingles2(startGrid, xp, yp);
+                // Only use solver after a certain amout of removals
+                if( tries > unchecked_removals ) {
 
-                if (is_solvable) {
-                    // remove number and re-enter loop to pick another
-                } else {
-                    // put number back and try again
-                    startGrid[xp][yp] = value_removed;
+                    if( tries == unchecked_removals+1 ){
+                        int[][] fullySolved = SudokuMethods.solver_singles_hiddenSingles(startGrid);
+                        boolean full_solved = isSolved(fullySolved);
+                        if( full_solved){
+                            Log.d("Solved = ", "SOLVED" );
+                        }
+                        else{
+                            Log.d("Solved = ", "NOT SOLVED" );
+                        }
+                    }
+
+                    startGrid[xp][yp] = 0;
+
+                    // Try to solve
+                    boolean is_solvable = false;
+                    is_solvable = SudokuMethods.solver_singles_hiddenSingles2(startGrid, xp, yp);
+
+                    if (is_solvable) {
+                        // remove number and re-enter loop to pick another
+                    } else {
+                        // put number back and try again
+                        startGrid[xp][yp] = value_removed;
+                    }
                 }
+                else{
+                    // Don't bother using solver
+                    startGrid[xp][yp] = 0;
+                }
+
+
             }
             else{
                 tries = tries-1;  // i.e. don't count this removal attempt. We were re-solving when no changes had been made!
