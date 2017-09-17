@@ -43,17 +43,10 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     private boolean checkPressed = false;
     private boolean hintPressed = false;
 
-
-
-    ArrayList<Integer> row, checks, correct;
-    ArrayList<ArrayList<Integer>> cols, boxes;
-
     // Current state of grid
     int[][] grid = new int [9][9];
     // Hold solution
     int[][] grid_correct = new int [9][9];
-    //int[][] start_grid = new int [9][9];
-
 
     int x = 11, y = 11;
 
@@ -65,11 +58,10 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
 
 
+        // Get the start_grid and correct_grid passed
         Bundle extras = getIntent().getExtras();
         grid_correct = (int[][]) extras.getSerializable("grid_correct");
-        //start_grid = (int[][]) extras.getSerializable("start_grid");
         grid = (int[][]) extras.getSerializable("start_grid");
-
 
 
         //Steve: need this plus the android:screenOrientation="portrait" in the xml
@@ -135,14 +127,16 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     }
 
 
+
+
+
+
     // STEVE: added this to prevent screen rotation
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
-
-
 
 
 

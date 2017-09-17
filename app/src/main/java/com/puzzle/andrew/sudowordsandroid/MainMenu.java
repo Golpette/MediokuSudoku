@@ -23,11 +23,9 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
     public static ProgressBar progressBar; // Want this accessible from other activity - is this the right way??
 
 
-
+    // STEVE: TEST MAKING SUDOKU HERE IN ASYNC TASK ==========================================
     private String difficulty;
 
-
-    // STEVE: TEST MAKING SUDOKU HERE IN ASYNC TASK ==========================================
     ArrayList<Integer> row, checks, correct;
     ArrayList<ArrayList<Integer>> cols, boxes;
 
@@ -40,13 +38,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
     int x = 11, y = 11;
     Random rand;
     boolean complete = false;
-
-
-
     //=========================================================================================
-
-
-
 
 
 
@@ -71,6 +63,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
     }
 
 
+
+
     // STEVE: Added this to stop screen rotation; force portrait
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -84,7 +78,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View view) {
 
-        // MAYBE NEED TO RESET ALL ARRAYS AND LISTS HERE??????????????
+        // CAREFUL: MAYBE NEED TO RESET ALL ARRAYS AND LISTS HERE??????????????
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -103,22 +97,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                 // Make progressBar visible
                 progressBar.setVisibility(View.VISIBLE);
 
-//                grid_correct = generateSudoku(grid);
-//                //Make the puzzle!
-//                start_grid = makeGrid(grid, "easy");
-
                 difficulty = "easy";
-
                 new PuzzleGeneration().execute();
-
-
-//                // RUN THE CODE TO START THE NEXT ACTIVITY
-//                Intent easy = new Intent(this, Sudoku.class);
-//                Bundle nBundle = new Bundle();
-//                nBundle.putSerializable("grid_correct", grid_correct);
-//                nBundle.putSerializable("start_grid", start_grid);
-//                easy.putExtras(nBundle);
-//                startActivity( easy );
 
                 break;
 
@@ -128,19 +108,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                 progressBar.setVisibility(View.VISIBLE);
 
                 difficulty = "medium";
-
-
                 new PuzzleGeneration().execute();
-//                grid_correct = generateSudoku(grid);
-//                //Make the puzzle!
-//                start_grid = makeGrid(grid, "medium");
-
-//                Intent medium = new Intent(this, Sudoku.class);
-//                Bundle mBundle = new Bundle();
-//                mBundle.putSerializable("grid_correct", grid_correct);
-//                mBundle.putSerializable("start_grid", start_grid);
-//                medium.putExtras(mBundle);
-//                startActivity( medium );
 
                 break;
         }
@@ -178,7 +146,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
         @Override
         protected void onPreExecute() {
-            //progressBar.setVisibility(View.VISIBLE);
          }
 
         @Override
