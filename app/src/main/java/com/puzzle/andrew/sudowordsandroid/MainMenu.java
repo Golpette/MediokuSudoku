@@ -89,6 +89,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         boxes = new ArrayList<ArrayList<Integer>>();
         cols = new ArrayList<ArrayList<Integer>>();
         rand = new Random();
+        complete = false;
 
 
         switch(view.getId()) {

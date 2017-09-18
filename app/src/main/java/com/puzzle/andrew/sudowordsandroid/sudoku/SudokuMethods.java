@@ -852,7 +852,7 @@ public class SudokuMethods {
          *        several times. This way we are not wasting time making unnecessary random numbers.
          */
 
-        int unchecked_removals = 27;   // ALWAYS WORKED FOR 21... NEED TO DO SOME MATHS AND PROVE WHAT THIS NUMBER SHOULD BE
+        int unchecked_removals = 21;   // ALWAYS WORKED FOR 21... NEED TO DO SOME MATHS AND PROVE WHAT THIS NUMBER SHOULD BE
 
         int[][] startGrid = new int[9][9];
         for( int i=0; i<9; i++ ){
@@ -879,10 +879,20 @@ public class SudokuMethods {
                         int[][] fullySolved = SudokuMethods.solver_singles_hiddenSingles(startGrid);
                         boolean full_solved = isSolved(fullySolved);
                         if( full_solved){
+                            // JUST CARRY ON
                             Log.d("Solved = ", "SOLVED" );
                         }
                         else{
+                            // WE NEED TO START AGAIN!
                             Log.d("Solved = ", "NOT SOLVED" );
+                            // if failed starting point, reset tries
+							tries=0;
+                            // and reset to initial condition
+                            for( int i=0; i<9; i++ ){
+                                for( int j=0; j<9; j++){
+                                    startGrid[i][j] = fullGrid[i][j];
+                                }
+                            }
                         }
                     }
 
