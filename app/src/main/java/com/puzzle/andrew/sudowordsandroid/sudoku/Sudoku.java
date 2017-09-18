@@ -46,6 +46,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     private boolean checkPressed = false;
     private boolean hintPressed = false;
 
+    GameState savedGame;
     ArrayList<Integer> row, checks;
     ArrayList<Integer> correct;
     ArrayList<ArrayList<Integer>> cols;
@@ -77,6 +78,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 
+       // savedGame = new GameState();
         correct = new ArrayList<Integer>();
         row = new ArrayList<Integer>();
         checks = new ArrayList<Integer>();
@@ -119,16 +121,22 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             }
         }
 
+        if(game is loaded){
+            start_grid = savedGame.getStartGame();
+            grid = savedGame.getMidGame();
+            grid_correct = savedGame.getEndGame();
+        }else {
 
-        //Make the puzzle!
-        generateSudoku(grid);
-        makeGrid(grid, DIFFICULTY);
-        for(int i = 0; i < x-2; i++) {
-            for (int j = 0; j < y - 2; j++) {
-                start_grid[i][j] = grid[i][j];
+            //Make the puzzle!
+            generateSudoku(grid);
+            makeGrid(grid, DIFFICULTY);
+            for (int i = 0; i < x - 2; i++) {
+                for (int j = 0; j < y - 2; j++) {
+                    start_grid[i][j] = grid[i][j];
+                }
             }
+            //generateCodedSudoku(start_grid, grid_correct, grid);
         }
-        generateCodedSudoku(start_grid, grid_correct, grid);
     }
 
 
@@ -428,7 +436,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 //editor.putInt(getString(R.string.saved_high_score), newHighScore);
-                editor.putInt(code, 1);
+                editor.putString(getString(R.string.code), "first");
                 editor.commit();
 
                 break;
@@ -467,38 +475,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         return savedGame;
     }
 
-
-    //Use this to load game eventually
-    public GameState decodeSavedSudoku(String savedGame) {
-        int[][] gameToLoad = new int[9][9];
-        int [][] start_game = new int [9][9];
-        int [][] end_game = new int [9][9];
-        for (int i = 0; i < savedGame.length(); i++) {
-            if (savedGame.charAt(i) == ' ') {
-                gameToLoad[i % 9][i / 8] = 0;
-                start_game[i % 9][i / 8] = 0;
-                end_game[i % 9][i / 8] = 0;
-            } else if ((int) savedGame.charAt(i) > 32 && (int) savedGame.charAt(i) < 42) {
-                gameToLoad[i % 9][i / 8] = (int) savedGame.charAt(i) - 32;
-                start_game[i % 9][i / 8] = (int) savedGame.charAt(i) - 32;
-                end_game[i % 9][i / 8] = (int) savedGame.charAt(i) - 32;
-            } else if ((int) savedGame.charAt(i) > 41 && (int) savedGame.charAt(i) < 51) {
-                gameToLoad[i % 9][i / 8] = (int) savedGame.charAt(i) - 41;
-                start_game[i % 9][i / 8] = 0;
-                end_game[i % 9][i / 8] =  (int) savedGame.charAt(i) - 41;
-            } else {
-                int a = (int)savedGame.charAt(i)-50;
-                if(a%8 <= a/8){
-                    gameToLoad[i % 9][i / 8] = a % 8;
-                }else {
-                    gameToLoad[i % 9][i / 8] = a % 8 + 1;
-                }
-                start_game[i % 9][i / 8] = 0;
-                end_game[i % 9][i / 8] = a/8 + 1;
-            }
-        }
-        return new GameState(start_game, gameToLoad, end_game);
-    }
 
 
     @Override
