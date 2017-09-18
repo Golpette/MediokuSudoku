@@ -42,9 +42,11 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     private Button saveButton;
 
     private String DIFFICULTY;
+    private boolean LOADED;
 
     private boolean checkPressed = false;
     private boolean hintPressed = false;
+
 
     GameState savedGame;
     ArrayList<Integer> row, checks;
@@ -63,15 +65,15 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     boolean complete = false;
 
 
-
-
     protected void onCreate(Bundle savedInstanceState) {
 
         // Get difficulty from button ID
         Bundle extras = getIntent().getExtras();
-        if(extras!=null)
+        if(extras != null && extras.getString("difficulty") != "loaded")
         {
             DIFFICULTY = extras.getString("difficulty");
+        }else{
+            LOADED = true;
         }
 
         //Steve: need this plus the android:screenOrientation="portrait" in the xml
@@ -121,7 +123,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             }
         }
 
-        if(game is loaded){
+        if(LOADED){
+            System.out.println("The extra loaded has been found");
             start_grid = savedGame.getStartGame();
             grid = savedGame.getMidGame();
             grid_correct = savedGame.getEndGame();
@@ -305,15 +308,15 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         // Update grid[][] every time a button is pressed, does not happen upon text entry.
         // Is there a better way to do this?
-        android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
-        for (int i = 0; i < x - 2; i++) {
-            for (int j = 0; j < y - 2; j++) {
-                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-                if (  !String.valueOf(field.getText()).isEmpty()  ) {
-                    grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
-                }
-            }
-        }
+//        android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
+//        for (int i = 0; i < x - 2; i++) {
+//            for (int j = 0; j < y - 2; j++) {
+//                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+//                if (  !String.valueOf(field.getText()).isEmpty()  ) {
+//                    grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
+//                }
+//            }
+//        }
 
 
         boolean gridFull = true;
@@ -323,6 +326,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         for (int i = 0; i < x - 2; i++) {
             for (int j = 0; j < y - 2; j++) {
                 EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+                System.out.println("Does this");
                 //field.setBackgroundResource(R.drawable.border_active);
                 if (grid[i][j] != grid_correct[i][j]) {
                     gridCorrect = false;

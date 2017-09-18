@@ -33,7 +33,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
         mediumButton = (Button) findViewById(R.id.button_medium);
         mediumButton.setOnClickListener(MainMenu.this);
 
-        loadButton = (Button) findViewById(R.id.button_medium);
+        loadButton = (Button) findViewById(R.id.button_load);
         loadButton.setOnClickListener(MainMenu.this);
 
 
@@ -103,12 +103,14 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                 break;
 
             case R.id.button_load:
+                System.out.println("PRESSED LOAD!!!");
                 SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
                 //int defaultValue = getResources().getInteger(R.string.saved_high_score_default);
                 String saved = sharedPref.getString(getString(R.string.code), "first");
                 GameState game = decodeSavedSudoku(saved);
+                System.out.println("game to load: " + game.toString());
                 Intent load = new Intent(this, Sudoku.class);
-                //load.putExtra();
+                load.putExtra("difficulty", "loaded");
                 startActivity(load);
 
         }
