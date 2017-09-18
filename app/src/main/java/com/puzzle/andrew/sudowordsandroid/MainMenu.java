@@ -82,13 +82,14 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
         progressBar.setVisibility(View.VISIBLE);
 
-
         correct = new ArrayList<Integer>();
         row = new ArrayList<Integer>();
         checks = new ArrayList<Integer>();
         boxes = new ArrayList<ArrayList<Integer>>();
         cols = new ArrayList<ArrayList<Integer>>();
         rand = new Random();
+        // reset solver
+        complete = false;
 
 
         switch(view.getId()) {
