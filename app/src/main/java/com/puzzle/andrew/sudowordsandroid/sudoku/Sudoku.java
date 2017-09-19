@@ -47,6 +47,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     private boolean checkPressed = false;
     private boolean hintPressed = false;
 
+    SharedPreferences sharedPref;
 
     GameState savedGame;
     ArrayList<Integer> row, checks;
@@ -69,18 +70,18 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         // Get difficulty from button ID
         Bundle extras = getIntent().getExtras();
-        if(extras != null && extras.getString("difficulty") != "loaded")
+        if(extras != null && !extras.getString("difficulty").equals("loaded"))
         {
             DIFFICULTY = extras.getString("difficulty");
         }else{
             LOADED = true;
         }
 
+
         //Steve: need this plus the android:screenOrientation="portrait" in the xml
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 
-       // savedGame = new GameState();
         correct = new ArrayList<Integer>();
         row = new ArrayList<Integer>();
         checks = new ArrayList<Integer>();
@@ -124,10 +125,14 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         }
 
         if(LOADED){
-            System.out.println("The extra loaded has been found");
+            sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+            //int defaultValue = getResources().getInteger(R.string.saved_high_score_default);
+            String saved = sharedPref.getString(getString(R.string.code), "");
+            savedGame = decodeSavedSudoku(saved);
             start_grid = savedGame.getStartGame();
             grid = savedGame.getMidGame();
             grid_correct = savedGame.getEndGame();
+            drawGrid(grid);
         }else {
 
             //Make the puzzle!
@@ -138,6 +143,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                     start_grid[i][j] = grid[i][j];
                 }
             }
+            drawGrid(grid);
             //generateCodedSudoku(start_grid, grid_correct, grid);
         }
     }
@@ -149,7 +155,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         super.onConfigurationChanged(newConfig);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
-
 
 
     // Generate the full (solution) grid
@@ -248,56 +253,44 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             }
         }
 
-
-
         // Set correct solution
         for(int i = 0; i < x-2; i++) {
             for (int j = 0; j < y - 2; j++) {
                 grid_correct[i][j] = grid[i][j];
             }
         }
-
-
-
     }
 
-
-
-
-    public void makeGrid(int [][] grid2, String diff){
+    public void makeGrid(int [][] grid2, String diff) {
         /**
          * Generates starting grid from solution grid
          */
 
-        if( diff.equals("easy" ) ){
+        if (diff.equals("easy")) {
             grid = SudokuMethods.makeEasy(grid2);
-        }
-        else if( diff.equals("medium") ){
+        } else if (diff.equals("medium")) {
             grid = SudokuMethods.makeMedium2(grid2); /// Steve: quick fix to make medium puzzles more efficient
         }
         ////grid = SudokuMethods.makeMedium(grid2); // DO NOT USE THIS
+    }
 
+    public void drawGrid(int [][] grid){
 
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
-
         for(int i = 0; i < x-2; i++){
             for (int j = 0; j < y-2; j++){
                 EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
                 field.setBackgroundResource(R.drawable.border_active);
-                if(grid[i][j]!=0) {
-                    field.setText("" + grid[i][j]);
+                if(start_grid[i][j]!=0) {
+                    field.setText("" + start_grid[i][j]);
                     field.setBackgroundResource(R.drawable.border);
                     field.setKeyListener(null);
+                }else if(grid[i][j]!=0){
+                    field.setText("" + grid[i][j]);
                 }
             }
         }
     }
-
-
-
-
-
-
 
 
     @Override
@@ -308,15 +301,15 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         // Update grid[][] every time a button is pressed, does not happen upon text entry.
         // Is there a better way to do this?
-//        android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
-//        for (int i = 0; i < x - 2; i++) {
-//            for (int j = 0; j < y - 2; j++) {
-//                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-//                if (  !String.valueOf(field.getText()).isEmpty()  ) {
-//                    grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
-//                }
-//            }
-//        }
+        android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
+        for (int i = 0; i < x - 2; i++) {
+            for (int j = 0; j < y - 2; j++) {
+                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+                if (  !String.valueOf(field.getText()).isEmpty()  ) {
+                    grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
+                }
+            }
+        }
 
 
         boolean gridFull = true;
@@ -326,7 +319,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         for (int i = 0; i < x - 2; i++) {
             for (int j = 0; j < y - 2; j++) {
                 EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-                System.out.println("Does this");
                 //field.setBackgroundResource(R.drawable.border_active);
                 if (grid[i][j] != grid_correct[i][j]) {
                     gridCorrect = false;
@@ -336,8 +328,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
             }
         }
-
-
 
         switch ( view.getId() ){
 
@@ -372,7 +362,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
 
                 break;
-
 
 
             // Check button -------------------------------------------
@@ -431,30 +420,24 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 break;
 
 
-
-
             case R.id.sudokuSaveButton:
 
                 String code = generateCodedSudoku(start_grid, grid_correct, grid);
-
-                SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+                sharedPref = this.getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 //editor.putInt(getString(R.string.saved_high_score), newHighScore);
-                editor.putString(getString(R.string.code), "first");
+                //editor.putString(getString(R.string.code), "first");
+                editor.putString(getString(R.string.code), code);
                 editor.commit();
 
                 break;
 
-
             default:
                 break;  //is this essential?
-
         }
-        
     }
 
-
-
+    //save game to String
     public String generateCodedSudoku(int start_grid [][], int [][] grid_correct, int [][]grid){
         String savedGame = "";
         for(int i = 0; i < 9; i++){
@@ -462,24 +445,64 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 if(grid[i][j] == 0){
                     savedGame += " ";
                 }else if(start_grid[i][j] != 0){
-                    char c = (char)(start_grid[i][j]+32);
-                    savedGame += c;
+                    char started = (char)(start_grid[i][j]+32);
+                    savedGame += started;
                 }else if(grid[i][j] == grid_correct[i][j]){
                     char correct = (char)(grid_correct[i][j]+41);
-                    correct += grid[i][j];
                     savedGame += correct;
                 }else{
-                    int temp = grid[i][j] + (grid_correct[i][j]-1)*8 + 50;
-                    char incorrect = (char)temp;
+                    char incorrect;
+                    System.out.println("/////////////////////THE CODED NUMBER IS: " + grid[i][j]);
+                    System.out.println("/////////////////////THE CORRECT NUMBER IS: " + grid_correct[i][j]);
+                    if(grid[i][j] > grid_correct[i][j]){
+                        incorrect= (char)(grid[i][j]-1 + (grid_correct[i][j]-1)*8 + 50);
+                    }else{
+                        incorrect= (char)(grid[i][j] + (grid_correct[i][j]-1)*8 + 50);
+                    }
+
                     savedGame += incorrect;
+                    System.out.println("/////////////////////THE NUMBER WENT TO: " + incorrect);
                 }
             }
         }
-        System.out.println("\n\n\nSavedGame: " + savedGame + "\n\n\n");
         return savedGame;
     }
 
-
+    //Use this to load game eventually
+    public GameState decodeSavedSudoku(String savedGame) {
+        int[][] gameToLoad = new int[9][9];
+        int [][] start_game = new int [9][9];
+        int [][] end_game = new int [9][9];
+        for (int i = 0; i < savedGame.length(); i++) {
+            int row = i/9;
+            int col = i%9;
+            int characterValue = (int) savedGame.charAt(i);
+            if (savedGame.charAt(i) == ' ') {
+                gameToLoad[row][col] = 0;
+                start_game[row][col] = 0;
+                end_game[row][col] = 0;
+            } else if (characterValue > 32 && characterValue < 42) {
+                gameToLoad[row][col] = characterValue - 32;
+                start_game[row][col] = characterValue - 32;
+                end_game[row][col] = characterValue - 32;
+            } else if (characterValue > 41 && characterValue < 51) {
+                gameToLoad[row][col] = characterValue - 41;
+                start_game[row][col] = 0;
+                end_game[row][col] =  characterValue - 41;
+            } else {
+                int a = characterValue-50;
+                System.out.println("###############THE ENCODED NUMBER IS: " + a);
+                if(a%8 <= a/8){
+                    gameToLoad[row][col] = a % 8;
+                }else {
+                    gameToLoad[row][col] = a % 8 + 1;
+                }
+                start_game[row][col] = 0;
+                end_game[row][col] = a/8 + 1;
+            }
+        }
+        return new GameState(start_game, gameToLoad, end_game);
+    }
 
     @Override
     public void onBackPressed() {
@@ -497,12 +520,4 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                     }
                 }).create().show();
     }
-
-
-
-
-
-
-
-
 }
