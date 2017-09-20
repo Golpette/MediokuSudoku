@@ -461,7 +461,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                     }
 
                     savedGame += incorrect;
-                    System.out.println("/////////////////////THE NUMBER WENT TO: " + incorrect);
+                    System.out.println("/////////////////////THE NUMBER WENT TO: " + (int)incorrect);
                 }
             }
         }
@@ -491,12 +491,10 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 end_game[row][col] =  characterValue - 41;
             } else {
                 int a = characterValue-50;
+                //This needs carefully checking over
                 System.out.println("###############THE ENCODED NUMBER IS: " + a);
-                if(a%8 <= a/8){
-                    gameToLoad[row][col] = a % 8;
-                }else {
-                    gameToLoad[row][col] = a % 8 + 1;
-                }
+                int value = 1 + ( a + (a-1 )/9)%9;
+                gameToLoad[row][col] = value;
                 start_game[row][col] = 0;
                 end_game[row][col] = a/8 + 1;
             }
