@@ -144,7 +144,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
             }
             drawGrid(grid);
-            //generateCodedSudoku(start_grid, grid_correct, grid);
         }
     }
 
@@ -425,8 +424,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 String code = generateCodedSudoku(start_grid, grid_correct, grid);
                 sharedPref = this.getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
-                //editor.putInt(getString(R.string.saved_high_score), newHighScore);
-                //editor.putString(getString(R.string.code), "first");
                 editor.putString(getString(R.string.code), code);
                 editor.commit();
 
@@ -452,8 +449,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                     savedGame += correct;
                 }else{
                     char incorrect;
-                    System.out.println("/////////////////////THE CODED NUMBER IS: " + grid[i][j]);
-                    System.out.println("/////////////////////THE CORRECT NUMBER IS: " + grid_correct[i][j]);
                     if(grid[i][j] > grid_correct[i][j]){
                         incorrect= (char)(grid[i][j]-1 + (grid_correct[i][j]-1)*8 + 50);
                     }else{
@@ -461,7 +456,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                     }
 
                     savedGame += incorrect;
-                    System.out.println("/////////////////////THE NUMBER WENT TO: " + (int)incorrect);
                 }
             }
         }
@@ -491,8 +485,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 end_game[row][col] =  characterValue - 41;
             } else {
                 int a = characterValue-50;
-                //This needs carefully checking over
-                System.out.println("###############THE ENCODED NUMBER IS: " + a);
                 int value = 1 + ( a + (a-1 )/9)%9;
                 gameToLoad[row][col] = value;
                 start_game[row][col] = 0;
