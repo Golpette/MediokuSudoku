@@ -8,12 +8,6 @@ public class SudokuMethods {
 	 * Different difficulty levels 
 	 */
 	
-	//TODO: - tidy code
-	//      - general style: rounded corners, different colours, ...
-	//
-	// - plot # starting entries for different methods. Any stat phys in there?
-	// - (stat phys for crosswords - i.e. english language percolation! / word occurrences on bbc website / ... MAKE WEBSITE)
-	
 	
 	public static int gridSize = 9;
 	
@@ -37,30 +31,34 @@ public class SudokuMethods {
 	
 		
 		// Remove numbers. Do this a set number of times / until no more can be removed 
-		for( int tries=0; tries<200; tries++ ){ // REDUCED TO 200 SINCE THIS METHOD IS NOW VERY SLOW
+		for( int tries=0; tries<55; tries++ ){ // REDUCED TO 200 SINCE THIS METHOD IS NOW VERY SLOW
 			
 			// pick random space and remove      
 			int xp=(int)(Math.random()*gridSize);  
 			int yp=(int)(Math.random()*gridSize); 
 			
 			int value_removed = startGrid[xp][yp];
-			startGrid[xp][yp]=0;                    /// TODO: CAREFUL!!!
 
-			// Try to solve
-			int[][] solved_config = new int[9][9];
-			solved_config = SudokuMethods.solver_singles_hiddenSingles(  startGrid  );
-			
-			// Check if solved
-			boolean is_solved = isSolved( solved_config );
-			
-			if( is_solved ){
-				// remove number and re-enter loop to pick another
-			}
-			else{
-				// put number back and try again
-				startGrid[xp][yp] = value_removed;
-			}
-		
+            if( startGrid[xp][yp] != 0 ) {
+                startGrid[xp][yp] = 0;
+
+                // Try to solve
+                int[][] solved_config = new int[9][9];
+                solved_config = SudokuMethods.solver_singles_hiddenSingles(startGrid);
+
+                // Check if solved
+                boolean is_solved = isSolved(solved_config);
+
+                if (is_solved) {
+                    // remove number and re-enter loop to pick another
+                } else {
+                    // put number back and try again
+                    startGrid[xp][yp] = value_removed;
+                }
+            }
+            else{
+                tries = tries-1;  // i.e. don't count this removal attempt. We were re-solving when no changes had been made!
+            }
 		}
 
 		return startGrid;
@@ -91,41 +89,45 @@ public class SudokuMethods {
 		
 		// Do this a set number of times / until no more can be removed / specific number of entries are left??
 		
-		for( int tries=0; tries<5000; tries++ ){   //REDUCED THIS FROM 100,000 !!
+		for( int tries=0; tries<500; tries++ ){   //REDUCED THIS FROM 100,000 !!
 		
 			// pick random space and remove            //TODO: do all similar numbers instead of random??
 			int xp=(int)(Math.random()*gridSize);  
 			int yp=(int)(Math.random()*gridSize); 
 			
 			int value_removed = startGrid[xp][yp];
-			startGrid[xp][yp]=0;                    /// TODO: CAREFUL, this is not printed since it is not in set [1,9] 
 
-			// Get lists of possibilities according to row, column and 3x3 square		
-			ArrayList<Integer> poss_row = possibilities_from_row( startGrid, xp, yp );
-			ArrayList<Integer> poss_col = possibilities_from_col( startGrid, xp, yp );
-			ArrayList<Integer> poss_sqr = possibilities_from_sqr( startGrid, xp, yp );			
-			
-			// Take the 3 lists above and check for common numbers.
-			//ArrayList<Integer> common_nums = new ArrayList<Integer>();
-			int count_cns=0;
-			for( Integer i: poss_row ){
-				if( poss_col.contains(i) && poss_sqr.contains(i) ){
-					//common_nums.add(i);
-					count_cns++;
-				}
-			}
-			
-			if( count_cns != 1 ){
-				// cannot solve sudoku with "easy" method so put number back
-				startGrid[xp][yp] = value_removed;
-			}
-			else if( count_cns ==0 ){
-				System.out.println("SOMETHING ODD - NO SHARED NUMBERS AFTER REMOVAL. SudokuMethods.java ");
-			}
-			else{
-				// We have exactly 1 possibility for this square. Leave it out and pick another!
-			}
-		
+            if( value_removed != 0 ) {
+
+                startGrid[xp][yp] = 0;                    /// TODO: CAREFUL, this is not printed since it is not in set [1,9]
+
+                // Get lists of possibilities according to row, column and 3x3 square
+                ArrayList<Integer> poss_row = possibilities_from_row(startGrid, xp, yp);
+                ArrayList<Integer> poss_col = possibilities_from_col(startGrid, xp, yp);
+                ArrayList<Integer> poss_sqr = possibilities_from_sqr(startGrid, xp, yp);
+
+                // Take the 3 lists above and check for common numbers.
+                //ArrayList<Integer> common_nums = new ArrayList<Integer>();
+                int count_cns = 0;
+                for (Integer i : poss_row) {
+                    if (poss_col.contains(i) && poss_sqr.contains(i)) {
+                        //common_nums.add(i);
+                        count_cns++;
+                    }
+                }
+
+                if (count_cns != 1) {
+                    // cannot solve sudoku with "easy" method so put number back
+                    startGrid[xp][yp] = value_removed;
+                } else if (count_cns == 0) {
+                    System.out.println("SOMETHING ODD - NO SHARED NUMBERS AFTER REMOVAL. SudokuMethods.java ");
+                } else {
+                    // We have exactly 1 possibility for this square. Leave it out and pick another!
+                }
+            }
+            else{
+                tries = tries - 1;
+            }
 		}
 
 		return startGrid;
@@ -976,16 +978,176 @@ public class SudokuMethods {
 		
 		return solved;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //====================================================================================
+    //
+    // EVERYTHING BELOW HERE IS STEVE PLAYING WWITH EFFICIENCY
+    //
+    //====================================================================================
+
+
+
+
+    public static int[][] makeMedium2(int[][] fullGrid){
+        /**
+         * Method to improve efficiency of puzzle generation
+         *
+         * (1) Stopping solver as soon as removed square is filled does make a difference (20-50% with (2))
+         * (2) Plus reducing # tries to 55 gives ok puzzles in 4-5 seconds on my phone
+         *
+         * Ideas:
+         * (3) Don't choose 2 random numbers (x,y) every time but try to remove all 5's, 6's, 9's etc...
+         *        Cycle through all numbers say 3 times?
+         * (4) Create 2 random lists of integers 0-8 for x and y coords, then cycle through them both
+         *        several times. This way we are not wasting time making unnecessary random numbers.
+         */
+
+        int[][] startGrid = new int[9][9];
+        for( int i=0; i<9; i++ ){
+            for( int j=0; j<9; j++){
+                startGrid[i][j] = fullGrid[i][j];
+            }
+        }
+
+        // Remove numbers. Attempt this a set number of times
+        for( int tries=0; tries<55; tries++ ){
+
+            // pick random space and remove
+            int xp=(int)(Math.random()*gridSize);
+            int yp=(int)(Math.random()*gridSize);
+
+            int value_removed = startGrid[xp][yp];
+
+            if( startGrid[xp][yp] != 0 ) {
+                startGrid[xp][yp] = 0;
+
+                // Try to solve
+                boolean is_solvable = false;
+                is_solvable = SudokuMethods.solver_singles_hiddenSingles2(startGrid, xp, yp);
+
+                if (is_solvable) {
+                    // remove number and re-enter loop to pick another
+                } else {
+                    // put number back and try again
+                    startGrid[xp][yp] = value_removed;
+                }
+            }
+            else{
+                tries = tries-1;  // i.e. don't count this removal attempt. We were re-solving when no changes had been made!
+            }
+        }
+
+        return startGrid;
+    }
+
+
+
+
+
+
+    public static boolean solver_singles_hiddenSingles2( int[][] strtGrid, int xx, int yy ){
+        /**
+         * Modified so that we do not solve til puzzle completion.
+         * Now we assume the grid provided before removal WAS solvable, so as soon as the grid
+         * that was removed is filled, we KNOW that we can continue to completion.
+         * Since we start with a full grid and remove 1 at a time this has to be true.
+         */
+        boolean is_solvable = false;
+
+        int[][] solvegrid = new int[9][9];
+        for( int i=0; i<9; i++ ){
+            for( int j=0; j<9; j++){
+                solvegrid[i][j] = strtGrid[i][j];
+            }
+        }
+
+        boolean solving = true;
+
+
+        while(solving){
+
+
+            // HOLD CURRENT GRID TO CHECK FOR DIFFERENCES
+            int[][] prev_grid = new int[9][9];
+            for( int i=0; i<9; i++ ){
+                for( int j=0; j<9; j++){
+                    prev_grid[i][j] = solvegrid[i][j];
+                }
+            }
+
+            // Add singles
+            add_singles( solvegrid );
+            if ( solvegrid[xx][yy] != 0 ){ is_solvable = true;  break;  }
+            // Add hidden singles
+            add_hiddenSingles_ROWS( solvegrid );
+            if ( solvegrid[xx][yy] != 0 ){ is_solvable = true;  break;  }
+            add_hiddenSingles_COLS( solvegrid );
+            if ( solvegrid[xx][yy] != 0 ){ is_solvable = true;  break;  }
+            add_hiddenSingles_3x3s( solvegrid );
+            if ( solvegrid[xx][yy] != 0 ){ is_solvable = true;  break;  }
+
+            // check we made at least 1 change
+            boolean anything_added = false;
+            for( int iii=0; iii<9; iii++){
+                for( int jjj=0; jjj<9; jjj++ ){
+                    if ( solvegrid[iii][jjj] != 0  &&  prev_grid[iii][jjj] == 0 ){
+                        anything_added = true;
+                    }
+                }
+            }
+            if( !anything_added ){
+                solving=false;
+            }
+
+
+        }//end while
+
+
+        return is_solvable;
+    }
 	
 	
 	

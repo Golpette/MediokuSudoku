@@ -17,6 +17,6 @@ public class Wordsearch extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wordsearch_menu);
 
-        wordsearchButton = (ImageButton)findViewById(R.id.crossword);
+        //wordsearchButton = (ImageButton)findViewById(R.id.crossword);
     }
 }
