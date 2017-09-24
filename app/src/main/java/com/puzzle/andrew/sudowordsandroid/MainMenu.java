@@ -172,16 +172,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
 
 
-
-
-
-
-
-
-
-
-
-
     // Generate the full (solution) grid
     public int[][] generateSudoku(int[][] grid){
         /**
@@ -313,16 +303,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
 
     }
-
-
-
-
-
-
-
-
-
-
 
 
 
