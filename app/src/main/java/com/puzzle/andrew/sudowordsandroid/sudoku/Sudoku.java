@@ -311,7 +311,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
                 // Here, make dialogue to enter saved filename
                 //TODO
-                String saveFileName = "savedGame1.txt";
+                String saveFileName = "savedGame1.dat";
 
                 // Write file
                 //File file = new File(Context.getFilesDir(), saveFileName);

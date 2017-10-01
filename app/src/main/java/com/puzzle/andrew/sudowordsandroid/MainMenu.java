@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MainMenu extends AppCompatActivity implements View.OnClickListener {
@@ -126,6 +127,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
 
             case R.id.button_load:
+                Context context = getApplicationContext();
+
 
                 //TODO
                 // 1. Get list of saved game files
@@ -134,13 +137,23 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                 // 4. Execute puzzleGeneration
 
                 //1.
+                String[] saveFiles = context.fileList();
+                List<String> games = new ArrayList<String>();
+                for( int l=0; l<saveFiles.length; l++ ) {
+                    Log.d("File list: ", saveFiles[l]);
+                    if( saveFiles[l].contains( ".dat" ) ){
+                        games.add( saveFiles[l] );
+                        Log.d("Valid save data: ", saveFiles[l]);
+                    }
+                }
 
                 //2.
 
+
+
                 //3.
-                String savedGameFile = "savedGame1.txt";
+                String savedGameFile = "savedGame1.dat";
                 String textFromFile = "";
-                Context context = getApplicationContext();
 
                 // Gets the file from the primary external storage space of the current application.
                 File testFile = new File( context.getFilesDir(), savedGameFile );
