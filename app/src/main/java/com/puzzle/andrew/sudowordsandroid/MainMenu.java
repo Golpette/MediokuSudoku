@@ -1,11 +1,13 @@
 package com.puzzle.andrew.sudowordsandroid;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -14,12 +16,15 @@ import android.widget.ProgressBar;
 import com.puzzle.andrew.sudowordsandroid.sudoku.Sudoku;
 import com.puzzle.andrew.sudowordsandroid.sudoku.SudokuMethods;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class MainMenu extends AppCompatActivity implements View.OnClickListener {
 
-    Button easyButton, mediumButton;
+    Button easyButton, mediumButton, loadButton;
     public static ProgressBar progressBar; // Want this accessible from other activity - is this the right way??
 
 
@@ -60,6 +65,9 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
         mediumButton = (Button) findViewById(R.id.button_medium);
         mediumButton.setOnClickListener(MainMenu.this);
+
+        loadButton = (Button) findViewById(R.id.button_load);
+        loadButton.setOnClickListener(MainMenu.this);
     }
 
 
@@ -80,7 +88,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
         // CAREFUL: MAYBE NEED TO RESET ALL ARRAYS AND LISTS HERE??????????????
 
-        progressBar.setVisibility(View.VISIBLE);
+        ///progressBar.setVisibility(View.VISIBLE);
 
         correct = new ArrayList<Integer>();
         row = new ArrayList<Integer>();
@@ -112,6 +120,79 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                 new PuzzleGeneration().execute();
 
                 break;
+
+
+
+
+
+            case R.id.button_load:
+
+                //TODO
+                // 1. Get list of saved game files
+                // 2. Put them into a dialogue box to be selected
+                // 3. Set initial, current and solution states in mBundle
+                // 4. Execute puzzleGeneration
+
+                //1.
+
+                //2.
+
+                //3.
+                String savedGameFile = "savedGame1.txt";
+                String textFromFile = "";
+                Context context = getApplicationContext();
+
+                // Gets the file from the primary external storage space of the current application.
+                File testFile = new File( context.getFilesDir(), savedGameFile );
+                if (testFile != null) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    // Reads the data from the file
+                    BufferedReader reader = null;
+                    try {
+                        reader = new BufferedReader(new FileReader(testFile));
+                        String line;
+
+                        while ((line = reader.readLine()) != null) {
+                            textFromFile += line.toString();
+                        }
+                        reader.close();
+                        Log.d("ReadWriteFile", textFromFile);
+                    } catch (Exception e) {
+                        //Log.e("eeeeeeReadWriteFile", textFromFile);
+                    }
+                }
+
+                if( textFromFile.length()!=(81*3) ){
+                    Log.d( "Invalid file format", savedGameFile);
+                }
+                else{
+                    // set current state
+                    for( int i=0; i<81; i++ ){
+                        grid[ i/9 ][ i%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+                    }
+                    // set initial state
+                    for( int i=81; i<162; i++ ){
+                        start_grid[ (i-81)/9 ][ (i-81)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+                    }
+                    // set initial state
+                    for( int i=162; i<81*3; i++ ){
+                        grid_correct[ (i-162)/9 ][ (i-162)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+                    }
+                }
+
+                Intent puzzle = new Intent(MainMenu.this, Sudoku.class);
+                Bundle mBundle = new Bundle();
+                mBundle.putSerializable("grid_solution", grid_correct );
+                mBundle.putSerializable("grid_initialState", start_grid );
+                mBundle.putSerializable("grid_currentState", grid );
+                puzzle.putExtras(mBundle);
+                startActivity( puzzle );
+
+
+
+                break;
+
+
         }
 
     }
@@ -135,12 +216,13 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
             //Make the puzzle!
             start_grid = makeGrid(grid, difficulty);
 
-            Intent medium = new Intent(MainMenu.this, Sudoku.class);
+            Intent puzzle = new Intent(MainMenu.this, Sudoku.class);
             Bundle mBundle = new Bundle();
-            mBundle.putSerializable("grid_correct", grid_correct);
-            mBundle.putSerializable("start_grid", start_grid);
-            medium.putExtras(mBundle);
-            startActivity( medium );
+            mBundle.putSerializable("grid_solution", grid_correct );
+            mBundle.putSerializable("grid_initialState", start_grid );
+            mBundle.putSerializable("grid_currentState", start_grid );       // is this OK? When generating a grid our start grid is our current!
+            puzzle.putExtras(mBundle);
+            startActivity( puzzle );
 
             return null;
         }
