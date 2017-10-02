@@ -130,7 +130,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                     field.setKeyListener(null);
                 }
                 field.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
-                field.setLayoutParams(new AppBarLayout.LayoutParams(157, 157));
+                field.setLayoutParams(new AppBarLayout.LayoutParams(158, 158));
                 field.setGravity(Gravity.CENTER);
                 field.setSelectAllOnFocus(true);
                 sudGrid.addView(field, i);
