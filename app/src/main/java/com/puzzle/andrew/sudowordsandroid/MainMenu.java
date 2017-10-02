@@ -50,6 +50,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
 
     public static List<String> savedGames;
+    String gameToLoad = "";
     //=========================================================================================
 
 
@@ -160,55 +161,59 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 savedGames = SavedGames.getSavedGames( context );  // only initialize it now... bad approach?
 
                 //2.
-                showNoticeDialog(  );
-                //DialogFragment newFragment = new LoadDialog();
-                //newFragment.show( getFragmentManager(), "dunno"  );
+
+                showNoticeDialog();
+
+//                while( gameToLoad.equals("") ) {
+//                    // THIS FEELS VERY STUPID
+//                }
 
 
 
-                // 3. Set initial, current and solution states in mBundle
-                String savedGameFile = "savedGame1.dat";
-                String textFromFile = "";
 
-                // Gets the file from the primary external storage space of the current application.
-                File testFile = new File( context.getFilesDir(), savedGameFile );
-                if (testFile != null) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    // Reads the data from the file
-                    BufferedReader reader = null;
-                    try {
-                        reader = new BufferedReader(new FileReader(testFile));
-                        String line;
-
-                        while ((line = reader.readLine()) != null) {
-                            textFromFile += line.toString();
-                        }
-                        reader.close();
-                        Log.d("ReadWriteFile", textFromFile);
-                    } catch (Exception e) {
-                        //Log.e("eeeeeeReadWriteFile", textFromFile);
-                    }
-                }
-
-                if( textFromFile.length()!=(81*3) ){
-                    Log.d( "INVALID FILE FORMAT", savedGameFile);
-                }
-                else{
-                    // set current state
-                    for( int i=0; i<81; i++ ){
-                        grid[ i/9 ][ i%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
-                    }
-                    // set initial state
-                    for( int i=81; i<162; i++ ){
-                        start_grid[ (i-81)/9 ][ (i-81)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
-                    }
-                    // set initial state
-                    for( int i=162; i<81*3; i++ ){
-                        grid_correct[ (i-162)/9 ][ (i-162)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
-                    }
-                }
-
-
+//                // 3. Set initial, current and solution states in mBundle
+//                String savedGameFile = "savedGame1.dat";
+//                String textFromFile = "";
+//
+//                // Gets the file from the primary external storage space of the current application.
+//                File testFile = new File( context.getFilesDir(), savedGameFile );
+//                if (testFile != null) {
+//                    StringBuilder stringBuilder = new StringBuilder();
+//                    // Reads the data from the file
+//                    BufferedReader reader = null;
+//                    try {
+//                        reader = new BufferedReader(new FileReader(testFile));
+//                        String line;
+//
+//                        while ((line = reader.readLine()) != null) {
+//                            textFromFile += line.toString();
+//                        }
+//                        reader.close();
+//                        Log.d("ReadWriteFile", textFromFile);
+//                    } catch (Exception e) {
+//                        //Log.e("eeeeeeReadWriteFile", textFromFile);
+//                    }
+//                }
+//
+//                if( textFromFile.length()!=(81*3) ){
+//                    Log.d( "INVALID FILE FORMAT", savedGameFile);
+//                }
+//                else{
+//                    // set current state
+//                    for( int i=0; i<81; i++ ){
+//                        grid[ i/9 ][ i%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+//                    }
+//                    // set initial state
+//                    for( int i=81; i<162; i++ ){
+//                        start_grid[ (i-81)/9 ][ (i-81)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+//                    }
+//                    // set initial state
+//                    for( int i=162; i<81*3; i++ ){
+//                        grid_correct[ (i-162)/9 ][ (i-162)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+//                    }
+//                }
+//
+//
 //                // Generate the game
 //                Intent puzzle = new Intent(MainMenu.this, Sudoku.class);
 //                Bundle mBundle = new Bundle();
@@ -217,7 +222,10 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 //                mBundle.putSerializable("grid_currentState", grid );
 //                puzzle.putExtras(mBundle);
 //                startActivity( puzzle );
-
+//
+//
+//
+//                gameToLoad = "";  // THIS FEELS VERY STUPID
 
 
                 break;
@@ -425,11 +433,78 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         dialog.show(  getFragmentManager(), "NoticeDialogFragment");
     }
 
+    // THE onClick() METHOD FOR THE LIST DIALOG WHERE WE CHOOSE WHAT GAME IS TO BE LOADED!
+    // WE HAVE TO MAKE THE INTENT AND SET-UP THE GAME IN THIS METHOD SINCE THE PROGRAM CONTINUES TO RUN
+    // AFTER WE SHOW A DIALOG.
     @Override
-    public void onClick( int i){
-        String list[] = {"Game 1", "Game 2", "Game 3", "Game 4", "Game 5", "Game 6", "Game 7", "Game 8", "Game 9", "Game 10", "Game 11", "Game 12", "Game 13"};
+    public void onClick( int which ){
+
+        Context context = getApplicationContext();
+
+
+        //String list[] = {"Game 1", "Game 2", "Game 3", "Game 4", "Game 5", "Game 6", "Game 7", "Game 8", "Game 9", "Game 10", "Game 11", "Game 12", "Game 13"};
         //Toast.makeText(this, "test: " + list[i], Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "test: " + savedGames.get(i), Toast.LENGTH_SHORT).show();
+
+
+        Toast.makeText(this, "test: " + savedGames.get( which ), Toast.LENGTH_SHORT).show();
+        gameToLoad = savedGames.get( which );
+//        return savedGames.get(i);
+
+
+
+        // 3. Set initial, current and solution states in mBundle
+        //String savedGameFile = "savedGame1.dat";
+        String textFromFile = "";
+
+        // Gets the file from the primary external storage space of the current application.
+        File testFile = new File( context.getFilesDir(), gameToLoad );
+        if (testFile != null) {
+            StringBuilder stringBuilder = new StringBuilder();
+            // Reads the data from the file
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new FileReader(testFile));
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    textFromFile += line.toString();
+                }
+                reader.close();
+                Log.d("ReadWriteFile", textFromFile);
+            } catch (Exception e) {
+                //Log.e("eeeeeeReadWriteFile", textFromFile);
+            }
+        }
+
+        if( textFromFile.length()!=(81*3) ){
+            Log.d( "INVALID FILE FORMAT", gameToLoad  );
+        }
+        else{
+            // set current state
+            for( int i=0; i<81; i++ ){
+                grid[ i/9 ][ i%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+            }
+            // set initial state
+            for( int i=81; i<162; i++ ){
+                start_grid[ (i-81)/9 ][ (i-81)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+            }
+            // set initial state
+            for( int i=162; i<81*3; i++ ){
+                grid_correct[ (i-162)/9 ][ (i-162)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+            }
+        }
+
+
+        // Generate the game
+        Intent puzzle = new Intent(MainMenu.this, Sudoku.class);
+        Bundle mBundle = new Bundle();
+        mBundle.putSerializable("grid_solution", grid_correct );
+        mBundle.putSerializable("grid_initialState", start_grid );
+        mBundle.putSerializable("grid_currentState", grid );
+        puzzle.putExtras(mBundle);
+        startActivity( puzzle );
+
+
     }
 
 
