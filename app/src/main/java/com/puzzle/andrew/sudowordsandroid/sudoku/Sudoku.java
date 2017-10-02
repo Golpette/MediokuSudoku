@@ -57,6 +57,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     int x = 11, y = 11;
 
     String saveFileName = "x";
+    String file_loaded;     //so we auto-input current filename for easy over-writing
 
 
 
@@ -68,6 +69,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         grid_correct = (int[][]) extras.getSerializable("grid_solution");
         grid = (int[][]) extras.getSerializable("grid_currentState");
         grid_initialState = (int[][]) extras.getSerializable("grid_initialState");
+        file_loaded = extras.getString( "file_loaded" );
 
 
         //Steve: need this plus the android:screenOrientation="portrait" in the xml
@@ -292,10 +294,14 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
                 // Use AlertDialog to select file name
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Choose file name");
+                builder.setTitle("Enter save name");
 
                 final EditText input = new EditText(this);
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
+                // Initialize with current loaded file name (or "" if new puzzle)
+                input.setText( file_loaded );
+                // and select it all for over-writing
+                input.setSelectAllOnFocus(true);
                 builder.setView(input);
 
                 //Set up buttons
@@ -324,10 +330,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                         ///ONLY RECOGNIZE .dat FILE TYPES!!
                         saveFileName = input.getText().toString()+".dat";
 
-                        //String saveFileName = "savedGame1.dat";
-
                         // Write file
-                        //File file = new File(Context.getFilesDir(), saveFileName);
                         FileOutputStream outputStream;
                         try {
                             outputStream = openFileOutput( saveFileName , Context.MODE_PRIVATE);
@@ -339,6 +342,11 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                             e.printStackTrace();
                         }
 
+                        // IS THIS SAFE TO DO?? Want to exit puzzle after saving.
+                        //Activity.finish();
+                        //finishAffinity();
+                        finish();
+
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
@@ -349,6 +357,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 });
 
                 builder.show();
+
 
                 break;
 

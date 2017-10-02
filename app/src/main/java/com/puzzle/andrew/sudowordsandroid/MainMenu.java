@@ -168,6 +168,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             mBundle.putSerializable("grid_solution", grid_correct );
             mBundle.putSerializable("grid_initialState", start_grid );
             mBundle.putSerializable("grid_currentState", start_grid );       // is this OK? When generating a grid our start grid is our current!
+            mBundle.putString("file_loaded", "");
             puzzle.putExtras(mBundle);
             startActivity( puzzle );
 
@@ -357,18 +358,17 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
         Context context = getApplicationContext();
 
+        // File name we want to load
         String gameToLoad = savedGames.get( which );
-
+        String gameToLoad_noExt = gameToLoad.substring(  0, gameToLoad.lastIndexOf('.')   );
 
         // Toast is just a wee temporary pop-up
-        Toast.makeText(this, "Loading: " + gameToLoad, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Loading: " + gameToLoad_noExt, Toast.LENGTH_SHORT).show();
 
 
-        // 3. Set initial, current and solution states in mBundle
-        //String savedGameFile = "savedGame1.dat";
+        // Set initial, current and solution states in mBundle
         String textFromFile = "";
-
-        // Gets the file from the primary external storage space of the current application.
+        // Gets the file from the primary **internal** storage space of the current application.
         File testFile = new File( context.getFilesDir(), gameToLoad );
         if (testFile != null) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -392,7 +392,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             Log.d( "INVALID FILE FORMAT", gameToLoad  );
         }
         else{
-            // set current state
+            // set current state (first 81 digits)
             for( int i=0; i<81; i++ ){
                 grid[ i/9 ][ i%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
             }
@@ -413,6 +413,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         mBundle.putSerializable("grid_solution", grid_correct );
         mBundle.putSerializable("grid_initialState", start_grid );
         mBundle.putSerializable("grid_currentState", grid );
+        mBundle.putString("file_loaded", gameToLoad_noExt);
         puzzle.putExtras(mBundle);
         startActivity( puzzle );
 

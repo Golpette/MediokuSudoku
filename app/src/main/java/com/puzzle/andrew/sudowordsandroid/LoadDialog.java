@@ -49,10 +49,16 @@ public class LoadDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        List<String> listw= MainMenu.savedGames;
+        List<String> list_w= MainMenu.savedGames;
+
+        // Get rid of .dat extension here for neatness in the list
+        List<String> list_x = new ArrayList<String>();
+        for( String s : list_w ){
+            list_x.add( s.substring( 0, s.lastIndexOf('.') )   );
+        }
 
         // builder needs and array not a list
-        String[] arr = listw.toArray( new String[ listw.size() ] );
+        String[] arr = list_x.toArray( new String[ list_w.size() ] );
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Choose game")
