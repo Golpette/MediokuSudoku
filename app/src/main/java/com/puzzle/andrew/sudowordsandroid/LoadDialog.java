@@ -28,7 +28,7 @@ public class LoadDialog extends DialogFragment {
     NoticeDialogListener mListener;
 
 
-    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener   // STEVE: I HAVE NO IDEA WHAT THIS IS
+    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener   // STEVE: I HAVE NO IDEA WHAT THIS IS BUT WE NEED IT
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -49,10 +49,9 @@ public class LoadDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        //String llist[] = {"Game 1", "Game 2", "Game 3", "Game 4", "Game 5", "Game 6", "Game 7", "Game 8", "Game 9", "Game 10", "Game 11", "Game 12", "Game 13"};
-
         List<String> listw= MainMenu.savedGames;
 
+        // builder needs and array not a list
         String[] arr = listw.toArray( new String[ listw.size() ] );
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

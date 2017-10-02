@@ -357,9 +357,12 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
         Context context = getApplicationContext();
 
-        Toast.makeText(this, "Loading: " + savedGames.get( which ), Toast.LENGTH_SHORT).show();
-
         String gameToLoad = savedGames.get( which );
+
+
+        // Toast is just a wee temporary pop-up
+        Toast.makeText(this, "Loading: " + gameToLoad, Toast.LENGTH_SHORT).show();
+
 
         // 3. Set initial, current and solution states in mBundle
         //String savedGameFile = "savedGame1.dat";

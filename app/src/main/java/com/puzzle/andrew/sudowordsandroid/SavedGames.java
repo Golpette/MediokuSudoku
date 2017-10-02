@@ -18,6 +18,9 @@ public class SavedGames  {
 
 
     public static List<String> getSavedGames( Context context ){
+        /**
+         * Method to return list of valid game save files (that is, .dat files)
+         */
 
         // All saved files
         String[] saveFiles = context.fileList();

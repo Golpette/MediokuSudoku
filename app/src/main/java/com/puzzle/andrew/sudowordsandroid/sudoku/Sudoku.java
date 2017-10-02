@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
@@ -55,8 +56,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
     int x = 11, y = 11;
 
-
-
+    String saveFileName = "x";
 
 
 
@@ -289,43 +289,66 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
             case R.id.sudokuSaveButton:
-                //TODO
 
-                // Create state String
-                String stateString = "";
-                for (int i = 0; i < x - 2; i++) {
-                    for (int j = 0; j < y - 2; j++) {
-                        stateString = stateString + String.valueOf(grid[i][j]);
+                // Use AlertDialog to select file name
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Choose file name");
+
+                final EditText input = new EditText(this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                //Set up buttons
+                builder.setPositiveButton("Save", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which ){
+
+                        // Create state String of 81*3 digits
+                        String stateString = "";
+                        for (int i = 0; i < x - 2; i++) {
+                            for (int j = 0; j < y - 2; j++) {
+                                stateString = stateString + String.valueOf(grid[i][j]);
+                            }
+                        }
+                        for (int i = 0; i < x - 2; i++) {
+                            for (int j = 0; j < y - 2; j++) {
+                                stateString = stateString + String.valueOf( grid_initialState[i][j] ) ;
+                            }
+                        }
+                        for (int i = 0; i < x - 2; i++) {
+                            for (int j = 0; j < y - 2; j++) {
+                                stateString = stateString + String.valueOf( grid_correct[i][j] ) ;
+                            }
+                        }
+
+                        ///ONLY RECOGNIZE .dat FILE TYPES!!
+                        saveFileName = input.getText().toString()+".dat";
+
+                        //String saveFileName = "savedGame1.dat";
+
+                        // Write file
+                        //File file = new File(Context.getFilesDir(), saveFileName);
+                        FileOutputStream outputStream;
+                        try {
+                            outputStream = openFileOutput( saveFileName , Context.MODE_PRIVATE);
+                            outputStream.write( stateString.getBytes()   );
+                            outputStream.close();
+                            Log.d("SUCCESS", "FILE WRITTEN SUCCESSFULLY");
+                        } catch (Exception e) {
+                            Log.d("NO FILE WORK", "NO SAVE FILE WRITTEN");
+                            e.printStackTrace();
+                        }
+
                     }
-                }
-                for (int i = 0; i < x - 2; i++) {
-                    for (int j = 0; j < y - 2; j++) {
-                        stateString = stateString + String.valueOf( grid_initialState[i][j] ) ;
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which){
+                        dialog.cancel();
                     }
-                }
-                for (int i = 0; i < x - 2; i++) {
-                    for (int j = 0; j < y - 2; j++) {
-                        stateString = stateString + String.valueOf( grid_correct[i][j] ) ;
-                    }
-                }
+                });
 
-                // Here, make dialogue to enter saved filename
-                //TODO
-                String saveFileName = "savedGame1.dat";
-
-                // Write file
-                //File file = new File(Context.getFilesDir(), saveFileName);
-                FileOutputStream outputStream;
-                try {
-                    outputStream = openFileOutput( saveFileName , Context.MODE_PRIVATE);
-                    outputStream.write( stateString.getBytes()   );
-                    outputStream.close();
-                    Log.d("SUCCESS", "FILE WRITTEN SUCCESSFULLY");
-                } catch (Exception e) {
-                    Log.d("NO FILE WORK", "NO SAVE FILE WRITTEN");
-                    e.printStackTrace();
-                }
-
+                builder.show();
 
                 break;
 
