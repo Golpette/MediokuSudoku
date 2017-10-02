@@ -12,16 +12,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-//
-////public class LoadDialog extends AppCompatActivity, DialogFragment {
-//public class LoadDialog extends DialogFragment {
-//
-////    @Override
-////    public Dialog onCreate(Bundle savedInstanceState) {
-////        super.onCreate(savedInstanceState);
-////        setContentView(R.layout.activity_load_dialog);
-////    }
-//}
+
 
 public class LoadDialog extends DialogFragment {
 
@@ -31,15 +22,13 @@ public class LoadDialog extends DialogFragment {
  * Each method passes the DialogFragment in case the host needs to query it. */
     public interface NoticeDialogListener {
         public void onClick (int i ) ;
-        //public void onDialogPositiveClick(DialogFragment dialog);
-        //public void onDialogNegativeClick(DialogFragment dialog);
     }
 
     // Use this instance of the interface to deliver action events
     NoticeDialogListener mListener;
 
 
-    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
+    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener   // STEVE: I HAVE NO IDEA WHAT THIS IS
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -60,13 +49,16 @@ public class LoadDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        String list[] = {"Game 1", "Game 2", "Game 3", "Game 4", "Game 5", "Game 6", "Game 7", "Game 8", "Game 9", "Game 10", "Game 11", "Game 12", "Game 13"};
+        //String llist[] = {"Game 1", "Game 2", "Game 3", "Game 4", "Game 5", "Game 6", "Game 7", "Game 8", "Game 9", "Game 10", "Game 11", "Game 12", "Game 13"};
+
+        List<String> listw= MainMenu.savedGames;
+
+        String[] arr = listw.toArray( new String[ listw.size() ] );
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
         builder.setTitle("Choose game")
                 //R.string.pick_color
-                .setItems(list, new DialogInterface.OnClickListener() {
+                .setItems( arr, new DialogInterface.OnClickListener() {
                     //R.array.colors_array
                     public void onClick(DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position

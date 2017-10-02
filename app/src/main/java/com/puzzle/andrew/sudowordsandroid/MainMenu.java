@@ -28,6 +28,7 @@ import java.util.Random;
 public class MainMenu extends AppCompatActivity implements View.OnClickListener, LoadDialog.NoticeDialogListener {
 
     Button easyButton, mediumButton, loadButton;
+
     public static ProgressBar progressBar; // Want this accessible from other activity - is this the right way??
 
 
@@ -46,6 +47,9 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     int x = 11, y = 11;
     Random rand;
     boolean complete = false;
+
+
+    public static List<String> savedGames;
     //=========================================================================================
 
 
@@ -134,30 +138,35 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 Context context = getApplicationContext();
 
                 //TODO
-                // 1. Get list of saved game files
-                // 2. Put them into a dialogue box to be selected
-                // 3. Set initial, current and solution states in mBundle
+                // 2. Put list of gameFiles into the list dialogue
                 // 4. Execute puzzleGeneration
 
-                //1.
-                String[] saveFiles = context.fileList();
-                List<String> games = new ArrayList<String>();
-                for( int l=0; l<saveFiles.length; l++ ) {
-                    Log.d("File list: ", saveFiles[l]);
-                    if( saveFiles[l].contains( ".dat" ) ){
-                        games.add( saveFiles[l] );
-                        Log.d("Valid save data: ", saveFiles[l]);
-                    }
-                }
+//                //1.
+//                // All saved files
+//                String[] saveFiles = context.fileList();
+//                // Valid game files
+//                List<String> gameFiles = new ArrayList<String>();
+//
+//                for( int l=0; l<saveFiles.length; l++ ) {
+//                    Log.d("File list: ", saveFiles[l]);
+//                    if( saveFiles[l].contains( ".dat" ) ){  // all game states saved in .dat files!!
+//                        gameFiles.add( saveFiles[l] );
+//                        Log.d("Valid save data: ", saveFiles[l]);
+//                    }
+//                }
+
+                List<String> gameFiles = SavedGames.getSavedGames( context );
+
+                savedGames = SavedGames.getSavedGames( context );  // only initialize it now... bad approach?
 
                 //2.
-                showNoticeDialog();
+                showNoticeDialog(  );
                 //DialogFragment newFragment = new LoadDialog();
                 //newFragment.show( getFragmentManager(), "dunno"  );
 
 
 
-                //3.
+                // 3. Set initial, current and solution states in mBundle
                 String savedGameFile = "savedGame1.dat";
                 String textFromFile = "";
 
@@ -182,7 +191,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 }
 
                 if( textFromFile.length()!=(81*3) ){
-                    Log.d( "Invalid file format", savedGameFile);
+                    Log.d( "INVALID FILE FORMAT", savedGameFile);
                 }
                 else{
                     // set current state
@@ -199,6 +208,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                     }
                 }
 
+
+//                // Generate the game
 //                Intent puzzle = new Intent(MainMenu.this, Sudoku.class);
 //                Bundle mBundle = new Bundle();
 //                mBundle.putSerializable("grid_solution", grid_correct );
@@ -417,23 +428,9 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     @Override
     public void onClick( int i){
         String list[] = {"Game 1", "Game 2", "Game 3", "Game 4", "Game 5", "Game 6", "Game 7", "Game 8", "Game 9", "Game 10", "Game 11", "Game 12", "Game 13"};
-        Toast.makeText(this, "test: " + list[i], Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "test: " + list[i], Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "test: " + savedGames.get(i), Toast.LENGTH_SHORT).show();
     }
-
-//    // The dialog fragment receives a reference to this Activity through the
-//    // Fragment.onAttach() callback, which it uses to call the following methods
-//    // defined by the NoticeDialogFragment.NoticeDialogListener interface
-//    @Override
-//    public void onDialogPositiveClick(DialogFragment dialog) {
-//        // User touched the dialog's positive button
-//        Log.d("Dialog ---- ",  "Positive button touched");
-//    }
-//
-//    @Override
-//    public void onDialogNegativeClick(DialogFragment dialog) {
-//        // User touched the dialog's negative button
-//        Log.d("Dialog ---- ",  "Negative button touched");
-//    }
 
 
 
