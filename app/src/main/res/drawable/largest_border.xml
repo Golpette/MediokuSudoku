@@ -7,7 +7,7 @@
     </solid>
 
     <stroke
-        android:width="6dp"
+        android:width="3dp"
         android:color="@color/border_color" >
     </stroke>
 
