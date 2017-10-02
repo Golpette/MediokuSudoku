@@ -10,7 +10,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -23,8 +25,8 @@ import android.widget.TextView;
 import com.puzzle.andrew.sudowordsandroid.MainMenu;
 import com.puzzle.andrew.sudowordsandroid.R;
 
-import java.util.ArrayList;
-import java.util.Random;
+import java.io.FileOutputStream;
+
 
 
 //TODO:   BUGS TO SORT
@@ -47,11 +49,13 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     int[][] grid = new int [9][9];
     // Hold solution
     int[][] grid_correct = new int [9][9];
+    // Initial puzzle's state
+    int[][] grid_initialState = new int[9][9];
 
     int x = 11, y = 11;
 
-
-
+    String saveFileName = "x";
+    String file_loaded;     //so we auto-input current filename for easy over-writing
 
 
 
@@ -60,8 +64,10 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         // Get the start_grid and correct_grid passed
         Bundle extras = getIntent().getExtras();
-        grid_correct = (int[][]) extras.getSerializable("grid_correct");
-        grid = (int[][]) extras.getSerializable("start_grid");
+        grid_correct = (int[][]) extras.getSerializable("grid_solution");
+        grid = (int[][]) extras.getSerializable("grid_currentState");
+        grid_initialState = (int[][]) extras.getSerializable("grid_initialState");
+        file_loaded = extras.getString( "file_loaded" );
 
 
         //Steve: need this plus the android:screenOrientation="portrait" in the xml
@@ -106,12 +112,15 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
 
+        // Set up grid using initial and current states
         for(int i = 0; i < x-2; i++){
             for (int j = 0; j < y-2; j++){
                 EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
                 field.setBackgroundResource(R.drawable.border_active);
-                if(grid[i][j]!=0) {
-                    field.setText("" + grid[i][j]);
+                // Set current grid state
+                if( grid[i][j]!=0 ){  field.setText("" + grid[i][j]);  }
+                // Set initial state colour and make non-editable
+                if(grid_initialState[i][j]!=0) {
                     field.setBackgroundResource(R.drawable.border);
                     field.setKeyListener(null);
                 }
@@ -165,11 +174,9 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             }
         }
 
-
+        // Check if grid is full or correct
         boolean gridFull = true;
         boolean gridCorrect = true;
-
-        // Check if grid is full or correct
         for (int i = 0; i < x - 2; i++) {
             for (int j = 0; j < y - 2; j++) {
                 EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
@@ -185,6 +192,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
 
+
+        // Deal with buton presses
         switch ( view.getId() ){
 
 
@@ -280,7 +289,73 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
             case R.id.sudokuSaveButton:
-                //TODO
+
+                // Use AlertDialog to select file name
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Enter save name");
+
+                final EditText input = new EditText(this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                // Initialize with current loaded file name (or "" if new puzzle)
+                input.setText( file_loaded );
+                // and select it all for over-writing
+                input.setSelectAllOnFocus(true);
+                builder.setView(input);
+
+                //Set up buttons
+                builder.setPositiveButton("Save", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which ){
+
+                        // Create state String of 81*3 digits
+                        String stateString = "";
+                        for (int i = 0; i < x - 2; i++) {
+                            for (int j = 0; j < y - 2; j++) {
+                                stateString = stateString + String.valueOf(grid[i][j]);
+                            }
+                        }
+                        for (int i = 0; i < x - 2; i++) {
+                            for (int j = 0; j < y - 2; j++) {
+                                stateString = stateString + String.valueOf( grid_initialState[i][j] ) ;
+                            }
+                        }
+                        for (int i = 0; i < x - 2; i++) {
+                            for (int j = 0; j < y - 2; j++) {
+                                stateString = stateString + String.valueOf( grid_correct[i][j] ) ;
+                            }
+                        }
+
+                        ///ONLY RECOGNIZE .dat FILE TYPES!!
+                        saveFileName = input.getText().toString()+".dat";
+
+                        // Write file
+                        FileOutputStream outputStream;
+                        try {
+                            outputStream = openFileOutput( saveFileName , Context.MODE_PRIVATE);
+                            outputStream.write( stateString.getBytes()   );
+                            outputStream.close();
+                            Log.d("SUCCESS", "FILE WRITTEN SUCCESSFULLY");
+                        } catch (Exception e) {
+                            Log.d("NO FILE WORK", "NO SAVE FILE WRITTEN");
+                            e.printStackTrace();
+                        }
+
+                        // IS THIS SAFE TO DO?? Want to exit puzzle after saving.
+                        //finishAffinity(); // will close all activities
+                        finish();
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which){
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+
+
                 break;
 
 

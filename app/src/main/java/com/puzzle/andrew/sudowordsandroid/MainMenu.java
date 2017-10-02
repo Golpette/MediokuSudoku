@@ -1,25 +1,34 @@
 package com.puzzle.andrew.sudowordsandroid;
 
+import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 
 import com.puzzle.andrew.sudowordsandroid.sudoku.Sudoku;
 import com.puzzle.andrew.sudowordsandroid.sudoku.SudokuMethods;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class MainMenu extends AppCompatActivity implements View.OnClickListener {
+public class MainMenu extends AppCompatActivity implements View.OnClickListener, LoadDialog.NoticeDialogListener {
 
-    Button easyButton, mediumButton;
+    Button easyButton, mediumButton, loadButton;
+
     public static ProgressBar progressBar; // Want this accessible from other activity - is this the right way??
 
 
@@ -38,6 +47,10 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
     int x = 11, y = 11;
     Random rand;
     boolean complete = false;
+
+    // This list is accessed by the onCreateDialog() method in LoadDialog
+    public static List<String> savedGames;
+
     //=========================================================================================
 
 
@@ -60,6 +73,9 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
         mediumButton = (Button) findViewById(R.id.button_medium);
         mediumButton.setOnClickListener(MainMenu.this);
+
+        loadButton = (Button) findViewById(R.id.button_load);
+        loadButton.setOnClickListener(MainMenu.this);
     }
 
 
@@ -79,8 +95,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View view) {
 
         // CAREFUL: MAYBE NEED TO RESET ALL ARRAYS AND LISTS HERE??????????????
-
-        progressBar.setVisibility(View.VISIBLE);
 
         correct = new ArrayList<Integer>();
         row = new ArrayList<Integer>();
@@ -112,6 +126,20 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                 new PuzzleGeneration().execute();
 
                 break;
+
+
+            case R.id.button_load:
+                Context context = getApplicationContext();
+
+                // Get all (.dat) game save files
+                savedGames = SavedGames.getSavedGames( context );  // only initialize it now... bad approach?
+
+                //2.  Raise the dialog but further puzzle loading has to gi into this dialogs onClick() method!
+                showNoticeDialog();
+
+                break;
+
+
         }
 
     }
@@ -135,12 +163,14 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
             //Make the puzzle!
             start_grid = makeGrid(grid, difficulty);
 
-            Intent medium = new Intent(MainMenu.this, Sudoku.class);
+            Intent puzzle = new Intent(MainMenu.this, Sudoku.class);
             Bundle mBundle = new Bundle();
-            mBundle.putSerializable("grid_correct", grid_correct);
-            mBundle.putSerializable("start_grid", start_grid);
-            medium.putExtras(mBundle);
-            startActivity( medium );
+            mBundle.putSerializable("grid_solution", grid_correct );
+            mBundle.putSerializable("grid_initialState", start_grid );
+            mBundle.putSerializable("grid_currentState", start_grid );       // is this OK? When generating a grid our start grid is our current!
+            mBundle.putString("file_loaded", "");
+            puzzle.putExtras(mBundle);
+            startActivity( puzzle );
 
             return null;
         }
@@ -307,9 +337,88 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
 
 
+    public void showNoticeDialog() {
+        /**
+         *  Create an instance of the dialog fragment and show it
+         */
+        DialogFragment dialog = new LoadDialog();
+        dialog.show(  getFragmentManager(), "NoticeDialogFragment");
+    }
 
 
 
+
+
+    @Override
+    public void onClick( int which ){
+        /**
+         *  THE onClick() METHOD FOR THE LIST DIALOG. HERE IS WHERE WE CHOOSE WHAT GAME IS TO BE LOADED!
+         *  WE HAVE TO MAKE THE INTENT AND SET-UP THE GAME IN THIS METHOD SINCE THE PROGRAM CONTINUES TO RUN AFTER WE SHOW A DIALOG.
+         */
+
+        Context context = getApplicationContext();
+
+        // File name we want to load
+        String gameToLoad = savedGames.get( which );
+        String gameToLoad_noExt = gameToLoad.substring(  0, gameToLoad.lastIndexOf('.')   );
+
+        // Toast is just a wee temporary pop-up
+        Toast.makeText(this, "Loading: " + gameToLoad_noExt, Toast.LENGTH_SHORT).show();
+
+
+        // Set initial, current and solution states in mBundle
+        String textFromFile = "";
+        // Gets the file from the primary **internal** storage space of the current application.
+        File testFile = new File( context.getFilesDir(), gameToLoad );
+        if (testFile != null) {
+            StringBuilder stringBuilder = new StringBuilder();
+            // Reads the data from the file
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new FileReader(testFile));
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    textFromFile += line.toString();
+                }
+                reader.close();
+                Log.d("ReadWriteFile", textFromFile);
+            } catch (Exception e) {
+                //Log.e("eeeeeeReadWriteFile", textFromFile);
+            }
+        }
+
+        if( textFromFile.length()!=(81*3) ){
+            Log.d( "INVALID FILE FORMAT", gameToLoad  );
+        }
+        else{
+            // set current state (first 81 digits)
+            for( int i=0; i<81; i++ ){
+                grid[ i/9 ][ i%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+            }
+            // set initial state
+            for( int i=81; i<162; i++ ){
+                start_grid[ (i-81)/9 ][ (i-81)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+            }
+            // set initial state
+            for( int i=162; i<81*3; i++ ){
+                grid_correct[ (i-162)/9 ][ (i-162)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+            }
+        }
+
+
+        // Generate the game now!
+        Intent puzzle = new Intent(MainMenu.this, Sudoku.class);
+        Bundle mBundle = new Bundle();
+        mBundle.putSerializable("grid_solution", grid_correct );
+        mBundle.putSerializable("grid_initialState", start_grid );
+        mBundle.putSerializable("grid_currentState", grid );
+        mBundle.putString("file_loaded", gameToLoad_noExt);
+        puzzle.putExtras(mBundle);
+        startActivity( puzzle );
+
+
+    }
 
 
 
