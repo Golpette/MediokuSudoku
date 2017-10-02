@@ -48,9 +48,9 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     Random rand;
     boolean complete = false;
 
-
+    // This list is accessed by the onCreateDialog() method in LoadDialog
     public static List<String> savedGames;
-    String gameToLoad = "";
+
     //=========================================================================================
 
 
@@ -96,8 +96,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
         // CAREFUL: MAYBE NEED TO RESET ALL ARRAYS AND LISTS HERE??????????????
 
-        ///progressBar.setVisibility(View.VISIBLE);
-
         correct = new ArrayList<Integer>();
         row = new ArrayList<Integer>();
         checks = new ArrayList<Integer>();
@@ -130,103 +128,14 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 break;
 
 
-
-
-
             case R.id.button_load:
-
-
                 Context context = getApplicationContext();
 
-                //TODO
-                // 2. Put list of gameFiles into the list dialogue
-                // 4. Execute puzzleGeneration
-
-//                //1.
-//                // All saved files
-//                String[] saveFiles = context.fileList();
-//                // Valid game files
-//                List<String> gameFiles = new ArrayList<String>();
-//
-//                for( int l=0; l<saveFiles.length; l++ ) {
-//                    Log.d("File list: ", saveFiles[l]);
-//                    if( saveFiles[l].contains( ".dat" ) ){  // all game states saved in .dat files!!
-//                        gameFiles.add( saveFiles[l] );
-//                        Log.d("Valid save data: ", saveFiles[l]);
-//                    }
-//                }
-
-                List<String> gameFiles = SavedGames.getSavedGames( context );
-
+                // Get all (.dat) game save files
                 savedGames = SavedGames.getSavedGames( context );  // only initialize it now... bad approach?
 
-                //2.
-
+                //2.  Raise the dialog but further puzzle loading has to gi into this dialogs onClick() method!
                 showNoticeDialog();
-
-//                while( gameToLoad.equals("") ) {
-//                    // THIS FEELS VERY STUPID
-//                }
-
-
-
-
-//                // 3. Set initial, current and solution states in mBundle
-//                String savedGameFile = "savedGame1.dat";
-//                String textFromFile = "";
-//
-//                // Gets the file from the primary external storage space of the current application.
-//                File testFile = new File( context.getFilesDir(), savedGameFile );
-//                if (testFile != null) {
-//                    StringBuilder stringBuilder = new StringBuilder();
-//                    // Reads the data from the file
-//                    BufferedReader reader = null;
-//                    try {
-//                        reader = new BufferedReader(new FileReader(testFile));
-//                        String line;
-//
-//                        while ((line = reader.readLine()) != null) {
-//                            textFromFile += line.toString();
-//                        }
-//                        reader.close();
-//                        Log.d("ReadWriteFile", textFromFile);
-//                    } catch (Exception e) {
-//                        //Log.e("eeeeeeReadWriteFile", textFromFile);
-//                    }
-//                }
-//
-//                if( textFromFile.length()!=(81*3) ){
-//                    Log.d( "INVALID FILE FORMAT", savedGameFile);
-//                }
-//                else{
-//                    // set current state
-//                    for( int i=0; i<81; i++ ){
-//                        grid[ i/9 ][ i%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
-//                    }
-//                    // set initial state
-//                    for( int i=81; i<162; i++ ){
-//                        start_grid[ (i-81)/9 ][ (i-81)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
-//                    }
-//                    // set initial state
-//                    for( int i=162; i<81*3; i++ ){
-//                        grid_correct[ (i-162)/9 ][ (i-162)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
-//                    }
-//                }
-//
-//
-//                // Generate the game
-//                Intent puzzle = new Intent(MainMenu.this, Sudoku.class);
-//                Bundle mBundle = new Bundle();
-//                mBundle.putSerializable("grid_solution", grid_correct );
-//                mBundle.putSerializable("grid_initialState", start_grid );
-//                mBundle.putSerializable("grid_currentState", grid );
-//                puzzle.putExtras(mBundle);
-//                startActivity( puzzle );
-//
-//
-//
-//                gameToLoad = "";  // THIS FEELS VERY STUPID
-
 
                 break;
 
@@ -428,29 +337,29 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
 
     public void showNoticeDialog() {
-        // Create an instance of the dialog fragment and show it
+        /**
+         *  Create an instance of the dialog fragment and show it
+         */
         DialogFragment dialog = new LoadDialog();
         dialog.show(  getFragmentManager(), "NoticeDialogFragment");
     }
 
-    // THE onClick() METHOD FOR THE LIST DIALOG WHERE WE CHOOSE WHAT GAME IS TO BE LOADED!
-    // WE HAVE TO MAKE THE INTENT AND SET-UP THE GAME IN THIS METHOD SINCE THE PROGRAM CONTINUES TO RUN
-    // AFTER WE SHOW A DIALOG.
+
+
+
+
     @Override
     public void onClick( int which ){
+        /**
+         *  THE onClick() METHOD FOR THE LIST DIALOG. HERE IS WHERE WE CHOOSE WHAT GAME IS TO BE LOADED!
+         *  WE HAVE TO MAKE THE INTENT AND SET-UP THE GAME IN THIS METHOD SINCE THE PROGRAM CONTINUES TO RUN AFTER WE SHOW A DIALOG.
+         */
 
         Context context = getApplicationContext();
 
+        Toast.makeText(this, "Loading: " + savedGames.get( which ), Toast.LENGTH_SHORT).show();
 
-        //String list[] = {"Game 1", "Game 2", "Game 3", "Game 4", "Game 5", "Game 6", "Game 7", "Game 8", "Game 9", "Game 10", "Game 11", "Game 12", "Game 13"};
-        //Toast.makeText(this, "test: " + list[i], Toast.LENGTH_SHORT).show();
-
-
-        Toast.makeText(this, "test: " + savedGames.get( which ), Toast.LENGTH_SHORT).show();
-        gameToLoad = savedGames.get( which );
-//        return savedGames.get(i);
-
-
+        String gameToLoad = savedGames.get( which );
 
         // 3. Set initial, current and solution states in mBundle
         //String savedGameFile = "savedGame1.dat";
@@ -495,7 +404,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         }
 
 
-        // Generate the game
+        // Generate the game now!
         Intent puzzle = new Intent(MainMenu.this, Sudoku.class);
         Bundle mBundle = new Bundle();
         mBundle.putSerializable("grid_solution", grid_correct );
