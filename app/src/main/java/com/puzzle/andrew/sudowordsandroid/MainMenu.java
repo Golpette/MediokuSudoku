@@ -1,5 +1,6 @@
 package com.puzzle.andrew.sudowordsandroid;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 
 import com.puzzle.andrew.sudowordsandroid.sudoku.Sudoku;
@@ -23,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MainMenu extends AppCompatActivity implements View.OnClickListener {
+public class MainMenu extends AppCompatActivity implements View.OnClickListener, LoadDialog.NoticeDialogListener {
 
     Button easyButton, mediumButton, loadButton;
     public static ProgressBar progressBar; // Want this accessible from other activity - is this the right way??
@@ -127,8 +129,9 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
 
             case R.id.button_load:
-                Context context = getApplicationContext();
 
+
+                Context context = getApplicationContext();
 
                 //TODO
                 // 1. Get list of saved game files
@@ -148,6 +151,9 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                 }
 
                 //2.
+                showNoticeDialog();
+                //DialogFragment newFragment = new LoadDialog();
+                //newFragment.show( getFragmentManager(), "dunno"  );
 
 
 
@@ -193,13 +199,13 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
                     }
                 }
 
-                Intent puzzle = new Intent(MainMenu.this, Sudoku.class);
-                Bundle mBundle = new Bundle();
-                mBundle.putSerializable("grid_solution", grid_correct );
-                mBundle.putSerializable("grid_initialState", start_grid );
-                mBundle.putSerializable("grid_currentState", grid );
-                puzzle.putExtras(mBundle);
-                startActivity( puzzle );
+//                Intent puzzle = new Intent(MainMenu.this, Sudoku.class);
+//                Bundle mBundle = new Bundle();
+//                mBundle.putSerializable("grid_solution", grid_correct );
+//                mBundle.putSerializable("grid_initialState", start_grid );
+//                mBundle.putSerializable("grid_currentState", grid );
+//                puzzle.putExtras(mBundle);
+//                startActivity( puzzle );
 
 
 
@@ -402,9 +408,32 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener 
 
 
 
+    public void showNoticeDialog() {
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialog = new LoadDialog();
+        dialog.show(  getFragmentManager(), "NoticeDialogFragment");
+    }
 
+    @Override
+    public void onClick( int i){
+        String list[] = {"Game 1", "Game 2", "Game 3", "Game 4", "Game 5", "Game 6", "Game 7", "Game 8", "Game 9", "Game 10", "Game 11", "Game 12", "Game 13"};
+        Toast.makeText(this, "test: " + list[i], Toast.LENGTH_SHORT).show();
+    }
 
-
+//    // The dialog fragment receives a reference to this Activity through the
+//    // Fragment.onAttach() callback, which it uses to call the following methods
+//    // defined by the NoticeDialogFragment.NoticeDialogListener interface
+//    @Override
+//    public void onDialogPositiveClick(DialogFragment dialog) {
+//        // User touched the dialog's positive button
+//        Log.d("Dialog ---- ",  "Positive button touched");
+//    }
+//
+//    @Override
+//    public void onDialogNegativeClick(DialogFragment dialog) {
+//        // User touched the dialog's negative button
+//        Log.d("Dialog ---- ",  "Negative button touched");
+//    }
 
 
 
