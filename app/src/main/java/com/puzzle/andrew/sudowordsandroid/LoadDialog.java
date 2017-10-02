@@ -49,6 +49,8 @@ public class LoadDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        String loadDialogTitle = "Choose game";
+
         List<String> list_w= MainMenu.savedGames;
 
         // Get rid of .dat extension here for neatness in the list
@@ -61,7 +63,10 @@ public class LoadDialog extends DialogFragment {
         String[] arr = list_x.toArray( new String[ list_w.size() ] );
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Choose game")
+
+        if( arr.length == 0 ){ loadDialogTitle = "No saved games!"  ;  }
+
+        builder.setTitle( loadDialogTitle )
                 //R.string.pick_color
                 .setItems( arr, new DialogInterface.OnClickListener() {
                     //R.array.colors_array

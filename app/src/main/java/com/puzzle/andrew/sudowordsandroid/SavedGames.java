@@ -29,8 +29,13 @@ public class SavedGames  {
 
         for( int l=0; l<saveFiles.length; l++ ) {
             Log.d("File list: ", saveFiles[l]);
-            if( saveFiles[l].contains( ".dat" ) ){  // all game states saved in .dat files!!
-                gameFiles.add( saveFiles[l] );
+
+            // All game states saved in .dat files!!
+            if( saveFiles[l].contains( ".dat" ) ){
+            //if( saveFiles[l].contains( ".zzz" ) ){  // test case of no saved games
+
+
+                    gameFiles.add( saveFiles[l] );
                 Log.d("Valid save data: ", saveFiles[l]);
             }
         }

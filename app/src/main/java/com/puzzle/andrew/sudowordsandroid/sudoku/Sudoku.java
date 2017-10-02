@@ -343,8 +343,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                         }
 
                         // IS THIS SAFE TO DO?? Want to exit puzzle after saving.
-                        //Activity.finish();
-                        //finishAffinity();
+                        //finishAffinity(); // will close all activities
                         finish();
 
                     }
