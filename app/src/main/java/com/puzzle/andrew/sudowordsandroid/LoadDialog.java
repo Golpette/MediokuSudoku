@@ -3,10 +3,8 @@ package com.puzzle.andrew.sudowordsandroid;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -24,13 +22,13 @@ public class LoadDialog extends DialogFragment {
         public void onClick (int i ) ;
     }
 
-    // Use this instance of the interface to deliver action events
+    // Use this instance of the interface to deliver action events to main activity!
     NoticeDialogListener mListener;
 
 
     // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener   // STEVE: I HAVE NO IDEA WHAT THIS IS BUT WE NEED IT
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(Activity activity) {  // TODO: CARE NEEDED: this was deprecated in API 23; might need onAttach(Context context) ...
         super.onAttach(activity);
         // Verify that the host activity implements the callback interface
         try {
@@ -48,9 +46,9 @@ public class LoadDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-        String loadDialogTitle = "Choose game";
-
+        /**
+         * Make a list dialog showing all saved games
+         */
         List<String> list_w= MainMenu.savedGames;
 
         // Get rid of .dat extension here for neatness in the list
@@ -59,11 +57,12 @@ public class LoadDialog extends DialogFragment {
             list_x.add( s.substring( 0, s.lastIndexOf('.') )   );
         }
 
-        // builder needs and array not a list
+        // The builder needs an array not a list
         String[] arr = list_x.toArray( new String[ list_w.size() ] );
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
+        String loadDialogTitle = "Choose game";
         if( arr.length == 0 ){ loadDialogTitle = "No saved games!"  ;  }
 
         builder.setTitle( loadDialogTitle )
@@ -71,8 +70,7 @@ public class LoadDialog extends DialogFragment {
                 .setItems( arr, new DialogInterface.OnClickListener() {
                     //R.array.colors_array
                     public void onClick(DialogInterface dialog, int which) {
-                        // The 'which' argument contains the index position
-                        // of the selected item
+                        // The 'which' argument contains index of selected item
                         mListener.onClick( which );
                     }
                 });

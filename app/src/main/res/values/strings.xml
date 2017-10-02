@@ -6,5 +6,5 @@
     <string name="sudoku_save">Save</string>
     <string name="sudoku_congrats">"CONGRATULATIONS!"</string>
     <string name="sudoku_backPress_title">"Sure you want to exit?"</string>
-    <string name="sudoku_backPress_message">"Current puzzle will be lost."</string>
+    <string name="sudoku_backPress_message">"Unsaved changes will be lost."</string>
 </resources>

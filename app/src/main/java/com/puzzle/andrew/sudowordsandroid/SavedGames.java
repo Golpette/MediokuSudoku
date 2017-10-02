@@ -10,20 +10,15 @@ import java.util.List;
 
 public class SavedGames  {
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_saved_games);
-//    }
-
 
     public static List<String> getSavedGames( Context context ){
         /**
          * Method to return list of valid game save files (that is, .dat files)
          */
 
-        // All saved files
+        // All saved files found in internal storeage
         String[] saveFiles = context.fileList();
+
         // Valid game files
         List<String> gameFiles = new ArrayList<String>();
 
@@ -32,10 +27,8 @@ public class SavedGames  {
 
             // All game states saved in .dat files!!
             if( saveFiles[l].contains( ".dat" ) ){
-            //if( saveFiles[l].contains( ".zzz" ) ){  // test case of no saved games
-
-
-                    gameFiles.add( saveFiles[l] );
+            //if( saveFiles[l].contains( ".zzz" ) ){  // test case if there are no saved games
+                gameFiles.add( saveFiles[l] );
                 Log.d("Valid save data: ", saveFiles[l]);
             }
         }

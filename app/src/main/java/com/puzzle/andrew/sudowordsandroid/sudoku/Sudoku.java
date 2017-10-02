@@ -25,10 +25,8 @@ import android.widget.TextView;
 import com.puzzle.andrew.sudowordsandroid.MainMenu;
 import com.puzzle.andrew.sudowordsandroid.R;
 
-import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Random;
+
 
 
 //TODO:   BUGS TO SORT
