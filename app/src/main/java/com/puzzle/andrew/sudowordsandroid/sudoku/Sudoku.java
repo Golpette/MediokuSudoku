@@ -5,16 +5,19 @@ import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -112,32 +115,34 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
 
-        // Set up grid using initial and current states
-        for(int i = 0; i < x-2; i++){
-            for (int j = 0; j < y-2; j++){
-                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+
+        for(int i = 0; i < x-2; i++) {
+            for (int j = 0; j < y - 2; j++) {
+                EditText field = new EditText(this);
                 field.setBackgroundResource(R.drawable.border_active);
-                // Set current grid state
-                if( grid[i][j]!=0 ){  field.setText("" + grid[i][j]);  }
-                // Set initial state colour and make non-editable
-                if(grid_initialState[i][j]!=0) {
-                    field.setBackgroundResource(R.drawable.border);
+                if (grid[i][j] != 0) {
+                    field.setText("" + grid[i][j]);
+                }
+                field.setBackgroundResource(R.drawable.rounded_corner);
+                field.setInputType(InputType.TYPE_CLASS_NUMBER);
+                if (grid_initialState[i][j] != 0) {
+                    field.setBackgroundResource(R.drawable.rounded_corner_highlight);
                     field.setKeyListener(null);
                 }
+                field.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
+                field.setLayoutParams(new AppBarLayout.LayoutParams(157, 157));
+                field.setGravity(Gravity.CENTER);
+                field.setSelectAllOnFocus(true);
+                sudGrid.addView(field, i);
+
             }
         }
-
-
 
         // Stop progressBar
         MainMenu.progressBar.setVisibility(View.GONE);
 
 
     }
-
-
-
-
 
 
     // STEVE: added this to prevent screen rotation
