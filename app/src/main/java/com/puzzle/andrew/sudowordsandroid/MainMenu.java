@@ -74,9 +74,14 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         mediumButton = (Button) findViewById(R.id.button_medium);
         mediumButton.setOnClickListener(MainMenu.this);
 
-        loadButton = (Button) findViewById(R.id.button_load);
+        loadButton = (Button) findViewById(R.id.button_saved_games);
         loadButton.setOnClickListener(MainMenu.this);
-    }
+
+        // Initialise the list of saved games
+        Context context = getApplicationContext();
+        savedGames = SavedGames.getSavedGames( context );  // only initialize it now... bad approach?
+
+        }
 
 
 
@@ -128,11 +133,11 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 break;
 
 
-            case R.id.button_load:
-                Context context = getApplicationContext();
+            case R.id.button_saved_games:
+                //Context context = getApplicationContext();
 
                 // Get all (.dat) game save files
-                savedGames = SavedGames.getSavedGames( context );  // only initialize it now... bad approach?
+                //savedGames = SavedGames.getSavedGames( context );  // only initialize it now... bad approach?
 
                 //2.  Raise the dialog but further puzzle loading has to gi into this dialogs onClick() method!
                 showNoticeDialog();

@@ -21,6 +21,7 @@ import android.widget.EditText;
 
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.puzzle.andrew.sudowordsandroid.MainMenu;
 import com.puzzle.andrew.sudowordsandroid.R;
@@ -40,7 +41,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
     private Button checkButton;
     private Button hintButton;
-    private Button saveButton;
+    //private Button saveButton;
 
     private boolean checkPressed = false;
     private boolean hintPressed = false;
@@ -81,33 +82,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         checkButton.setOnClickListener(Sudoku.this);
         hintButton = (Button) findViewById(R.id.sudokuHintButton);
         hintButton.setOnClickListener(Sudoku.this);
-        saveButton = (Button) findViewById(R.id.sudokuSaveButton);
-        saveButton.setOnClickListener(Sudoku.this);
-
-        //Create a TextWatcher for input to addTextChangedListener() to hide keypad on number entry
-        GridLayout layout = (GridLayout)findViewById(R.id.sudokuGrid);
-        for (int i = 0; i < layout.getChildCount(); i++) {
-            View v = layout.getChildAt(i);
-            if (v instanceof EditText) {
-                final EditText et = (EditText) v;
-                TextWatcher tw = new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    }
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    }
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(et.getApplicationWindowToken(), 0);
-                    }
-                };
-                et.addTextChangedListener( tw );
-
-            }
-        }
-
+        //saveButton = (Button) findViewById(R.id.sudokuSaveButton);
+        //saveButton.setOnClickListener(Sudoku.this);
 
 
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
@@ -126,6 +102,46 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
             }
         }
+
+
+
+
+        //Create a TextWatcher for input to addTextChangedListener() to hide keypad on number entry
+        // (this HAS TO GO HERE at end of onCreate() or the autosave will activate as we initialise grid)
+        GridLayout layout = (GridLayout)findViewById(R.id.sudokuGrid);
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View v = layout.getChildAt(i);
+            if (v instanceof EditText) {
+                final EditText et = (EditText) v;
+                TextWatcher tw = new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(et.getApplicationWindowToken(), 0);
+
+                        // Autosave if a loaded game!
+                        if( !file_loaded.equals("") ){
+                            updateGrid();
+                            saveGame();
+                        }
+                    }
+                };
+                et.addTextChangedListener( tw );
+
+            }
+        }
+
+
+
+
+
 
 
 
@@ -158,21 +174,26 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
          * Define function of Hint and Check buttons here
          */
 
-        // Update grid[][] every time a button is pressed, does not happen upon text entry.
-        // Is there a better way to do this?
+        updateGrid();
+
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
-        for (int i = 0; i < x - 2; i++) {
-            for (int j = 0; j < y - 2; j++) {
-                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-                if (  !String.valueOf(field.getText()).isEmpty()  ) {
-                    grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
-                }
-                else{
-                    // Need to reset empties to zero
-                    grid[i][j] = 0 ;
-                }
-            }
-        }
+
+
+//        // Update grid[][] every time a button is pressed, does not happen upon text entry.
+//        // Is there a better way to do this?
+//       android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
+//        for (int i = 0; i < x - 2; i++) {
+//            for (int j = 0; j < y - 2; j++) {
+//                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+//                if (  !String.valueOf(field.getText()).isEmpty()  ) {
+//                    grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
+//                }
+//                else{
+//                    // Need to reset empties to zero
+//                    grid[i][j] = 0 ;
+//                }
+//            }
+//        }
 
         // Check if grid is full or correct
         boolean gridFull = true;
@@ -202,18 +223,20 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 // Every time hint is pressed, get rid of "check" features (copy and pasted from below)
                 checkPressed = false;
 
-                // Reset colours
-                for (int i = 0; i < x - 2; i++) {
-                    for (int j = 0; j < y - 2; j++) {
-                        EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-                        if( field.getKeyListener() == null ){
-                            field.setBackgroundResource(R.drawable.border);
-                        }
-                        else {
-                            field.setBackgroundResource(R.drawable.border_active);
-                        }
-                    }
-                }
+                resetGridColours();
+
+//                // Reset colours
+//                for (int i = 0; i < x - 2; i++) {
+//                    for (int j = 0; j < y - 2; j++) {
+//                        EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+//                        if( field.getKeyListener() == null ){
+//                            field.setBackgroundResource(R.drawable.border);
+//                        }
+//                        else {
+//                            field.setBackgroundResource(R.drawable.border_active);
+//                        }
+//                    }
+//                }
 
                 if( !hintPressed && !gridFull ) {
                     hintPressed = true;
@@ -234,18 +257,20 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             case R.id.sudokuCheckButton:
                 hintPressed = false;
 
-                // Always reset colours when Check is pressed
-                for (int i = 0; i < x - 2; i++) {
-                    for (int j = 0; j < y - 2; j++) {
-                        EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-                        if( field.getKeyListener() == null ){
-                            field.setBackgroundResource(R.drawable.border);
-                        }
-                        else {
-                            field.setBackgroundResource(R.drawable.border_active);
-                        }
-                    }
-                }
+                resetGridColours();
+
+//                // Always reset colours when Check is pressed
+//                for (int i = 0; i < x - 2; i++) {
+//                    for (int j = 0; j < y - 2; j++) {
+//                        EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+//                        if( field.getKeyListener() == null ){
+//                            field.setBackgroundResource(R.drawable.border);
+//                        }
+//                        else {
+//                            field.setBackgroundResource(R.drawable.border_active);
+//                        }
+//                    }
+//                }
 
                 if( !checkPressed ) {
                     checkPressed=true;
@@ -288,45 +313,260 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
 
-            case R.id.sudokuSaveButton:
+//            case R.id.sudokuSaveButton:
+//
+//                // Use AlertDialog to select file name
+//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                builder.setTitle("Enter save name");
+//
+//                final EditText input = new EditText(this);
+//                input.setInputType(InputType.TYPE_CLASS_TEXT);
+//                // Initialize with current loaded file name (or "" if new puzzle)
+//                input.setText( file_loaded );
+//                // and select it all for over-writing
+//                input.setSelectAllOnFocus(true);
+//                builder.setView(input);
+//
+//                //Set up buttons
+//                builder.setPositiveButton("Save", new DialogInterface.OnClickListener(){
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which ){
+//
+//                        // Create state String of 81*3 digits
+//                        String stateString = "";
+//                        for (int i = 0; i < x - 2; i++) {
+//                            for (int j = 0; j < y - 2; j++) {
+//                                stateString = stateString + String.valueOf(grid[i][j]);
+//                            }
+//                        }
+//                        for (int i = 0; i < x - 2; i++) {
+//                            for (int j = 0; j < y - 2; j++) {
+//                                stateString = stateString + String.valueOf( grid_initialState[i][j] ) ;
+//                            }
+//                        }
+//                        for (int i = 0; i < x - 2; i++) {
+//                            for (int j = 0; j < y - 2; j++) {
+//                                stateString = stateString + String.valueOf( grid_correct[i][j] ) ;
+//                            }
+//                        }
+//
+//                        ///ONLY RECOGNIZE .dat FILE TYPES!!
+//                        saveFileName = input.getText().toString()+".dat";
+//
+//                        // Write file
+//                        FileOutputStream outputStream;
+//                        try {
+//                            outputStream = openFileOutput( saveFileName , Context.MODE_PRIVATE);
+//                            outputStream.write( stateString.getBytes()   );
+//                            outputStream.close();
+//                            Log.d("SUCCESS", "FILE WRITTEN SUCCESSFULLY");
+//                        } catch (Exception e) {
+//                            Log.d("NO FILE WORK", "NO SAVE FILE WRITTEN");
+//                            e.printStackTrace();
+//                        }
+//
+//                        // IS THIS SAFE TO DO?? Want to exit puzzle after saving.
+//                        //finishAffinity(); // will close all activities
+//                        finish();
+//
+//                    }
+//                });
+//                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which){
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//                builder.show();
+//
+//
+//                break;
 
-                // Use AlertDialog to select file name
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Enter save name");
 
-                final EditText input = new EditText(this);
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                // Initialize with current loaded file name (or "" if new puzzle)
-                input.setText( file_loaded );
-                // and select it all for over-writing
-                input.setSelectAllOnFocus(true);
-                builder.setView(input);
 
-                //Set up buttons
-                builder.setPositiveButton("Save", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which ){
+            default:
+                break;  //is this essential?
 
-                        // Create state String of 81*3 digits
-                        String stateString = "";
-                        for (int i = 0; i < x - 2; i++) {
-                            for (int j = 0; j < y - 2; j++) {
-                                stateString = stateString + String.valueOf(grid[i][j]);
-                            }
+        }
+        
+    }
+
+
+
+
+
+
+
+    public void saveGame() {
+        /**
+         * Save game state to file
+         */
+
+        // Create state String of 81*3 digits
+        String stateString = "";
+        for (int i = 0; i < x - 2; i++) {
+            for (int j = 0; j < y - 2; j++) {
+                stateString = stateString + String.valueOf(grid[i][j]);
+            }
+        }
+        for (int i = 0; i < x - 2; i++) {
+            for (int j = 0; j < y - 2; j++) {
+                stateString = stateString + String.valueOf( grid_initialState[i][j] ) ;
+            }
+        }
+        for (int i = 0; i < x - 2; i++) {
+            for (int j = 0; j < y - 2; j++) {
+                stateString = stateString + String.valueOf( grid_correct[i][j] ) ;
+            }
+        }
+
+        ///ONLY RECOGNIZE .dat FILE TYPES!!
+        saveFileName = file_loaded+".dat";
+
+        // Write file
+        FileOutputStream outputStream;
+        try {
+            outputStream = openFileOutput( saveFileName , Context.MODE_PRIVATE);
+            outputStream.write( stateString.getBytes()   );
+            outputStream.close();
+            Log.d("SUCCESS", "FILE WRITTEN SUCCESSFULLY");
+        } catch (Exception e) {
+            Log.d("NO FILE WORK", "NO SAVE FILE WRITTEN");
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
+
+    public void updateGrid(){
+        /**
+         *   Update grid[][] (does not happen upon text entry).
+         */
+        android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
+        for (int i = 0; i < x - 2; i++) {
+            for (int j = 0; j < y - 2; j++) {
+                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+                if (  !String.valueOf(field.getText()).isEmpty()  ) {
+                    grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
+                }
+                else{
+                    // Need to reset empties to zero
+                    grid[i][j] = 0 ;
+                }
+            }
+        }
+
+
+
+    }
+
+
+
+    public void resetGridColours(){
+        /**
+         * Reset grid to initial  colours
+         */
+        android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
+        // Reset colours
+        for (int i = 0; i < x - 2; i++) {
+            for (int j = 0; j < y - 2; j++) {
+                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+                if( field.getKeyListener() == null ){
+                    field.setBackgroundResource(R.drawable.border);
+                }
+                else {
+                    field.setBackgroundResource(R.drawable.border_active);
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+    @Override
+    public void onBackPressed() {
+        /**
+         * Create warning message when back button is pressed
+         */
+
+        // Only warn for unsaved games
+        if( file_loaded.equals("") ){
+
+//            new AlertDialog.Builder(this)
+//                    .setTitle(R.string.sudoku_backPress_title)
+//                    .setMessage(R.string.sudoku_backPress_message)
+//                    .setNegativeButton(android.R.string.no, null)
+//                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//
+//                        public void onClick(DialogInterface arg0, int arg1) {
+//                            Sudoku.super.onBackPressed();
+//                        }
+//                    }).create().show();
+
+
+
+            // Use AlertDialog to select file name or exit without saving
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.save_message_title);
+
+
+            final EditText input = new EditText(this);
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            // Initialize with current loaded file name (or "" if new puzzle)
+            input.setText( R.string.save_message_autofill );
+            // and select it all for over-writing
+            input.setSelectAllOnFocus(true);
+            builder.setView(input);
+
+
+            //Set up buttons
+            builder.setPositiveButton(R.string.sudoku_save, new DialogInterface.OnClickListener(){
+                @Override
+                public void onClick(DialogInterface dialog, int which ){
+
+                    // Create state String of 81*3 digits
+                    String stateString = "";
+                    for (int i = 0; i < x - 2; i++) {
+                        for (int j = 0; j < y - 2; j++) {
+                            stateString = stateString + String.valueOf(grid[i][j]);
                         }
-                        for (int i = 0; i < x - 2; i++) {
-                            for (int j = 0; j < y - 2; j++) {
-                                stateString = stateString + String.valueOf( grid_initialState[i][j] ) ;
-                            }
+                    }
+                    for (int i = 0; i < x - 2; i++) {
+                        for (int j = 0; j < y - 2; j++) {
+                            stateString = stateString + String.valueOf( grid_initialState[i][j] ) ;
                         }
-                        for (int i = 0; i < x - 2; i++) {
-                            for (int j = 0; j < y - 2; j++) {
-                                stateString = stateString + String.valueOf( grid_correct[i][j] ) ;
-                            }
+                    }
+                    for (int i = 0; i < x - 2; i++) {
+                        for (int j = 0; j < y - 2; j++) {
+                            stateString = stateString + String.valueOf( grid_correct[i][j] ) ;
                         }
+                    }
 
-                        ///ONLY RECOGNIZE .dat FILE TYPES!!
-                        saveFileName = input.getText().toString()+".dat";
+                    ///ONLY RECOGNIZE .dat FILE TYPES!!
+                    saveFileName = input.getText().toString()+".dat";
+
+
+                    if( MainMenu.savedGames.contains( saveFileName ) ){
+                        Log.d("SAVE GAME:",  " GAME NAME ALREADY EXISTS");
+                        // delete name
+                        input.setText( "Name exists, try another" );
+                        Sudoku.super.onBackPressed();
+
+                        //TODO:  currently the game is just not saved if there is a name clash!!
+
+                        //onBackPressed();
+
+                        //bring up a message
+                    }
+                    else{
 
                         // Write file
                         FileOutputStream outputStream;
@@ -345,54 +585,36 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                         finish();
 
                     }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which){
-                        dialog.cancel();
-                    }
-                });
 
-                builder.show();
-
-
-                break;
+                }
+            });
 
 
 
-            default:
-                break;  //is this essential?
+
+            builder.setNegativeButton(R.string.sudoku_dont_save, new DialogInterface.OnClickListener(){
+                @Override
+                public void onClick(DialogInterface dialog, int which){
+
+                    //TODO :  delete the temp file name!
+
+                    finish();
+                    //Sudoku.super.onBackPressed();
+                    //dialog.cancel();
+                }
+            });
+
+
+           builder.show();
+
+
 
         }
-        
-    }
-
-
-
-
-
-
-
-    @Override
-    public void onBackPressed() {
-        /**
-         * Create warning message when back button is pressed
-         */
-
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.sudoku_backPress_title)
-                .setMessage(R.string.sudoku_backPress_message)
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        Sudoku.super.onBackPressed();
-                    }
-                }).create().show();
-
+        else{
+            Sudoku.super.onBackPressed();
+        }
 
     }
-
 
 
 

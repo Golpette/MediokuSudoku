@@ -1291,8 +1291,8 @@
         android:text="@string/sudoku_check"
         app:layout_constraintLeft_toRightOf="@+id/sudokuHintButton"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/sudokuSaveButton"
-        android:layout_marginBottom="25dp" />
+        android:layout_marginBottom="25dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
@@ -1302,15 +1302,6 @@
         android:orientation="horizontal"
         tools:layout_editor_absoluteY="20dp"
         tools:layout_editor_absoluteX="0dp" />
-
-    <Button
-        android:id="@+id/sudokuSaveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sudoku_save"
-        app:layout_constraintLeft_toRightOf="@+id/sudokuCheckButton"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/sudokuCheckButton" />
 
 
 </android.support.constraint.ConstraintLayout>
