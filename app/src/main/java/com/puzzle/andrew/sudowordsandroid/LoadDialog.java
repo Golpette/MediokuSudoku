@@ -6,14 +6,12 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class LoadDialog extends DialogFragment {
-
 
     /* The activity that creates an instance of this dialog fragment must
  * implement this interface in order to receive event callbacks.
@@ -40,8 +38,6 @@ public class LoadDialog extends DialogFragment {
                     + " must implement NoticeDialogListener");
         }
     }
-
-
 
 
     @Override
@@ -77,9 +73,4 @@ public class LoadDialog extends DialogFragment {
         return builder.create();
 
     }
-
-
-
-
-
 }

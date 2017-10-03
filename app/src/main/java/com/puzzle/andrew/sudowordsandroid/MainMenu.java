@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -27,9 +29,10 @@ import java.util.Random;
 
 public class MainMenu extends AppCompatActivity implements View.OnClickListener, LoadDialog.NoticeDialogListener {
 
-    Button easyButton, mediumButton, loadButton;
+    Button easyButton, mediumButton, difficultButton, loadButton;
 
     public static ProgressBar progressBar; // Want this accessible from other activity - is this the right way??
+
 
 
     // STEVE: TEST MAKING SUDOKU HERE IN ASYNC TASK ==========================================
@@ -60,6 +63,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main_menu);
 
         //Steve: need this plus the android:screenOrientation="portrait" in the xml
@@ -73,6 +78,9 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
         mediumButton = (Button) findViewById(R.id.button_medium);
         mediumButton.setOnClickListener(MainMenu.this);
+
+        difficultButton = (Button) findViewById(R.id.button_difficult);
+        difficultButton.setOnClickListener(MainMenu.this);
 
         loadButton = (Button) findViewById(R.id.button_load);
         loadButton.setOnClickListener(MainMenu.this);
@@ -124,6 +132,22 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
                 difficulty = "medium";
                 new PuzzleGeneration().execute();
+
+                break;
+
+            case R.id.button_difficult:
+                // Make progressBar visible
+                progressBar.setVisibility(View.VISIBLE);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                builder.setMessage(R.string.difficult_message)
+                        .setTitle("");
+
+                AlertDialog dialog = builder.create();
+
+                difficulty = "difficult";
+                //new PuzzleGeneration().execute();
 
                 break;
 

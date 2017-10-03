@@ -63,13 +63,12 @@ public class SudokuMethods {
 
 		return startGrid;
 	}
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	
 	public static int[][] makeEasy(int[][] fullGrid){   //  MAYBE "VERRRRY" EASY
 		/**

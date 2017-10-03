@@ -8,11 +8,11 @@
     <!-- steve changed large_background_color -->
 
     <stroke
-        android:width="1dp"
+        android:width="1.5dp"
         android:color="@color/border_color" >
     </stroke>
 
     <corners
-        android:radius="2dp"    >
+        android:radius="0dp"    >
     </corners>
 </shape>
