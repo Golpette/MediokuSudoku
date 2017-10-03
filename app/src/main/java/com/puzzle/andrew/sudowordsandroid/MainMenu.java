@@ -134,12 +134,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
 
             case R.id.button_saved_games:
-                //Context context = getApplicationContext();
-
-                // Get all (.dat) game save files
-                //savedGames = SavedGames.getSavedGames( context );  // only initialize it now... bad approach?
-
-                //2.  Raise the dialog but further puzzle loading has to gi into this dialogs onClick() method!
+                // Raise the dialog but further puzzle loading has to go into this dialogs onClick() method
                 showNoticeDialog();
 
                 break;
@@ -424,6 +419,17 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
