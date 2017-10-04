@@ -29,6 +29,8 @@ import android.widget.TextView;
 import com.puzzle.andrew.sudowordsandroid.MainMenu;
 import com.puzzle.andrew.sudowordsandroid.R;
 
+import org.w3c.dom.Text;
+
 import java.io.FileOutputStream;
 
 
@@ -117,10 +119,35 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
+        sudGrid.removeAllViews();
+
+        sudGrid.setRowCount(9);
+        sudGrid.setColumnCount(9);
+
+
+//        <ImageView
+//        android:id="@+id/large_row0col0"
+//        android:layout_width="120dp"
+//        android:layout_height="120dp"
+//        android:layout_column="0"
+//        android:layout_columnSpan="3"
+//        android:layout_row="0"
+//        android:layout_rowSpan="3"
+//        android:background="@drawable/rounded_corner_large"
+//        app:srcCompat="@drawable/large_border" />
+
+//        TextView largest = new TextView(this);
+//        largest.setBackgroundResource(R.drawable.rounded_corner_large);
+//        largest.setLayoutParams(new GridLayout.LayoutParams(
+//                GridLayout.spec(1, GridLayout.CENTER),
+//                GridLayout.spec(1, GridLayout.CENTER)));
+//        sudGrid.addView(largest);
+
 
 
         for(int i = 0; i < x-2; i++) {
             for (int j = 0; j < y - 2; j++) {
+
                 EditText field = new EditText(this);
                 field.setBackgroundResource(R.drawable.border_active);
                 if (grid[i][j] != 0) {
@@ -136,7 +163,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 field.setLayoutParams(new AppBarLayout.LayoutParams(158, 158));
                 field.setGravity(Gravity.CENTER);
                 field.setSelectAllOnFocus(true);
-                sudGrid.addView(field, i);
+                sudGrid.addView(field);
 
             }
         }
