@@ -139,7 +139,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 // Make progressBar visible
                 progressBar.setVisibility(View.VISIBLE);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
 
                 builder.setMessage(R.string.difficult_message)
                         .setTitle("");

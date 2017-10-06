@@ -4,11 +4,17 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.R.drawable.ic_dialog_alert;
 
 
 public class LoadDialog extends DialogFragment {
@@ -56,7 +62,8 @@ public class LoadDialog extends DialogFragment {
         // The builder needs an array not a list
         String[] arr = list_x.toArray( new String[ list_w.size() ] );
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog);
+
 
         String loadDialogTitle = "Choose game";
         if( arr.length == 0 ){ loadDialogTitle = "No saved games!"  ;  }
@@ -70,6 +77,7 @@ public class LoadDialog extends DialogFragment {
                         mListener.onClick( which );
                     }
                 });
+
         return builder.create();
 
     }

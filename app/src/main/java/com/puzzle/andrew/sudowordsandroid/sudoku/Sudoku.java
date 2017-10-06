@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
@@ -326,7 +327,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             case R.id.sudokuSaveButton:
 
                 // Use AlertDialog to select file name
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
                 builder.setTitle("Enter save name");
 
                 final EditText input = new EditText(this);
@@ -414,8 +415,10 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
          * Create warning message when back button is pressed
          */
 
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.sudoku_backPress_title)
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomAlertDialog);
+
+        builder.setTitle(R.string.sudoku_backPress_title)
+                .setIcon(R.drawable.sudoku)
                 .setMessage(R.string.sudoku_backPress_message)
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
