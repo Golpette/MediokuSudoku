@@ -407,7 +407,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             input.setInputType(InputType.TYPE_CLASS_TEXT);
 
             // Initialize with current loaded file name (or "" if new puzzle)
-            input.setText( default_msg );
+            input.setHint( default_msg );
             // and select it all for over-writing
             input.setSelectAllOnFocus(true);
             builder.setView(input);
