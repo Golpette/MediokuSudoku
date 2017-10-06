@@ -60,7 +60,7 @@ public class LoadDialog extends DialogFragment {
         }
 
         // The builder needs an array not a list
-        String[] arr = list_x.toArray( new String[ list_w.size() ] );
+        String[] arr = list_x.toArray( new String[ list_x.size() ] );
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 

@@ -2,15 +2,19 @@ package com.puzzle.andrew.sudowordsandroid;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -356,73 +360,128 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
          *  WE HAVE TO MAKE THE INTENT AND SET-UP THE GAME IN THIS METHOD SINCE THE PROGRAM CONTINUES TO RUN AFTER WE SHOW A DIALOG.
          */
 
-        Context context = getApplicationContext();
+        // File we want to load from LoadDialog
+        String gameName = savedGames.get( which );
+        // Remove extension
+        String gameName_noExt = gameName.substring(  0, gameName.lastIndexOf('.')   );
 
-        // File name we want to load
-        String gameToLoad = savedGames.get( which );
-        String gameToLoad_noExt = gameToLoad.substring(  0, gameToLoad.lastIndexOf('.')   );
-
-        // Toast is just a wee temporary pop-up
-        Toast.makeText(this, "Loading: " + gameToLoad_noExt, Toast.LENGTH_SHORT).show();
-
-
-        // Set initial, current and solution states in mBundle
-        String textFromFile = "";
-        // Gets the file from the primary **internal** storage space of the current application.
-        File testFile = new File( context.getFilesDir(), gameToLoad );
-        if (testFile != null) {
-            StringBuilder stringBuilder = new StringBuilder();
-            // Reads the data from the file
-            BufferedReader reader = null;
-            try {
-                reader = new BufferedReader(new FileReader(testFile));
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                    textFromFile += line.toString();
-                }
-                reader.close();
-                Log.d("ReadWriteFile", textFromFile);
-            } catch (Exception e) {
-                //Log.e("eeeeeeReadWriteFile", textFromFile);
-            }
-        }
-
-        if( textFromFile.length()!=(81*3) ){
-            Log.d( "INVALID FILE FORMAT", gameToLoad  );
-        }
-        else{
-            // set current state (first 81 digits)
-            for( int i=0; i<81; i++ ){
-                grid[ i/9 ][ i%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
-            }
-            // set initial state
-            for( int i=81; i<162; i++ ){
-                start_grid[ (i-81)/9 ][ (i-81)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
-            }
-            // set initial state
-            for( int i=162; i<81*3; i++ ){
-                grid_correct[ (i-162)/9 ][ (i-162)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
-            }
-        }
-
-
-        // Generate the game now!
-        Intent puzzle = new Intent(MainMenu.this, Sudoku.class);
-        Bundle mBundle = new Bundle();
-        mBundle.putSerializable("grid_solution", grid_correct );
-        mBundle.putSerializable("grid_initialState", start_grid );
-        mBundle.putSerializable("grid_currentState", grid );
-        mBundle.putString("file_loaded", gameToLoad_noExt);
-        puzzle.putExtras(mBundle);
-        startActivity( puzzle );
-
+        // Make alert dialogue for load / delete
+        load_delete_choice( gameName_noExt );
+        // TODO this is a shit cheat and not user friendly.
+        // TODO I want to hold any file in list to bring up a multichoicelist so we can delete multiple files
 
     }
 
 
 
 
+
+
+
+
+    public void load_delete_choice( String filename2 ){
+        /**
+         * Custom onBackPressed to allow passing of Strings
+         */
+
+         final String filename = filename2;
+
+        // Use AlertDialog to select file name or exit without saving
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle( "Load or delete?" );
+
+
+        //Set up buttons. Positive button loads game
+        builder.setPositiveButton( "Load", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which ){
+
+                Context context = getApplicationContext();
+
+                Toast.makeText(context, "Loading: " + filename, Toast.LENGTH_SHORT).show();
+
+                // Load game
+                // Set initial, current and solution states in mBundle
+                String textFromFile = "";
+                // Gets the file from the primary **internal** storage space of the current application.
+                File testFile = new File( context.getFilesDir(), filename+".dat" );
+                if (testFile != null) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    // Reads the data from the file
+                    BufferedReader reader = null;
+                    try {
+                        reader = new BufferedReader(new FileReader(testFile));
+                        String line;
+
+                        while ((line = reader.readLine()) != null) {
+                            textFromFile += line.toString();
+                        }
+                        reader.close();
+                        Log.d("ReadWriteFile", textFromFile);
+                    } catch (Exception e) {
+                        //Log.e("eeeeeeReadWriteFile", textFromFile);
+                    }
+                }
+
+                if( textFromFile.length()!=(81*3) ){
+                    Log.d( "INVALID FILE FORMAT", filename  );
+                }
+                else{
+                    // set current state (first 81 digits)
+                    for( int i=0; i<81; i++ ){
+                        grid[ i/9 ][ i%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+                    }
+                    // set initial state
+                    for( int i=81; i<162; i++ ){
+                        start_grid[ (i-81)/9 ][ (i-81)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+                    }
+                    // set initial state
+                    for( int i=162; i<81*3; i++ ){
+                        grid_correct[ (i-162)/9 ][ (i-162)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+                    }
+                }
+
+                // Generate the game now!
+                Intent puzzle = new Intent(MainMenu.this, Sudoku.class);
+                Bundle mBundle = new Bundle();
+                mBundle.putSerializable("grid_solution", grid_correct );
+                mBundle.putSerializable("grid_initialState", start_grid );
+                mBundle.putSerializable("grid_currentState", grid );
+                mBundle.putString("file_loaded", filename );
+                puzzle.putExtras(mBundle);
+                startActivity( puzzle );
+
+            }
+        });
+
+        // Negative button deletes game
+        builder.setNegativeButton( "Delete" , new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which){
+                //TODO :  delete the file!
+
+                Context context = getApplicationContext();
+
+                File fdelete = new File( context.getFilesDir(), filename+".dat" );
+
+                if (fdelete.exists()) {
+                    if (fdelete.delete()) {
+                        Toast.makeText(context, "Deleting: " + filename, Toast.LENGTH_SHORT).show();
+                        Log.d("FILE DELETION", "Deletion successful");
+                    } else {
+                        Log.d("FILE DELETION", "Deletion failed");
+                    }
+                }
+
+                // Update the save game list!!
+                savedGames = SavedGames.getSavedGames( context );
+            }
+        });
+
+
+        builder.show();
+
+    }
 
 
 
