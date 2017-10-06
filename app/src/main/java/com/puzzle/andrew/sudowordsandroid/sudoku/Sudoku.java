@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.puzzle.andrew.sudowordsandroid.MainMenu;
 import com.puzzle.andrew.sudowordsandroid.R;
+import com.puzzle.andrew.sudowordsandroid.SavedGames;
 
 import java.io.FileOutputStream;
 
@@ -55,7 +56,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
     int x = 11, y = 11;
 
-    String saveFileName = "x";
+    String saveFileName = "x.dat";
     String file_loaded;     //so we auto-input current filename for easy over-writing
 
     //Context context;
@@ -408,20 +409,26 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
             // Initialize with current loaded file name (or "" if new puzzle)
             input.setHint( default_msg );
+            //input.setText( default_msg );
+
             // and select it all for over-writing
             input.setSelectAllOnFocus(true);
             builder.setView(input);
 
 
+            //Log.d("savefilename = ",  saveFileName);
+
+
             //Set up buttons
             builder.setPositiveButton(R.string.sudoku_save, new DialogInterface.OnClickListener(){
+
                 @Override
                 public void onClick(DialogInterface dialog, int which ){
 
                     /// Get name from the input EditText  (only recognize .dat files!)
-                    saveFileName = input.getText().toString()+".dat";
+                    String fileToSave = input.getText().toString()+".dat";
 
-                    if( MainMenu.savedGames.contains( saveFileName ) ){
+                    if( MainMenu.savedGames.contains( fileToSave ) ){
                         //Log.d("SAVE GAME:",  " GAME NAME ALREADY EXISTS");
 
                         // Print a Toast warning message
@@ -433,8 +440,14 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                         customOnBackPressed(  "Name already used!" , "try another"  );
                     }
                     else{
+                        // Remove the extension;  "file_loaded" is what is saved in saveGame()
+                        file_loaded = fileToSave.substring( 0, fileToSave.lastIndexOf(".")    );   //saveGame doesn't want the extension
+                        saveGame();
 
-                        saveGame();  // SC: I don't think this save is necessary...
+                        // Update the save game list!
+                        Context context = getApplicationContext();
+                        MainMenu.savedGames = SavedGames.getSavedGames( context );
+
                         finish();
                     }
                 }
