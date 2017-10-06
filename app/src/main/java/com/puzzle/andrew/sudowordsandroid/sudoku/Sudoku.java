@@ -58,10 +58,13 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     String saveFileName = "x";
     String file_loaded;     //so we auto-input current filename for easy over-writing
 
+    //Context context;
+
 
 
     protected void onCreate(Bundle savedInstanceState) {
 
+        //context = getApplicationContext();
 
         // Get the start_grid and correct_grid passed
         Bundle extras = getIntent().getExtras();
@@ -135,9 +138,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
             }
         }
-
-
-
 
 
 
@@ -380,32 +380,34 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         /**
          * Create warning message when back button is pressed
          */
+        String default_msg = "enter save name";
+        String default_title = "Want to save?";
+
+        customOnBackPressed( default_title, default_msg );
+    }
+
+
+
+
+
+
+    public void customOnBackPressed( String default_title, String default_msg ){
+        /**
+         * Custom onBackPressed to allow passing of Strings
+         */
 
         // Only warn for unsaved games
         if( file_loaded.equals("") ){  //TODO: set this "" to some generic temp name?
 
-//            new AlertDialog.Builder(this)
-//                    .setTitle(R.string.sudoku_backPress_title)
-//                    .setMessage(R.string.sudoku_backPress_message)
-//                    .setNegativeButton(android.R.string.no, null)
-//                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//
-//                        public void onClick(DialogInterface arg0, int arg1) {
-//                            Sudoku.super.onBackPressed();
-//                        }
-//                    }).create().show();
-
-
-
             // Use AlertDialog to select file name or exit without saving
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.save_message_title);
-
+            builder.setTitle( default_title );
 
             final EditText input = new EditText(this);
             input.setInputType(InputType.TYPE_CLASS_TEXT);
+
             // Initialize with current loaded file name (or "" if new puzzle)
-            input.setText( R.string.save_message_autofill );
+            input.setText( default_msg );
             // and select it all for over-writing
             input.setSelectAllOnFocus(true);
             builder.setView(input);
@@ -416,82 +418,39 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 @Override
                 public void onClick(DialogInterface dialog, int which ){
 
-                    // Create state String of 81*3 digits
-                    String stateString = "";
-                    for (int i = 0; i < x - 2; i++) {
-                        for (int j = 0; j < y - 2; j++) {
-                            stateString = stateString + String.valueOf(grid[i][j]);
-                        }
-                    }
-                    for (int i = 0; i < x - 2; i++) {
-                        for (int j = 0; j < y - 2; j++) {
-                            stateString = stateString + String.valueOf( grid_initialState[i][j] ) ;
-                        }
-                    }
-                    for (int i = 0; i < x - 2; i++) {
-                        for (int j = 0; j < y - 2; j++) {
-                            stateString = stateString + String.valueOf( grid_correct[i][j] ) ;
-                        }
-                    }
-
-                    ///ONLY RECOGNIZE .dat FILE TYPES!!
+                    /// Get name from the input EditText  (only recognize .dat files!)
                     saveFileName = input.getText().toString()+".dat";
 
-
                     if( MainMenu.savedGames.contains( saveFileName ) ){
-                        Log.d("SAVE GAME:",  " GAME NAME ALREADY EXISTS");
-                        // delete name
-                        input.setText( "Name exists, try another" );
-                        Sudoku.super.onBackPressed();
+                        //Log.d("SAVE GAME:",  " GAME NAME ALREADY EXISTS");
 
-                        //TODO:  currently the game is just not saved if there is a name clash!!
+                        // Print a Toast warning message
+                        Context context = getApplicationContext();
+                        Toast toast = Toast.makeText(context, "Saved game already exists!", Toast.LENGTH_LONG );
+                        toast.show();
 
-                        //onBackPressed();
-
-                        //bring up a message
+                        // Recursively call this function if name already taken!
+                        customOnBackPressed(  "Name already used!" , "try another"  );
                     }
                     else{
 
-                        // Write file
-                        FileOutputStream outputStream;
-                        try {
-                            outputStream = openFileOutput( saveFileName , Context.MODE_PRIVATE);
-                            outputStream.write( stateString.getBytes()   );
-                            outputStream.close();
-                            Log.d("SUCCESS", "FILE WRITTEN SUCCESSFULLY");
-                        } catch (Exception e) {
-                            Log.d("NO FILE WORK", "NO SAVE FILE WRITTEN");
-                            e.printStackTrace();
-                        }
-
-                        // IS THIS SAFE TO DO?? Want to exit puzzle after saving.
-                        //finishAffinity(); // will close all activities
+                        saveGame();  // SC: I don't think this save is necessary...
                         finish();
-
                     }
-
                 }
             });
-
-
 
 
             builder.setNegativeButton(R.string.sudoku_dont_save, new DialogInterface.OnClickListener(){
                 @Override
                 public void onClick(DialogInterface dialog, int which){
-
                     //TODO :  delete the temp file name!
-
                     finish();
-                    //Sudoku.super.onBackPressed();
-                    //dialog.cancel();
                 }
             });
 
 
-           builder.show();
-
-
+            builder.show();
 
         }
         else{
@@ -499,7 +458,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         }
 
     }
-
 
 
 

@@ -79,7 +79,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
         // Initialise the list of saved games
         Context context = getApplicationContext();
-        savedGames = SavedGames.getSavedGames( context );  // only initialize it now... bad approach?
+        savedGames = SavedGames.getSavedGames( context );  // need to re-call this if we start deleting files
 
         }
 
