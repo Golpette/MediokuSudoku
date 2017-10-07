@@ -62,7 +62,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         grid_initial_state = (int[][]) extras.getSerializable("grid_initialState");
         file_loaded = extras.getString( "file_loaded" ); // either the saved name or, if new game, "_temp_file_"
 
-
         //Steve: need this plus the android:screenOrientation="portrait" in the xml
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -439,7 +438,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                                 Log.d("FILE DELETION", "Deletion of _temp_file_ failed");
                             }
                         }
-                        
+
                         // Update the save game list!
                         MainMenu.savedGames = SavedGames.getSavedGames( context );
 
