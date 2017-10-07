@@ -1,5 +1,6 @@
 package com.puzzle.andrew.sudowordsandroid.sudoku;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
@@ -156,7 +157,14 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 if (grid_initialState[i][j] != 0) {
                     field.setBackgroundResource(R.drawable.rounded_corner_highlight);
                     field.setKeyListener(null);
-                    field.setFocusable(false);
+                    field.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View view, boolean hasFocus) {
+                            hideKeyboard(view);
+                        }
+                    });
+
+                    //field.setFocusable(false);
                 }else{
                     field.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                         @Override
@@ -165,6 +173,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                                 view.setBackgroundResource(R.drawable.rounded_corner_selected);
                             } else {
                                 view.setBackgroundResource(R.drawable.rounded_corner);
+                                //hideKeyboard(view);
                             }
                         }
                     });
@@ -187,6 +196,11 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
     }
 
+    //Hide keyboard when focus is not in an editable square
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 
     // STEVE: added this to prevent screen rotation
     @Override
