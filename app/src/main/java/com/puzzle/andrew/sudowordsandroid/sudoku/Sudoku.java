@@ -15,6 +15,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -207,15 +208,30 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
                 resetGridColours();
 
+                boolean errors = incorrectEntries();
 
-                if( !hintPressed && !gridFull ) {
-                    hintPressed = true;
-                    // actual Hint Button functionality
-                    int[] hint_xy = SudokuMethods.getHint_singles_hiddenSingles(grid);
-                    EditText field2 = (EditText) sudGrid.getChildAt(hint_xy[0] * 9 + hint_xy[1]);   //TODO: double check the [0] and [1] are correct way round
-                    field2.setBackgroundColor(getResources().getColor(R.color.sudoku_hint));
+                if( !errors ) {
+
+                    if (!hintPressed && !gridFull) {
+                        hintPressed = true;
+                        // actual Hint Button functionality
+                        int[] hint_xy = SudokuMethods.getHint_singles_hiddenSingles(grid);
+                        EditText field2 = (EditText) sudGrid.getChildAt(hint_xy[0] * 9 + hint_xy[1]);   //TODO: double check the [0] and [1] are correct way round
+                        field2.setBackgroundColor(getResources().getColor(R.color.sudoku_hint));
+                    } else {
+                        hintPressed = false;
+                    }
+
                 }
                 else{
+                    Toast toast = Toast.makeText(this, "There are incorrect entries!", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.TOP,0,0);
+                    // Increase text size in Toast
+                    ViewGroup group = (ViewGroup) toast.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setTextSize(20);
+
+                    toast.show();
                     hintPressed = false;
                 }
 
@@ -229,20 +245,30 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 hintPressed = false;
                 resetGridColours();
 
-                String[] morale = {"You can do it!", "Einstein never solved a single sudoku!", "This world doesn't deserve you",
+                String[] morale = {"You can do it!", "Einstein never solved a single sudoku", "This world doesn't deserve you",
                         "You're incredible!", "Fill me!", "I believe in you", "You complete me",
                         "Such perseverance and resolve", "Keep going!", "In the future, when robots rule the world, puzzles are all we'll have",
-                        "To solve the sudoku, one must become the sudoku", "Your smile is contagious :)"};
+                        "To solve the sudoku, one must become the sudoku", "Your smile is contagious :)",
+                        "You are the chosen one", "You're a wizard, Harry!", "This puzzle was generated JUST FOR YOU",
+                        "There are 6,670,903,752,021,072,936,960 sudoku puzzles to complete", "You can do sudoku!",
+                        "We all need a little help sometimes", "Feel the joy rise!"};
 
                 int r = (int)(  Math.random() * (morale.length)   );
 
                 Toast toast = Toast.makeText(this, morale[r], Toast.LENGTH_SHORT );
                 toast.setGravity(Gravity.CENTER,0,0);
+                // Increase text size in Toast
+                ViewGroup group = (ViewGroup) toast.getView();
+                TextView messageTextView = (TextView) group.getChildAt(0);
+                messageTextView.setTextSize(18);
                 toast.show();
 
+                break;
 
+            //================================================
+            //DONT DELETE YET
 
-
+                // REMOVE CHECK FEATURE AND JUST ADD A WARNING IN HINT IF THERE ARE INCORRECT ENTRIES
 //                if( !checkPressed ) {
 //                    checkPressed=true;
 //
@@ -278,8 +304,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 //                else{
 //                    checkPressed = false;
 //                }
+//========================================================
 
-                break;
 
 
 
@@ -291,6 +317,25 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     }
 
 
+
+
+
+    public boolean incorrectEntries(){
+        /**
+         * Check if there are incorrect entries; ok to have empty
+         */
+        boolean errors = false;
+
+        for (int i = 0; i < x - 2; i++) {
+            for (int j = 0; j < y - 2; j++) {
+                if (grid[i][j] != grid_correct[i][j]  &&  grid[i][j] !=0 ) {
+                    errors = true;
+                }
+            }
+        }
+
+        return errors;
+    }
 
 
 
