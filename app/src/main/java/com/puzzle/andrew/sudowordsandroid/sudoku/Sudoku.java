@@ -29,11 +29,8 @@ import com.puzzle.andrew.sudowordsandroid.SavedGames;
 import java.io.File;
 import java.io.FileOutputStream;
 
-
-
 //TODO:   BUGS TO SORT
 // (1) The hint will not be correct if there is an incorrect entry; fix the method / give warning?
-
 
 /**
  * Created by Andrew on 30/08/2017.
@@ -78,7 +75,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         hintButton = (Button) findViewById(R.id.sudokuHintButton);
         hintButton.setOnClickListener(Sudoku.this);
 
-
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
 
         // Set up grid using initial and current states
@@ -95,9 +91,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
             }
         }
-
-
-
 
         //Create a TextWatcher for input to addTextChangedListener() to hide keypad / reset colour /
         // autosave / ...  upoon number entry
@@ -142,15 +135,13 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
 
-
-
-
     // STEVE: added this to prevent screen rotation
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
+
 
 
     public void checkIfCorrect(){
@@ -166,7 +157,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
             }
         }
-
         if( gridCorrect ){
             // Congratulations Toast
             Toast toast = Toast.makeText(this, "CONGRATULATIONS!", Toast.LENGTH_SHORT);
@@ -178,7 +168,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             toast.show();
         }
     }
-
 
 
 
@@ -204,14 +193,12 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         /**
          * Define function of Hint and Check buttons here
          */
-
         updateGrid();
 
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
 
         // Check if grid is full (so we can prevent Hint method running)
         boolean gridFull = isGridFull();
-
 
         // Deal with buton presses
         switch ( view.getId() ){
@@ -235,7 +222,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                     } else {
                         hintPressed = false;
                     }
-
                 }
                 else{
                     Toast toast = Toast.makeText(this, "There are incorrect entries!", Toast.LENGTH_SHORT);
@@ -249,8 +235,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                     hintPressed = false;
                 }
                 break;
-
-
 
             // Check button -------------------------------------------
             case R.id.sudokuMoraleButton:
@@ -276,13 +260,10 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 messageTextView.setTextSize(18);
                 toast.show();
                 break;
-
-
             default:
                 break;  //is this essential?
         }
     }
-
 
 
 
@@ -304,13 +285,10 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
 
-
-
     public void saveGame() {
         /**
          * Save game state to file
          */
-
         // Create state String of 81*3 digits
         String stateString = "";
         for (int i = 0; i < GRID_SIZE; i++) {
@@ -344,8 +322,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             e.printStackTrace();
         }
     }
-
-
 
 
 
@@ -391,10 +367,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
 
-
-
-
-
     @Override
     public void onBackPressed() {
         /**
@@ -405,9 +377,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         customOnBackPressed( default_title, default_msg );
     }
-
-
-
 
 
 
@@ -470,8 +439,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                                 Log.d("FILE DELETION", "Deletion of _temp_file_ failed");
                             }
                         }
-
-
+                        
                         // Update the save game list!
                         MainMenu.savedGames = SavedGames.getSavedGames( context );
 
@@ -479,7 +447,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                     }
                 }
             });
-
 
             builder.setNegativeButton(R.string.sudoku_dont_save, new DialogInterface.OnClickListener(){
                 @Override
