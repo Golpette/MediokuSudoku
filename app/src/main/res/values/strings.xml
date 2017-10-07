@@ -4,8 +4,12 @@
     <string name="sudoku_header"></string>
     <string name="sudoku_hint">Hint</string>
     <string name="sudoku_check">Check</string>
+    <string name="sudoku_morale">Morale</string>
     <string name="sudoku_save">Save</string>
-    <string name="sudoku_congrats">"CONGRATULATIONS!"</string>
-    <string name="sudoku_backPress_title">"Sure you want to exit?"</string>
-    <string name="sudoku_backPress_message">"Unsaved changes will be lost."</string>
+    <string name="sudoku_dont_save">Don\'t save</string>
+    <string name="save_message_title">Want to save?</string>
+    <string name="save_message_autofill">enter save name</string>
+    <string name="sudoku_congrats">CONGRATULATIONS!</string>
+    <string name="sudoku_backPress_title">Sure you want to exit?</string>
+    <string name="sudoku_backPress_message">Unsaved changes will be lost</string>
 </resources>

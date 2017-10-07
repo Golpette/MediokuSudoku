@@ -8,8 +8,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Button;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +63,7 @@ public class LoadDialog extends DialogFragment {
         }
 
         // The builder needs an array not a list
-        String[] arr = list_x.toArray( new String[ list_w.size() ] );
+        String[] arr = list_x.toArray( new String[ list_x.size() ] );
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialog);
 

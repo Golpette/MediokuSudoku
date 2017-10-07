@@ -1052,7 +1052,7 @@ public class SudokuMethods {
         }
 
         // Remove numbers. Attempt this a set number of times
-        for( int tries=0; tries<55; tries++ ){
+        for( int tries=0; tries<60; tries++ ){
 
             // pick random space and remove
             int xp=(int)(Math.random()*gridSize);
