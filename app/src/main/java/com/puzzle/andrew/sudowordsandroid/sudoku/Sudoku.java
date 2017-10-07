@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.os.Build;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,24 +40,20 @@ import java.io.FileOutputStream;
  */
 public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
-    private Button moraleButton;
-    private Button hintButton;
+    private Button moraleButton, hintButton;
 
     private boolean hintPressed = false;
 
+    final static int GRID_SIZE = MainMenu.GRID_SIZE;
+
     // Current state of grid
-    int[][] grid = new int [9][9];
+    int[][] grid = new int [GRID_SIZE][GRID_SIZE];
     // Hold solution
-    int[][] grid_correct = new int [9][9];
+    int[][] grid_correct = new int [GRID_SIZE][GRID_SIZE];
     // Initial puzzle's state
-    int[][] grid_initialState = new int[9][9];
+    int[][] grid_initial_state = new int[GRID_SIZE][GRID_SIZE];
 
-    int x = 11, y = 11;
-
-    String saveFileName = "";
-    String file_loaded;     //so we auto-input current filename for easy over-writing
-
-
+    String saveFileName = "", file_loaded;     //so we auto-input current filename for easy over-writing
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +62,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         Bundle extras = getIntent().getExtras();
         grid_correct = (int[][]) extras.getSerializable("grid_solution");
         grid = (int[][]) extras.getSerializable("grid_currentState");
-        grid_initialState = (int[][]) extras.getSerializable("grid_initialState");
+        grid_initial_state = (int[][]) extras.getSerializable("grid_initialState");
         file_loaded = extras.getString( "file_loaded" ); // either the saved name or, if new game, "_temp_file_"
 
 
@@ -88,14 +82,14 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
 
         // Set up grid using initial and current states
-        for(int i = 0; i < x-2; i++){
-            for (int j = 0; j < y-2; j++){
-                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+        for(int i = 0; i < GRID_SIZE; i++){
+            for (int j = 0; j < GRID_SIZE; j++){
+                EditText field = (EditText) sudGrid.getChildAt(i * GRID_SIZE + j);
                 field.setBackgroundResource(R.drawable.border_active);
                 // Set current grid state
                 if( grid[i][j]!=0 ){  field.setText("" + grid[i][j]);  }
                 // Set initial state colour and make non-editable
-                if(grid_initialState[i][j]!=0) {
+                if(grid_initial_state[i][j]!=0) {
                     field.setBackgroundResource(R.drawable.border);
                     field.setKeyListener(null);
                 }
@@ -174,8 +168,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         // Check if grid is full or correct
         boolean gridCorrect = true;
-        for (int i = 0; i < x - 2; i++) {
-            for (int j = 0; j < y - 2; j++) {
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
                 if (grid[i][j] != grid_correct[i][j]) {
                     gridCorrect = false;
                 }
@@ -205,8 +199,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         * Check if grid is full of numbers
         */
         boolean gridFull = true;
-        for (int i = 0; i < x - 2; i++) {
-            for (int j = 0; j < y - 2; j++) {
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
                 if(grid[i][j]==0){  // 0 is set if no number is entered
                     gridFull = false;
                 }
@@ -249,7 +243,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                         hintPressed = true;
                         // actual Hint Button functionality
                         int[] hint_xy = SudokuMethods.getHint_singles_hiddenSingles(grid);
-                        EditText field2 = (EditText) sudGrid.getChildAt(hint_xy[0] * 9 + hint_xy[1]);   //TODO: double check the [0] and [1] are correct way round
+                        EditText field2 = (EditText) sudGrid.getChildAt(hint_xy[0] * GRID_SIZE + hint_xy[1]);   //TODO: double check the [0] and [1] are correct way round
                         field2.setBackgroundColor(getResources().getColor(R.color.sudoku_hint));
                     } else {
                         hintPressed = false;
@@ -337,8 +331,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
          */
         boolean errors = false;
 
-        for (int i = 0; i < x - 2; i++) {
-            for (int j = 0; j < y - 2; j++) {
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
                 if (grid[i][j] != grid_correct[i][j]  &&  grid[i][j] !=0 ) {
                     errors = true;
                 }
@@ -359,18 +353,18 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         // Create state String of 81*3 digits
         String stateString = "";
-        for (int i = 0; i < x - 2; i++) {
-            for (int j = 0; j < y - 2; j++) {
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
                 stateString = stateString + String.valueOf(grid[i][j]);
             }
         }
-        for (int i = 0; i < x - 2; i++) {
-            for (int j = 0; j < y - 2; j++) {
-                stateString = stateString + String.valueOf( grid_initialState[i][j] ) ;
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                stateString = stateString + String.valueOf( grid_initial_state[i][j] ) ;
             }
         }
-        for (int i = 0; i < x - 2; i++) {
-            for (int j = 0; j < y - 2; j++) {
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
                 stateString = stateString + String.valueOf( grid_correct[i][j] ) ;
             }
         }
@@ -401,9 +395,9 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
          *   Update grid[][] (does not happen upon text entry).
          */
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
-        for (int i = 0; i < x - 2; i++) {
-            for (int j = 0; j < y - 2; j++) {
-                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                EditText field = (EditText) sudGrid.getChildAt(i * GRID_SIZE + j);
                 if (  !String.valueOf(field.getText()).isEmpty()  ) {
                     grid[i][j] = Integer.parseInt(String.valueOf(field.getText()));
                 }
@@ -426,9 +420,9 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
          */
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
         // Reset colours
-        for (int i = 0; i < x - 2; i++) {
-            for (int j = 0; j < y - 2; j++) {
-                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                EditText field = (EditText) sudGrid.getChildAt(i * GRID_SIZE + j);
                 if( field.getKeyListener() == null ){
                     field.setBackgroundResource(R.drawable.border);
                 }

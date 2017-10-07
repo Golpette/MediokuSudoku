@@ -45,13 +45,13 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     ArrayList<Integer> row, checks, correct;
     ArrayList<ArrayList<Integer>> cols, boxes;
 
-    final static int GRID_SIZE = 9;
+    public final static int GRID_SIZE = 9;
     // Current state of grid
-    int[][] grid = new int [GRID_SIZE][GRID_SIZE];
+    private int[][] grid = new int [GRID_SIZE][GRID_SIZE];
     // Hold solution
-    int[][] grid_correct = new int [GRID_SIZE][GRID_SIZE];
+    private int[][] grid_correct = new int [GRID_SIZE][GRID_SIZE];
     //Initial state of grid
-    int[][] start_grid = new int[GRID_SIZE][GRID_SIZE];
+    private int[][] grid_initial_state = new int[GRID_SIZE][GRID_SIZE];
 
 
     Random rand;
@@ -154,7 +154,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
                 break;
 
-
             case R.id.button_saved_games:
                 // Raise the dialog but further puzzle loading has to go into this dialogs onClick() method
                 showNoticeDialog();
@@ -183,13 +182,13 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             // Make full grid
             grid_correct = generateSudoku(grid);
             //Make the puzzle!
-            start_grid = makeGrid(grid, difficulty);
+            grid_initial_state = makeGrid(grid, difficulty);
 
             Intent puzzle = new Intent(MainMenu.this, Sudoku.class);
             Bundle mBundle = new Bundle();
             mBundle.putSerializable("grid_solution", grid_correct );
-            mBundle.putSerializable("grid_initialState", start_grid );
-            mBundle.putSerializable("grid_currentState", start_grid );       // is this OK? When generating a grid our start grid is our current!
+            mBundle.putSerializable("grid_initialState", grid_initial_state);
+            mBundle.putSerializable("grid_currentState", grid_initial_state);       // is this OK? When generating a grid our start grid is our current!
             mBundle.putString("file_loaded", unsavedGameName  );  // TODO KEEP THIS IN MIND
             puzzle.putExtras(mBundle);
             startActivity( puzzle );
@@ -334,17 +333,17 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
 
 
-    public int[][] makeGrid(int [][] grid2, String diff){
+    public int[][] makeGrid(int [][] grid, String diff){
         /**
          * Generates starting grid from solution grid
          */
         int[][] start_grid = new int[GRID_SIZE][GRID_SIZE];
 
         if( diff.equals("easy" ) ){
-            start_grid = SudokuMethods.makeEasy(grid2);
+            start_grid = SudokuMethods.makeEasy(grid);
         }
         else if( diff.equals("medium") ){
-            start_grid = SudokuMethods.makeMedium2(grid2);
+            start_grid = SudokuMethods.makeMedium2(grid);
         }
 
         return start_grid;
@@ -451,7 +450,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                     }
                     // set initial state
                     for( int i=81; i<162; i++ ){
-                        start_grid[ (i-81)/GRID_SIZE ][ (i-81)%GRID_SIZE ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+                        grid_initial_state[ (i-81)/GRID_SIZE ][ (i-81)%GRID_SIZE ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
                     }
                     // set initial state
                     for( int i=162; i<81*3; i++ ){
@@ -463,7 +462,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 Intent puzzle = new Intent(MainMenu.this, Sudoku.class);
                 Bundle mBundle = new Bundle();
                 mBundle.putSerializable("grid_solution", grid_correct );
-                mBundle.putSerializable("grid_initialState", start_grid );
+                mBundle.putSerializable("grid_initialState", grid_initial_state);
                 mBundle.putSerializable("grid_currentState", grid );
                 mBundle.putString("file_loaded", filename );
                 puzzle.putExtras(mBundle);
