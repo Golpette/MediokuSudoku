@@ -131,22 +131,13 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
                         // Make congrats Toast if correct
                         checkIfCorrect(  );
-
                     }
                 };
                 et.addTextChangedListener( tw );
-
             }
         }
-
-
-
-
-
         // Stop progressBar
         MainMenu.progressBar.setVisibility(View.GONE);
-
-
     }
 
 
@@ -186,9 +177,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             messageTextView.setTextSize(25);
             toast.show();
         }
-
-
-
     }
 
 
@@ -238,7 +226,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 boolean errors = incorrectEntries();
 
                 if( !errors ) {
-
                     if (!hintPressed && !gridFull) {
                         hintPressed = true;
                         // actual Hint Button functionality
@@ -261,7 +248,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                     toast.show();
                     hintPressed = false;
                 }
-
                 break;
 
 
@@ -294,33 +280,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
             default:
                 break;  //is this essential?
-
         }
-        
     }
-
-//=========================================================
-// REMOVE CHECK FEATURE AND JUST ADD A WARNING IN HINT IF THERE ARE INCORRECT ENTRIES
-//                if( !checkPressed ) {
-//                    checkPressed=true;
-//                    for (int i = 0; i < x - 2; i++) {
-//                        for (int j = 0; j < y - 2; j++) {
-//                            EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-//                            //field.setBackgroundResource(R.drawable.border_active);
-//                            if (grid[i][j] == grid_correct[i][j]) {
-//                                field.setBackgroundColor( getResources().getColor(R.color.sudoku_correct) );
-//                            }
-//                            else if(grid[i][j]!=0 ){  // 0 is set if no number is entered
-//                                field.setBackgroundColor( getResources().getColor(R.color.sudoku_wrong) );
-//                            }
-//                        }
-//                    }
-//                }
-//                else{
-//                    checkPressed = false;
-//                }
-//========================================================
-
 
 
 
@@ -338,7 +299,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
             }
         }
-
         return errors;
     }
 
@@ -383,7 +343,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             Log.d("NO FILE WORK", "NO SAVE FILE WRITTEN");
             e.printStackTrace();
         }
-
     }
 
 
@@ -407,9 +366,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 }
             }
         }
-
-
-
     }
 
 
@@ -540,24 +496,13 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                             Log.d("FILE DELETION", "Deletion of _temp_file_ failed");
                         }
                     }
-
                     finish();
                 }
             });
-
-
             builder.show();
-
         }
         else{
             Sudoku.super.onBackPressed();
         }
-
     }
-
-
-
-
-
-
 }

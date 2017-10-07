@@ -53,7 +53,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     //Initial state of grid
     private int[][] grid_initial_state = new int[GRID_SIZE][GRID_SIZE];
 
-
     Random rand;
     boolean complete = false;
 
@@ -61,7 +60,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     public static List<String> savedGames;
 
     //=========================================================================================
-
 
 
 
@@ -93,11 +91,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         // Initialise the list of saved games
         Context context = getApplicationContext();
         savedGames = SavedGames.getSavedGames( context );  // need to re-call this if we start deleting files
-
         }
-
-
-
 
     // STEVE: Added this to stop screen rotation; force portrait
     @Override
@@ -108,21 +102,18 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
 
 
-
     @Override
     public void onClick(View view) {
 
         // CAREFUL: MAYBE NEED TO RESET ALL ARRAYS AND LISTS HERE??????????????
-
-        correct = new ArrayList<Integer>();
-        row = new ArrayList<Integer>();
-        checks = new ArrayList<Integer>();
-        boxes = new ArrayList<ArrayList<Integer>>();
-        cols = new ArrayList<ArrayList<Integer>>();
+        correct = new ArrayList<>();
+        row = new ArrayList<>();
+        checks = new ArrayList<>();
+        boxes = new ArrayList<>();
+        cols = new ArrayList<>();
         rand = new Random();
         // reset solver
         complete = false;
-
 
         switch(view.getId()) {
 
@@ -159,18 +150,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 showNoticeDialog();
 
                 break;
-
-
         }
-
     }
-
-
-
-
-
-
-
 
 
 
@@ -206,19 +187,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     // Generate the full (solution) grid
     public int[][] generateSudoku(int[][] grid){
         /**
@@ -230,21 +198,20 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         checks.clear();
         correct.clear();
 
-
         if(!complete){
             for (int i = 0; i < GRID_SIZE; i++){
                 int bound = GRID_SIZE;
 
-                ArrayList<Integer> tempRow = new ArrayList<Integer>();
-                ArrayList<Integer> tempBox = new ArrayList<Integer>();
+                ArrayList<Integer> tempRow = new ArrayList<>();
+                ArrayList<Integer> tempBox = new ArrayList<>();
                 for (int j = 0; j <GRID_SIZE; j++){
                     if(j == 0){
                         for(int k = 1; k <= GRID_SIZE; k++){
                             row.add(k);
                             if(i == 0){
-                                ArrayList<Integer> box = new ArrayList<Integer>();
+                                ArrayList<Integer> box = new ArrayList<>();
                                 boxes.add(box);
-                                ArrayList<Integer> temps = new ArrayList<Integer>();
+                                ArrayList<Integer> temps = new ArrayList<>();
                                 cols.add(temps);
                             }
                         }
@@ -280,12 +247,10 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                     if(bound == 0){
                         complete = true;
                         break;
-                        //generateSudoku();
                     }else{
                         if(!cols.isEmpty()){
                             int temp = (rand.nextInt(bound));
                             int insertion = row.get(temp);
-                            //numbers[i][j].setText(""+insertion);
                             correct.add(insertion);
                             checks.add(row.get(temp));
                             cols.get(j).add(row.get(temp));
@@ -316,20 +281,14 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 }
             }
         }
-
-
-
         // Set correct solution
         for(int i = 0; i < GRID_SIZE; i++) {
             for (int j = 0; j <GRID_SIZE; j++) {
                 grid_correct[i][j] = grid[i][j];
             }
         }
-
         return grid_correct;
-
     }
-
 
 
 
@@ -345,16 +304,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         else if( diff.equals("medium") ){
             start_grid = SudokuMethods.makeMedium2(grid);
         }
-
         return start_grid;
-
-
     }
-
-
-
-
-
 
 
 
@@ -365,8 +316,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         DialogFragment dialog = new LoadDialog();
         dialog.show(  getFragmentManager(), "NoticeDialogFragment");
     }
-
-
 
 
 
@@ -386,13 +335,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         load_delete_choice( gameName_noExt );
         // TODO this is a shit cheat and not user friendly.
         // TODO I want to hold any file in list to bring up a multichoicelist so we can delete multiple files
-
     }
-
-
-
-
-
 
 
 
@@ -400,13 +343,11 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         /**
          * Custom onBackPressed to allow passing of Strings
          */
-
          final String filename = filename2;
 
         // Use AlertDialog to select file name or exit without saving
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle( "Load or delete?" );
-
 
         //Set up buttons. Positive button loads game
         builder.setPositiveButton( "Load", new DialogInterface.OnClickListener(){
@@ -467,7 +408,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 mBundle.putString("file_loaded", filename );
                 puzzle.putExtras(mBundle);
                 startActivity( puzzle );
-
             }
         });
 
@@ -494,22 +434,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 savedGames = SavedGames.getSavedGames( context );
             }
         });
-
-
         builder.show();
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
