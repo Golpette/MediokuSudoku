@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="true"
-    android:focusableInTouchMode="true"
     android:background="@drawable/gradient"
     android:screenOrientation="portrait">
 
@@ -16,6 +14,8 @@
         android:text="@string/sudoku_header"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textStyle="bold"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
         app:layout_constraintBottom_toTopOf="@+id/sudokuGrid"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

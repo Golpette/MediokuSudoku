@@ -19,6 +19,7 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -148,7 +149,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         for(int i = 0; i < x-2; i++) {
             for (int j = 0; j < y - 2; j++) {
-                EditText field = new EditText(this);
+                final EditText field = new EditText(this);
                 field.setBackgroundResource(R.drawable.rounded_corner);
                 field.setInputType(InputType.TYPE_CLASS_NUMBER);
                 if (grid[i][j] != 0) {
@@ -166,10 +167,19 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
                     //field.setFocusable(false);
                 }else{
+                    field.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            field.onTouchEvent(event);
+                            field.setSelection(field.getText().length());
+                            return true;
+                        }
+                    });
                     field.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                         @Override
                         public void onFocusChange(View view, boolean hasFocus) {
                             if (view.hasFocus()) {
+                                //field.setSelection(field.getText().length());
                                 view.setBackgroundResource(R.drawable.rounded_corner_selected);
                             } else {
                                 view.setBackgroundResource(R.drawable.rounded_corner);
