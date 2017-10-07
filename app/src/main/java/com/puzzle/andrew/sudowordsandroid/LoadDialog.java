@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +60,7 @@ public class LoadDialog extends DialogFragment {
         }
 
         // The builder needs an array not a list
-        String[] arr = list_x.toArray( new String[ list_w.size() ] );
+        String[] arr = list_x.toArray( new String[ list_x.size() ] );
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -74,6 +76,9 @@ public class LoadDialog extends DialogFragment {
                         mListener.onClick( which );
                     }
                 });
+
+
+
         return builder.create();
 
     }
