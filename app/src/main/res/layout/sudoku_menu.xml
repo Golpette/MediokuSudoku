@@ -34,6 +34,13 @@
         app:layout_constraintBottom_toTopOf="@+id/sudokuHintButton"
         android:layout_marginTop="32dp">
 
+        <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
+        <LinearLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_width="0px"
+            android:layout_height="0px"/>
+
         <ImageView
             android:id="@+id/large_row0col0"
             android:layout_width="120dp"

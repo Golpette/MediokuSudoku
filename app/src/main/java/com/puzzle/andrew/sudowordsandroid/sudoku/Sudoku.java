@@ -149,22 +149,31 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         for(int i = 0; i < x-2; i++) {
             for (int j = 0; j < y - 2; j++) {
-
                 EditText field = new EditText(this);
-                field.setBackgroundResource(R.drawable.border_active);
+                field.setBackgroundResource(R.drawable.rounded_corner);
+                field.setInputType(InputType.TYPE_CLASS_NUMBER);
                 if (grid[i][j] != 0) {
                     field.setText("" + grid[i][j]);
                 }
-                field.setBackgroundResource(R.drawable.rounded_corner);
-                field.setInputType(InputType.TYPE_CLASS_NUMBER);
                 if (grid_initialState[i][j] != 0) {
                     field.setBackgroundResource(R.drawable.rounded_corner_highlight);
                     field.setKeyListener(null);
+                }else{
+                    field.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View view, boolean hasFocus) {
+                            if (view.hasFocus()) {
+                                view.setBackgroundResource(R.drawable.rounded_corner_selected);
+                            } else {
+                                view.setBackgroundResource(R.drawable.rounded_corner);
+                            }
+                        }
+                    });
                 }
                 field.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
                 field.setLayoutParams(new AppBarLayout.LayoutParams(158, 158));
                 field.setGravity(Gravity.CENTER);
-                field.setSelectAllOnFocus(true);
+                //field.setSelectAllOnFocus(true);
                 field.setCursorVisible(false);
 
 
