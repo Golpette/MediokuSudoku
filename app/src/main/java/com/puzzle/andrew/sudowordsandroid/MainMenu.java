@@ -1,3 +1,8 @@
+/**
+ * @author Andrew Rigg, Steven Court
+ * @date 30/08/2017.
+ * This is an android app which generates sudoku puzzles randomly from scratch
+ */
 package com.puzzle.andrew.sudowordsandroid;
 
 import android.app.DialogFragment;
@@ -10,14 +15,11 @@ import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 
 import com.puzzle.andrew.sudowordsandroid.sudoku.Sudoku;
 import com.puzzle.andrew.sudowordsandroid.sudoku.SudokuMethods;
@@ -31,7 +33,7 @@ import java.util.Random;
 
 public class MainMenu extends AppCompatActivity implements View.OnClickListener, LoadDialog.NoticeDialogListener {
 
-    Button easyButton, mediumButton, loadButton;
+    Button easyButton, mediumButton, hardButton, loadButton;
 
     public static ProgressBar progressBar; // Want this accessible from other activity - is this the right way??
 
@@ -43,13 +45,15 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     ArrayList<Integer> row, checks, correct;
     ArrayList<ArrayList<Integer>> cols, boxes;
 
+    final static int GRID_SIZE = 9;
     // Current state of grid
-    int[][] grid = new int [9][9];
+    int[][] grid = new int [GRID_SIZE][GRID_SIZE];
     // Hold solution
-    int[][] grid_correct = new int [9][9];
-    int[][] start_grid = new int[9][9];
+    int[][] grid_correct = new int [GRID_SIZE][GRID_SIZE];
+    //Initial state of grid
+    int[][] start_grid = new int[GRID_SIZE][GRID_SIZE];
 
-    int x = 11, y = 11;
+
     Random rand;
     boolean complete = false;
 
@@ -78,6 +82,10 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
         mediumButton = (Button) findViewById(R.id.button_medium);
         mediumButton.setOnClickListener(MainMenu.this);
+
+        hardButton = (Button) findViewById(R.id.button_hard);
+        hardButton.setOnClickListener(MainMenu.this);
+        hardButton.setEnabled(false);
 
         loadButton = (Button) findViewById(R.id.button_saved_games);
         loadButton.setOnClickListener(MainMenu.this);
@@ -134,6 +142,15 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
                 difficulty = "medium";
                 new PuzzleGeneration().execute();
+
+                break;
+
+            case R.id.button_hard:
+                // Make progressBar visible
+                progressBar.setVisibility(View.VISIBLE);
+
+                difficulty = "hard";
+                //new PuzzleGeneration().execute();
 
                 break;
 
@@ -216,14 +233,14 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
 
         if(!complete){
-            for (int i = 0; i < x-2; i++){
-                int bound = 9;
+            for (int i = 0; i < GRID_SIZE; i++){
+                int bound = GRID_SIZE;
 
                 ArrayList<Integer> tempRow = new ArrayList<Integer>();
                 ArrayList<Integer> tempBox = new ArrayList<Integer>();
-                for (int j = 0; j < y-2; j++){
+                for (int j = 0; j <GRID_SIZE; j++){
                     if(j == 0){
-                        for(int k = 1; k < 10; k++){
+                        for(int k = 1; k <= GRID_SIZE; k++){
                             row.add(k);
                             if(i == 0){
                                 ArrayList<Integer> box = new ArrayList<Integer>();
@@ -294,9 +311,9 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             }
         }
         if(!correct.isEmpty()){
-            for(int i = 0; i < x-2; i++) {
-                for (int j = 0; j < y - 2; j++) {
-                    grid[i][j] = correct.get(j * (x - 2) + i);
+            for(int i = 0; i < GRID_SIZE; i++) {
+                for (int j = 0; j < GRID_SIZE; j++) {
+                    grid[i][j] = correct.get(j * (GRID_SIZE) + i);
                 }
             }
         }
@@ -304,8 +321,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
 
         // Set correct solution
-        for(int i = 0; i < x-2; i++) {
-            for (int j = 0; j < y - 2; j++) {
+        for(int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j <GRID_SIZE; j++) {
                 grid_correct[i][j] = grid[i][j];
             }
         }
@@ -321,7 +338,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         /**
          * Generates starting grid from solution grid
          */
-        int[][] start_grid = new int[9][9];
+        int[][] start_grid = new int[GRID_SIZE][GRID_SIZE];
 
         if( diff.equals("easy" ) ){
             start_grid = SudokuMethods.makeEasy(grid2);
@@ -430,15 +447,15 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 else{
                     // set current state (first 81 digits)
                     for( int i=0; i<81; i++ ){
-                        grid[ i/9 ][ i%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+                        grid[ i/GRID_SIZE ][ i%GRID_SIZE ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
                     }
                     // set initial state
                     for( int i=81; i<162; i++ ){
-                        start_grid[ (i-81)/9 ][ (i-81)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+                        start_grid[ (i-81)/GRID_SIZE ][ (i-81)%GRID_SIZE ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
                     }
                     // set initial state
                     for( int i=162; i<81*3; i++ ){
-                        grid_correct[ (i-162)/9 ][ (i-162)%9 ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
+                        grid_correct[ (i-162)/GRID_SIZE ][ (i-162)%GRID_SIZE ] = Integer.parseInt(  String.valueOf( textFromFile.charAt(i) )  );
                     }
                 }
 
