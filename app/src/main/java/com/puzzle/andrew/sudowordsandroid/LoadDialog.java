@@ -70,6 +70,7 @@ public class LoadDialog extends DialogFragment {
 
         builder.setTitle( loadDialogTitle )
                 //R.string.pick_color
+                .setIcon(R.drawable.sudoku)
                 .setItems( arr, new DialogInterface.OnClickListener() {
                     //R.array.colors_array
                     public void onClick(DialogInterface dialog, int which) {

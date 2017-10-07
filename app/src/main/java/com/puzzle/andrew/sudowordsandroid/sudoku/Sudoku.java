@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
@@ -164,6 +165,9 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 field.setLayoutParams(new AppBarLayout.LayoutParams(158, 158));
                 field.setGravity(Gravity.CENTER);
                 field.setSelectAllOnFocus(true);
+                field.setCursorVisible(false);
+
+
                 sudGrid.addView(field);
 
             }
