@@ -3,6 +3,7 @@
     <string name="sudoku_header">Good luck!</string>
     <string name="sudoku_hint">Hint</string>
     <string name="sudoku_check">Check</string>
+    <string name="sudoku_morale">Morale</string>
     <string name="sudoku_save">Save</string>
     <string name="sudoku_dont_save">Don\'t save</string>
     <string name="save_message_title">Want to save?</string>

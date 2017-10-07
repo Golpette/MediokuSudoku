@@ -1280,15 +1280,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sudoku_hint"
-        app:layout_constraintBottom_toBottomOf="@+id/sudokuCheckButton"
-        app:layout_constraintRight_toLeftOf="@+id/sudokuCheckButton"
+        app:layout_constraintBottom_toBottomOf="@+id/sudokuMoraleButton"
+        app:layout_constraintRight_toLeftOf="@+id/sudokuMoraleButton"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
-        android:id="@+id/sudokuCheckButton"
+        android:id="@+id/sudokuMoraleButton"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:text="@string/sudoku_check"
+        android:text="@string/sudoku_morale"
         app:layout_constraintLeft_toRightOf="@+id/sudokuHintButton"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="25dp"

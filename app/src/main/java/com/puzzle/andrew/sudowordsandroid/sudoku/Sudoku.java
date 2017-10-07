@@ -40,7 +40,7 @@ import java.io.FileOutputStream;
  */
 public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
-    private Button checkButton;
+    private Button moraleButton;
     private Button hintButton;
     //private Button saveButton;
 
@@ -82,8 +82,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         setContentView(R.layout.sudoku_menu);
 
         // Make Hint and Check buttons and listeners
-        checkButton = (Button) findViewById(R.id.sudokuCheckButton);
-        checkButton.setOnClickListener(Sudoku.this);
+        moraleButton = (Button) findViewById(R.id.sudokuMoraleButton);
+        moraleButton.setOnClickListener(Sudoku.this);
         hintButton = (Button) findViewById(R.id.sudokuHintButton);
         hintButton.setOnClickListener(Sudoku.this);
 
@@ -203,7 +203,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             // Hint button -----------------------
             case R.id.sudokuHintButton:
                 // Every time hint is pressed, get rid of "check" features (copy and pasted from below)
-                checkPressed = false;
+                //checkPressed = false;
 
                 resetGridColours();
 
@@ -224,47 +224,60 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
             // Check button -------------------------------------------
-            case R.id.sudokuCheckButton:
-                hintPressed = false;
+            case R.id.sudokuMoraleButton:
 
+                hintPressed = false;
                 resetGridColours();
 
+                String[] morale = {"You can do it!", "Einstein never solved a single sudoku!", "This world doesn't deserve you",
+                        "You're incredible!", "Fill me!", "I believe in you", "You complete me",
+                        "Such perseverance and resolve", "Keep going!", "In the future, when robots rule the world, puzzles are all we'll have",
+                        "To solve the sudoku, one must become the sudoku", "Your smile is contagious :)"};
 
-                if( !checkPressed ) {
-                    checkPressed=true;
+                int r = (int)(  Math.random() * (morale.length)   );
 
-                    // Display congrats message upon completion
-                    if( gridCorrect){
-                        // Make snackbar
-                        Snackbar mSnackbar = Snackbar.make(view, R.string.sudoku_congrats, Snackbar.LENGTH_LONG);
-                        // Get snackbar view
-                        View mView = mSnackbar.getView();
-                        // Get textview inside snackbar view
-                        TextView mTextView = (TextView) mView.findViewById(android.support.design.R.id.snackbar_text);
-                        // Center the message
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-                            mTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                        else
-                            mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
-                        mSnackbar.show();
-                    }
+                Toast toast = Toast.makeText(this, morale[r], Toast.LENGTH_SHORT );
+                toast.setGravity(Gravity.CENTER,0,0);
+                toast.show();
 
-                    for (int i = 0; i < x - 2; i++) {
-                        for (int j = 0; j < y - 2; j++) {
-                            EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-                            //field.setBackgroundResource(R.drawable.border_active);
-                            if (grid[i][j] == grid_correct[i][j]) {
-                                field.setBackgroundColor( getResources().getColor(R.color.sudoku_correct) );
-                            }
-                            else if(grid[i][j]!=0 ){  // 0 is set if no number is entered
-                                field.setBackgroundColor( getResources().getColor(R.color.sudoku_wrong) );
-                            }
-                        }
-                    }
-                }
-                else{
-                    checkPressed = false;
-                }
+
+
+
+//                if( !checkPressed ) {
+//                    checkPressed=true;
+//
+//                    // Display congrats message upon completion
+//                    if( gridCorrect){
+//                        // Make snackbar
+//                        Snackbar mSnackbar = Snackbar.make(view, R.string.sudoku_congrats, Snackbar.LENGTH_LONG);
+//                        // Get snackbar view
+//                        View mView = mSnackbar.getView();
+//                        // Get textview inside snackbar view
+//                        TextView mTextView = (TextView) mView.findViewById(android.support.design.R.id.snackbar_text);
+//                        // Center the message
+//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+//                            mTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+//                        else
+//                            mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
+//                        mSnackbar.show();
+//                    }
+//
+//                    for (int i = 0; i < x - 2; i++) {
+//                        for (int j = 0; j < y - 2; j++) {
+//                            EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
+//                            //field.setBackgroundResource(R.drawable.border_active);
+//                            if (grid[i][j] == grid_correct[i][j]) {
+//                                field.setBackgroundColor( getResources().getColor(R.color.sudoku_correct) );
+//                            }
+//                            else if(grid[i][j]!=0 ){  // 0 is set if no number is entered
+//                                field.setBackgroundColor( getResources().getColor(R.color.sudoku_wrong) );
+//                            }
+//                        }
+//                    }
+//                }
+//                else{
+//                    checkPressed = false;
+//                }
 
                 break;
 
