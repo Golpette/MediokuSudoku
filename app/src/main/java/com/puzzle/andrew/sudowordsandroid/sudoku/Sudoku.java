@@ -145,8 +145,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 //                GridLayout.spec(1, GridLayout.CENTER)));
 //        sudGrid.addView(largest);
 
-
-
         for(int i = 0; i < x-2; i++) {
             for (int j = 0; j < y - 2; j++) {
                 EditText field = new EditText(this);
@@ -158,6 +156,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 if (grid_initialState[i][j] != 0) {
                     field.setBackgroundResource(R.drawable.rounded_corner_highlight);
                     field.setKeyListener(null);
+                    field.setFocusable(false);
                 }else{
                     field.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                         @Override
