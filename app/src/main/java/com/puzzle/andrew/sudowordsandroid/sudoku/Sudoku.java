@@ -56,15 +56,13 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
     int x = 11, y = 11;
 
-    String saveFileName = "x.dat";
+    String saveFileName = "";
     String file_loaded;     //so we auto-input current filename for easy over-writing
 
 
 
 
     protected void onCreate(Bundle savedInstanceState) {
-
-        //context = getApplicationContext();
 
         // Get the start_grid and correct_grid passed
         Bundle extras = getIntent().getExtras();
@@ -107,7 +105,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
 
 
-        //Create a TextWatcher for input to addTextChangedListener() to hide keypad on number entry
+        //Create a TextWatcher for input to addTextChangedListener() to hide keypad / reset colour /
+        // autosave / ...  upoon number entry
         // (this HAS TO GO HERE at end of onCreate() or the autosave will activate as we initialise grid)
         GridLayout layout = (GridLayout)findViewById(R.id.sudokuGrid);
         for (int i = 0; i < layout.getChildCount(); i++) {
@@ -115,6 +114,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             if (v instanceof EditText) {
                 final EditText et = (EditText) v;
                 TextWatcher tw = new TextWatcher() {
+
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     }
@@ -127,13 +127,16 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(et.getApplicationWindowToken(), 0);
 
-                        // Autosave if a loaded game!
-                        //if( !file_loaded.equals("") ){ /// TODO: this should never be the case now
-                            updateGrid();
-                            saveGame();
-                        //}
+                        // Autosave upon every change
+                        updateGrid();
+                        saveGame();
                         // Reset colours after any change
                         resetGridColours();
+                        // and remove hint
+                        hintPressed = false;
+
+                        // Make congrats Toast if correct
+                        checkIfCorrect(  );
 
                     }
                 };
@@ -165,7 +168,52 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     }
 
 
+    public void checkIfCorrect(){
 
+        android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
+
+        // Check if grid is full or correct
+        boolean gridCorrect = true;
+        for (int i = 0; i < x - 2; i++) {
+            for (int j = 0; j < y - 2; j++) {
+                if (grid[i][j] != grid_correct[i][j]) {
+                    gridCorrect = false;
+                }
+            }
+        }
+
+        if( gridCorrect ){
+            // Congratulations Toast
+            Toast toast = Toast.makeText(this, "CONGRATULATIONS!", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP,0,0);
+            // Increase text size in Toast
+            ViewGroup group = (ViewGroup) toast.getView();
+            TextView messageTextView = (TextView) group.getChildAt(0);
+            messageTextView.setTextSize(25);
+            toast.show();
+        }
+
+
+
+    }
+
+
+
+
+    public boolean isGridFull(){
+        /**
+        * Check if grid is full of numbers
+        */
+        boolean gridFull = true;
+        for (int i = 0; i < x - 2; i++) {
+            for (int j = 0; j < y - 2; j++) {
+                if(grid[i][j]==0){  // 0 is set if no number is entered
+                    gridFull = false;
+                }
+            }
+        }
+        return gridFull;
+    }
 
 
 
@@ -179,33 +227,17 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
 
-        // Check if grid is full or correct
-        boolean gridFull = true;
-        boolean gridCorrect = true;
-        for (int i = 0; i < x - 2; i++) {
-            for (int j = 0; j < y - 2; j++) {
-                EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
-                //field.setBackgroundResource(R.drawable.border_active);
-                if (grid[i][j] != grid_correct[i][j]) {
-                    gridCorrect = false;
-                }
-                if(grid[i][j]==0){  // 0 is set if no number is entered
-                    gridFull = false;
-                }
-            }
-        }
-
-
+        // Check if grid is full (so we can prevent Hint method running)
+        boolean gridFull = isGridFull();
 
 
         // Deal with buton presses
         switch ( view.getId() ){
 
-
             // Hint button -----------------------
             case R.id.sudokuHintButton:
-                // Every time hint is pressed, get rid of "check" features (copy and pasted from below)
-                //checkPressed = false;
+                // If correct, make a Snackbar with congrats message
+                checkIfCorrect();
 
                 resetGridColours();
 
@@ -252,7 +284,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                         "To solve the sudoku, one must become the sudoku", "Your smile is contagious :)",
                         "You are the chosen one", "You're a wizard, Harry!", "This puzzle was generated JUST FOR YOU",
                         "There are 6,670,903,752,021,072,936,960 sudoku puzzles to complete", "You can do sudoku!",
-                        "We all need a little help sometimes", "Feel the joy"};
+                        "We all need a little help sometimes", "Feel the joy", "You should be proud!"};
 
                 int r = (int)(  Math.random() * (morale.length)   );
 
@@ -263,32 +295,20 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 TextView messageTextView = (TextView) group.getChildAt(0);
                 messageTextView.setTextSize(18);
                 toast.show();
-
                 break;
 
-            //================================================
-            //DONT DELETE YET
 
-                // REMOVE CHECK FEATURE AND JUST ADD A WARNING IN HINT IF THERE ARE INCORRECT ENTRIES
+            default:
+                break;  //is this essential?
+
+        }
+        
+    }
+
+//=========================================================
+// REMOVE CHECK FEATURE AND JUST ADD A WARNING IN HINT IF THERE ARE INCORRECT ENTRIES
 //                if( !checkPressed ) {
 //                    checkPressed=true;
-//
-//                    // Display congrats message upon completion
-//                    if( gridCorrect){
-//                        // Make snackbar
-//                        Snackbar mSnackbar = Snackbar.make(view, R.string.sudoku_congrats, Snackbar.LENGTH_LONG);
-//                        // Get snackbar view
-//                        View mView = mSnackbar.getView();
-//                        // Get textview inside snackbar view
-//                        TextView mTextView = (TextView) mView.findViewById(android.support.design.R.id.snackbar_text);
-//                        // Center the message
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-//                            mTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-//                        else
-//                            mTextView.setGravity(Gravity.CENTER_HORIZONTAL);
-//                        mSnackbar.show();
-//                    }
-//
 //                    for (int i = 0; i < x - 2; i++) {
 //                        for (int j = 0; j < y - 2; j++) {
 //                            EditText field = (EditText) sudGrid.getChildAt(i * 9 + j);
@@ -306,16 +326,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 //                    checkPressed = false;
 //                }
 //========================================================
-
-
-
-
-            default:
-                break;  //is this essential?
-
-        }
-        
-    }
 
 
 
