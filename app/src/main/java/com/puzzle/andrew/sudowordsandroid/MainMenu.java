@@ -86,7 +86,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         difficultButton = (Button) findViewById(R.id.button_difficult);
         difficultButton.setOnClickListener(MainMenu.this);
 
-        loadButton = (Button) findViewById(R.id.button_load);
+        loadButton = (Button) findViewById(R.id.button_saved_games);
         loadButton.setOnClickListener(MainMenu.this);
 
         // Initialise the list of saved games

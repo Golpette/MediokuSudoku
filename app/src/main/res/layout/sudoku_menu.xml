@@ -151,7 +151,19 @@
 
 
     </GridLayout>
-    
+
+    <Button
+    android:id="@+id/sudokuHintButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/sudoku_hint"
+    android:textSize="16sp"
+    android:background = "@drawable/roundedbutton"
+    android:backgroundTint="@android:color/holo_blue_dark"
+    app:layout_constraintBottom_toBottomOf="@+id/sudokuCheckButton"
+    app:layout_constraintRight_toLeftOf="@+id/sudokuCheckButton"
+    app:layout_constraintLeft_toLeftOf="parent" />
+
         
     <Button
         android:id="@+id/sudokuMoraleButton"
@@ -161,7 +173,6 @@
         android:textSize="16sp"
         android:background = "@drawable/roundedbutton"
         android:backgroundTint="@android:color/holo_blue_dark"
-        app:layout_constraintBottom_toBottomOf="@+id/sudokuCheckButton"
         app:layout_constraintRight_toLeftOf="@+id/sudokuCheckButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />

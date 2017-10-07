@@ -75,7 +75,7 @@
         android:id="@+id/button_saved_games"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Saved games"
+        android:text="Load"
         android:backgroundTint="@android:color/darker_gray"
         android:background = "@drawable/roundedbutton"
         android:textSize="16sp"
