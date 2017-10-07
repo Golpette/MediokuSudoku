@@ -28,6 +28,7 @@ import com.puzzle.andrew.sudowordsandroid.MainMenu;
 import com.puzzle.andrew.sudowordsandroid.R;
 import com.puzzle.andrew.sudowordsandroid.SavedGames;
 
+import java.io.File;
 import java.io.FileOutputStream;
 
 
@@ -43,9 +44,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
     private Button moraleButton;
     private Button hintButton;
-    //private Button saveButton;
 
-    private boolean checkPressed = false;
     private boolean hintPressed = false;
 
     // Current state of grid
@@ -60,7 +59,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
     String saveFileName = "x.dat";
     String file_loaded;     //so we auto-input current filename for easy over-writing
 
-    //Context context;
 
 
 
@@ -73,7 +71,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         grid_correct = (int[][]) extras.getSerializable("grid_solution");
         grid = (int[][]) extras.getSerializable("grid_currentState");
         grid_initialState = (int[][]) extras.getSerializable("grid_initialState");
-        file_loaded = extras.getString( "file_loaded" );
+        file_loaded = extras.getString( "file_loaded" ); // either the saved name or, if new game, "_temp_file_"
 
 
         //Steve: need this plus the android:screenOrientation="portrait" in the xml
@@ -130,10 +128,13 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                         imm.hideSoftInputFromWindow(et.getApplicationWindowToken(), 0);
 
                         // Autosave if a loaded game!
-                        if( !file_loaded.equals("") ){
+                        //if( !file_loaded.equals("") ){ /// TODO: this should never be the case now
                             updateGrid();
                             saveGame();
-                        }
+                        //}
+                        // Reset colours after any change
+                        resetGridColours();
+
                     }
                 };
                 et.addTextChangedListener( tw );
@@ -251,7 +252,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                         "To solve the sudoku, one must become the sudoku", "Your smile is contagious :)",
                         "You are the chosen one", "You're a wizard, Harry!", "This puzzle was generated JUST FOR YOU",
                         "There are 6,670,903,752,021,072,936,960 sudoku puzzles to complete", "You can do sudoku!",
-                        "We all need a little help sometimes", "Feel the joy rise!"};
+                        "We all need a little help sometimes", "Feel the joy"};
 
                 int r = (int)(  Math.random() * (morale.length)   );
 
@@ -455,8 +456,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
          * Custom onBackPressed to allow passing of Strings
          */
 
-        // Only warn for unsaved games
-        if( file_loaded.equals("") ){  //TODO: set this "" to some generic temp name?
+        // Only warn for unsaved games (i.e. with the unsavedGameName generic name
+        if( file_loaded.equals( MainMenu.unsavedGameName  ) ){
 
             // Use AlertDialog to select file name or exit without saving
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -473,10 +474,6 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
             input.setSelectAllOnFocus(true);
             builder.setView(input);
 
-
-            //Log.d("savefilename = ",  saveFileName);
-
-
             //Set up buttons
             builder.setPositiveButton(R.string.sudoku_save, new DialogInterface.OnClickListener(){
 
@@ -484,13 +481,14 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 public void onClick(DialogInterface dialog, int which ){
 
                     /// Get name from the input EditText  (only recognize .dat files!)
-                    String fileToSave = input.getText().toString()+".dat";
+                String fileToSave = input.getText().toString()+".dat";
+                Context context = getApplicationContext();
+
 
                     if( MainMenu.savedGames.contains( fileToSave ) ){
                         //Log.d("SAVE GAME:",  " GAME NAME ALREADY EXISTS");
 
                         // Print a Toast warning message
-                        Context context = getApplicationContext();
                         Toast toast = Toast.makeText(context, "Saved game already exists!", Toast.LENGTH_LONG );
                         toast.show();
 
@@ -502,8 +500,19 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                         file_loaded = fileToSave.substring( 0, fileToSave.lastIndexOf(".")    );   //saveGame doesn't want the extension
                         saveGame();
 
+                        //delete the temp file
+                        File fdelete = new File( context.getFilesDir(), MainMenu.unsavedGameName+".dat" );  // this has to be the temp_file
+                        if (fdelete.exists()) {
+                            if (fdelete.delete()) {
+                                //Toast.makeText(context, "Deleting: " + filename, Toast.LENGTH_SHORT).show();
+                                Log.d("FILE DELETION", "Deletion of _temp_file_ successful");
+                            } else {
+                                Log.d("FILE DELETION", "Deletion of _temp_file_ failed");
+                            }
+                        }
+
+
                         // Update the save game list!
-                        Context context = getApplicationContext();
                         MainMenu.savedGames = SavedGames.getSavedGames( context );
 
                         finish();
@@ -516,6 +525,18 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 @Override
                 public void onClick(DialogInterface dialog, int which){
                     //TODO :  delete the temp file name!
+                    // no save desired; delete temp file
+                    Context context = getApplicationContext();
+                    File fdelete = new File( context.getFilesDir(), MainMenu.unsavedGameName+".dat" );
+                    if (fdelete.exists()) {
+                        if (fdelete.delete()) {
+                            //Toast.makeText(context, "Deleting: " + filename, Toast.LENGTH_SHORT).show();
+                            Log.d("FILE DELETION", "Deletion of _temp_file_ successful");
+                        } else {
+                            Log.d("FILE DELETION", "Deletion of _temp_file_ failed");
+                        }
+                    }
+
                     finish();
                 }
             });

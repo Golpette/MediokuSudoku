@@ -35,6 +35,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
     public static ProgressBar progressBar; // Want this accessible from other activity - is this the right way??
 
+    final public static String unsavedGameName = "_restore_unsaved_game_";
 
     // STEVE: TEST MAKING SUDOKU HERE IN ASYNC TASK ==========================================
     private String difficulty;
@@ -172,7 +173,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             mBundle.putSerializable("grid_solution", grid_correct );
             mBundle.putSerializable("grid_initialState", start_grid );
             mBundle.putSerializable("grid_currentState", start_grid );       // is this OK? When generating a grid our start grid is our current!
-            mBundle.putString("file_loaded", "");  // TODO KEEP THIS IN MIND
+            mBundle.putString("file_loaded", unsavedGameName  );  // TODO KEEP THIS IN MIND
             puzzle.putExtras(mBundle);
             startActivity( puzzle );
 
