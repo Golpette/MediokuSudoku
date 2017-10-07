@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -76,20 +77,75 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
 
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
 
-        // Set up grid using initial and current states
-        for(int i = 0; i < GRID_SIZE; i++){
-            for (int j = 0; j < GRID_SIZE; j++){
-                EditText field = (EditText) sudGrid.getChildAt(i * GRID_SIZE + j);
-                field.setBackgroundResource(R.drawable.border_active);
-                // Set current grid state
-                if( grid[i][j]!=0 ){  field.setText("" + grid[i][j]);  }
-                // Set initial state colour and make non-editable
-                if(grid_initial_state[i][j]!=0) {
-                    field.setBackgroundResource(R.drawable.border);
-                    field.setKeyListener(null);
+//        // Set up grid using initial and current states
+//        for(int i = 0; i < GRID_SIZE; i++){
+//            for (int j = 0; j < GRID_SIZE; j++){
+//                EditText field = (EditText) sudGrid.getChildAt(i * GRID_SIZE + j);
+//                field.setBackgroundResource(R.drawable.border_active);
+//                // Set current grid state
+//                if( grid[i][j]!=0 ){  field.setText("" + grid[i][j]);  }
+//                // Set initial state colour and make non-editable
+//                if(grid_initial_state[i][j]!=0) {
+//                    field.setBackgroundResource(R.drawable.border);
+//                    field.setKeyListener(null);
+//                }
+//            }
+//        }
+
+
+
+
+        for(int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                final EditText field = new EditText(this);
+                field.setBackgroundResource(R.drawable.rounded_corner);
+                field.setInputType(InputType.TYPE_CLASS_NUMBER);
+                if (grid[i][j] != 0) {
+                    field.setText("" + grid[i][j]);
                 }
+                if (grid_initial_state[i][j] != 0) {
+                    field.setBackgroundResource(R.drawable.rounded_corner_highlight);
+                    field.setKeyListener(null);
+                    field.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View view, boolean hasFocus) {
+                            hideKeyboard(view);
+                        }
+                    });
+                    //field.setFocusable(false);
+                }else{
+                    field.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            field.onTouchEvent(event);
+                            field.setSelection(field.getText().length());
+                            return true;
+                        }
+                    });
+                    field.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View view, boolean hasFocus) {
+                            if (view.hasFocus()) {
+                                //field.setSelection(field.getText().length());
+                                view.setBackgroundResource(R.drawable.rounded_corner_selected);
+                            } else {
+                                view.setBackgroundResource(R.drawable.rounded_corner);
+                                //hideKeyboard(view);
+                            }
+                        }
+                    });
+                }
+                field.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
+                field.setLayoutParams(new AppBarLayout.LayoutParams(158, 158));
+                field.setGravity(Gravity.CENTER);
+                //field.setSelectAllOnFocus(true);
+                field.setCursorVisible(false);
+                sudGrid.addView(field);
             }
         }
+
+
+
 
         //Create a TextWatcher for input to addTextChangedListener() to hide keypad / reset colour /
         // autosave / ...  upoon number entry
