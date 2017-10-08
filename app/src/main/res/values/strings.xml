@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Doku Kudos</string>
+    <string name="app_name">Medioku Sudoku</string>
     <string name="sudoku_header">Good luck!</string>
     <string name="sudoku_hint">Hint</string>
     <string name="sudoku_check">Check</string>
