@@ -85,7 +85,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
         hardButton = (Button) findViewById(R.id.button_hard);
         hardButton.setOnClickListener(MainMenu.this);
-        hardButton.setEnabled(false);
+        //hardButton.setEnabled(false);
 
         loadButton = (Button) findViewById(R.id.button_saved_games);
         loadButton.setOnClickListener(MainMenu.this);
@@ -148,9 +148,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             case R.id.button_hard:
                 // Make progressBar visible
                 progressBar.setVisibility(View.VISIBLE);
-
                 difficulty = "hard";
-                //new PuzzleGeneration().execute();
+                // TODO new PuzzleGeneration().execute();
 
                 break;
 
