@@ -4,15 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient"
     android:screenOrientation="portrait">
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sudoku_header"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textStyle="bold"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
         app:layout_constraintBottom_toTopOf="@+id/sudokuGrid"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -27,6 +29,7 @@
         android:columnCount="9"
         android:rowCount="9"
         android:visibility="visible"
+        android:focusableInTouchMode="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
@@ -41,6 +44,7 @@
             android:layout_columnSpan="3"
             android:layout_row="0"
             android:layout_rowSpan="3"
+            android:background="@drawable/rounded_corner_large"
             app:srcCompat="@drawable/large_border" />
 
         <ImageView
@@ -51,6 +55,7 @@
             android:layout_columnSpan="3"
             android:layout_row="0"
             android:layout_rowSpan="3"
+            android:background="@drawable/rounded_corner_large"
             app:srcCompat="@drawable/large_border" />
 
         <ImageView
@@ -61,6 +66,7 @@
             android:layout_columnSpan="3"
             android:layout_row="0"
             android:layout_rowSpan="3"
+            android:background="@drawable/rounded_corner_large"
             app:srcCompat="@drawable/large_border" />
 
         <ImageView
@@ -71,6 +77,7 @@
             android:layout_columnSpan="3"
             android:layout_row="3"
             android:layout_rowSpan="3"
+            android:background="@drawable/rounded_corner_large"
             app:srcCompat="@drawable/large_border" />
 
         <ImageView
@@ -81,6 +88,7 @@
             android:layout_columnSpan="3"
             android:layout_row="3"
             android:layout_rowSpan="3"
+            android:background="@drawable/rounded_corner_large"
             app:srcCompat="@drawable/large_border" />
 
         <ImageView
@@ -91,6 +99,7 @@
             android:layout_columnSpan="3"
             android:layout_row="3"
             android:layout_rowSpan="3"
+            android:background="@drawable/rounded_corner_large"
             app:srcCompat="@drawable/large_border" />
 
         <ImageView
@@ -101,6 +110,7 @@
             android:layout_columnSpan="3"
             android:layout_row="6"
             android:layout_rowSpan="3"
+            android:background="@drawable/rounded_corner_large"
             app:srcCompat="@drawable/large_border" />
 
         <ImageView
@@ -111,6 +121,7 @@
             android:layout_columnSpan="3"
             android:layout_row="6"
             android:layout_rowSpan="3"
+            android:background="@drawable/rounded_corner_large"
             app:srcCompat="@drawable/large_border" />
 
         <ImageView
@@ -121,6 +132,7 @@
             android:layout_columnSpan="3"
             android:layout_row="6"
             android:layout_rowSpan="3"
+            android:background="@drawable/rounded_corner_large"
             app:srcCompat="@drawable/large_border" />
 
 
@@ -132,31 +144,37 @@
             android:layout_columnSpan="9"
             android:layout_row="0"
             android:layout_rowSpan="9"
+            android:background="@drawable/rounded_corner_large"
             app:srcCompat="@drawable/largest_border" />
+
+
 
     </GridLayout>
 
-
-
-
     <Button
-        android:id="@+id/sudokuHintButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sudoku_hint"
-        app:layout_constraintBottom_toBottomOf="@+id/sudokuMoraleButton"
-        app:layout_constraintRight_toLeftOf="@+id/sudokuMoraleButton"
-        app:layout_constraintLeft_toLeftOf="parent" />
+    android:id="@+id/sudokuHintButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/sudoku_hint"
+    android:textSize="16sp"
+    android:background = "@drawable/roundedbutton"
+    android:backgroundTint="@android:color/holo_blue_dark"
+    app:layout_constraintBottom_toBottomOf="@+id/sudokuCheckButton"
+    app:layout_constraintRight_toLeftOf="@+id/sudokuCheckButton"
+    app:layout_constraintLeft_toLeftOf="parent" />
 
+        
     <Button
         android:id="@+id/sudokuMoraleButton"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:text="@string/sudoku_morale"
-        app:layout_constraintLeft_toRightOf="@+id/sudokuHintButton"
+        android:textSize="16sp"
+        android:background = "@drawable/roundedbutton"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        app:layout_constraintRight_toLeftOf="@+id/sudokuCheckButton"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="25dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <android.support.constraint.Guideline
         android:layout_width="wrap_content"
@@ -166,6 +184,5 @@
         android:orientation="horizontal"
         tools:layout_editor_absoluteY="20dp"
         tools:layout_editor_absoluteX="0dp" />
-
 
 </android.support.constraint.ConstraintLayout>
