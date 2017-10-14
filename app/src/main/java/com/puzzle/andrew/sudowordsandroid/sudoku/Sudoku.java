@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -113,11 +114,16 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         // (this HAS TO GO HERE at end of onCreate() or the autosave will activate as we initialise grid)
         GridLayout layout = (GridLayout)findViewById(R.id.sudokuGrid);
         for (int i = 0; i < layout.getChildCount(); i++) {
+
             View v = layout.getChildAt(i);
             if (v instanceof EditText) {
                 final EditText et = (EditText) v;
-                TextWatcher tw = new TextWatcher() {
 
+                // Only allow digits 1-9 to be entered
+                et.setKeyListener(DigitsKeyListener.getInstance("123456789"));
+
+                // Make the TextWatcher
+                TextWatcher tw = new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     }
