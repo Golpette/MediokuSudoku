@@ -70,7 +70,10 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         super.onCreate(savedInstanceState);
+
+        // TODO: Do not use xml layout
         setContentView(R.layout.sudoku_menu);
+
 
         // Make Hint and Check buttons and listeners
         moraleButton = (Button) findViewById(R.id.sudokuMoraleButton);
@@ -79,7 +82,13 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         hintButton.setOnClickListener(Sudoku.this);
 
 
+        // TODO: Programatically generate the sudokuGrid here -----------------------
+        //  GridLayout with 81 positioned EditText views
+
         android.widget.GridLayout sudGrid = (android.widget.GridLayout) findViewById(R.id.sudokuGrid);
+
+        // TODO -----------------------------------------------------------------
+
 
         // Set up grid using initial and current states
         for(int i = 0; i < GRID_SIZE; i++){
@@ -444,8 +453,8 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         /**
          * Create warning message when back button is pressed
          */
-        String default_msg = "enter save name";
         String default_title = "Want to save?";
+        String default_msg = "enter save name";
 
         customOnBackPressed( default_title, default_msg );
     }
@@ -485,24 +494,28 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
                 public void onClick(DialogInterface dialog, int which ){
 
                     /// Get name from the input EditText  (only recognize .dat files!)
-                String fileToSave = input.getText().toString()+".dat";
-                Context context = getApplicationContext();
+                    String inputText = input.getText().toString();
+                    String fileToSave = inputText+".dat";
+                    Context context = getApplicationContext();
 
 
-                    if( MainMenu.savedGames.contains( fileToSave ) ){
-                        //Log.d("SAVE GAME:",  " GAME NAME ALREADY EXISTS");
-
-                        // Print a Toast warning message
-                        Toast toast = Toast.makeText(context, "Saved game already exists!", Toast.LENGTH_LONG );
-                        toast.show();
-
+                    if(  MainMenu.savedGames.contains( fileToSave )  ||   inputText.equals("")  ){
+                        String nextTitle = "Name already used!";
+                        if( inputText.equals("")  ){
+                            nextTitle = "Save name invalid";
+                        }
                         // Recursively call this function if name already taken!
-                        customOnBackPressed(  "Name already used!" , "try another"  );
+                        customOnBackPressed(  nextTitle , "try another"  );
+
                     }
                     else{
                         // Remove the extension;  "file_loaded" is what is saved in saveGame()
                         file_loaded = fileToSave.substring( 0, fileToSave.lastIndexOf(".")    );   //saveGame doesn't want the extension
                         saveGame();
+                        Toast toast = Toast.makeText( getApplicationContext(), "Saving: "+file_loaded, Toast.LENGTH_SHORT );
+                        toast.show();
+
+
 
                         //delete the temp file
                         File fdelete = new File( context.getFilesDir(), MainMenu.unsavedGameName+".dat" );  // this has to be the temp_file
