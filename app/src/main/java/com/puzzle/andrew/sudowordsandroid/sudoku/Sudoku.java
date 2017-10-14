@@ -438,7 +438,7 @@ public class Sudoku extends AppCompatActivity implements View.OnClickListener{
         for (int i = 0; i < GRID_SIZE; i++) {
             for (int j = 0; j < GRID_SIZE; j++) {
                 EditText field = (EditText) sudGrid.getChildAt(i * GRID_SIZE + j);
-                if( field.getKeyListener() == null ){
+                if( grid_initial_state[i][j] != 0 ){    // field.getKeyListener() == null ){
                     field.setBackgroundResource(R.drawable.border);
                 }
                 else {
